@@ -1,0 +1,60 @@
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<vlayout hflex="1" vflex="">
+
+
+    <div sclass="" style="background-color:white;  border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                <style>
+            .test{
+            background-image: linear-gradient(to bottom,#135474, white  );
+            }
+        </style>
+        <zscript><![CDATA[
+       
+        java.util.Map sites = new java.util.HashMap();
+        
+        sites.put("principal","/Paginas/pincipal.zul");
+        sites.put("conta","/Paginas/conta.zul");
+        sites.put("artigo","/Paginas/publicacaoList.zul");
+        sites.put("reserva","/Paginas/reservas.zul");
+        sites.put("leitura","/Paginas/leituras.zul");
+
+        void redirect(String name){
+        String loc = sites.get(name);
+            if(loc!=null){
+                Executions.getCurrent().sendRedirect(loc);
+            }
+        }
+     ]]></zscript>
+     
+      
+        
+        <div sclass="banner" >
+            <image id="" src="/imgs/logo.png" width="390px"  height="70px" style="margin-left:-10px; margin-bottom:10px;"/>
+            <borderlayout >
+                <center border="none">
+         
+                        <hbox  spacing="40px"  >
+                            <label value="Feeds"  onClick='redirect("principal")' />
+                            <label value="Leituras"  onClick='redirect("leitura")'  />
+                            <label value="Publicações"  onClick='redirect("artigo")' />
+                            <label value="Reservas"  onClick='redirect("reserva")'/>
+                            <label value="Conta"  onClick='redirect("conta")'/>
+                        </hbox> 
+                   
+                </center>
+            
+                <east border="none"  >
+                    
+                    <hbox    apply="controlador.paginas.LogoutController">    		
+                        <label value="${sessionScope.userCredential.name}"  if="${not sessionScope.userCredential.anonymous}"/>          
+                        <label id="logout"  value="| Sair" if="${not sessionScope.userCredential.anonymous}" />
+                    </hbox>
+                    
+                </east>
+            </borderlayout>
+        </div>
+
+    </div>
+   
+</vlayout>
+

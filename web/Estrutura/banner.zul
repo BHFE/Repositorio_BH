@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div hflex="1" vflex="1" sclass="cabecalho">
+        <menupopup id="menu_utente_lista">
+            <menuitem image="/Icons/logout.png" id="logout" label="Sair" if="${not sessionScope.userCredential.anonymous}"/>
+        </menupopup>
+        <hbox hflex="1" vflex="1" align="center" style="background:#dfe8f6 url('../Estrutura/imagem/bf.png') no-repeat;">
+            
+            <hbox apply="controlador.paginas.LogoutController" hflex="1" vflex="1" pack="end" align="end">
+                <button image="/Icons/account_white.png" label="${sessionScope.userCredential.name}"
+                       if="${not sessionScope.userCredential.anonymous}"
+                class="dropdown-toggle btn-primary" popup="menu_utente_lista, after_start"/>
+            </hbox>
+        </hbox>
+    </div>
+</zk>

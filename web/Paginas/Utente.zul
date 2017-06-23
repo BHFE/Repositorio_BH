@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div sclass="conteudo" apply="controlador.paginas.UtenteController">
+        <script src="bootstrap/zk/js/Button-bs.js" />
+        <script src="bootstrap/zk/js/panel-bs.js"/>
+        <menupopup id="menu_utente_lista">
+            <menuitem id="listar_utente" label="Visitantes" />
+            <menuitem id="listar_estudantes" label="Estudantes"/>
+            <menuitem id="listar_funcionarios" label="Funcionarios"/>
+        </menupopup>
+        <menupopup id="m2">
+            <menuitem label="Visitantes" id="search_utente"/>
+            <menuitem label="Estudantes" id="search_estudante"/>
+            <menuitem label="Funcionarios" id="search_funcionario"/>
+        </menupopup>
+        <!--==================Seccao de submenu======================-->
+        
+        <div sclass="sub-menu">
+            <hlayout>
+                <div sclass="btn-group">
+                    <button image="/Icons/ic_person_add.png" autodisable="true" sclass="btn-primary"
+                            label="Adicionar" tooltiptext="Novo utente">
+                        <attribute name="onClick">{
+                            final Window win1 = (Window) Executions.createComponents(
+                            "/Paginas/FormCadastroUtente.zul", null, null);
+                            win1.position =  &quot;center&quot;;
+                            //win1.setMaximizable(true);
+                            win1.doModal();
+                            }</attribute>
+                    </button>
+                    <button image="/Icons/ic_list.png" label="Listar" class="dropdown-toggle btn-primary" tooltiptext="Listar utentes"
+                            popup="menu_utente_lista, after_start"/>
+                </div>
+                <label sclass="sub-menu-texto-1">Gestão de Utentes</label>
+            </hlayout>
+        </div>
+        <!--================Seccao de pesquisa=======================-->
+        <div sclass="filtro row">
+            <div sclass="col-lg-4">
+                <div class="input-group">
+                    <textbox class="form-control" placeholder="Pesquisa por nome de utente" style="height: 38px" id="membersearch"/>
+                    <span class="input-group-btn">
+                        <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                        <button class="dropdown-toggle btn-primary" iconSclass="caret"
+                                popup="m2, after_start" height="38px" tooltiptext="Pesquisar por">
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div sclass="col-lg-4">
+                <div class="input-group">
+                    <decimalbox id="utente_search" class="form-control"
+                                placeholder="Pesquisa por N◦ de utente" style="height: 38px"/>
+                    <span class="input-group-btn">
+                        <button id="btn_utente_search" image="/Icons/ic_search.png" sclass="btn-primary"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <separator/>
+        <div id="div_pesquisar">
+            <!--============================Lista para pesquisa de utentes visitantes============================-->
+            <listbox id="listVisitante" mold="paging" sclass="lista-livros" rows="6" visible="false">
+                <listhead>
+                    <listheader/>
+                </listhead>
+                <template name="model">
+                    <listitem style="background-color: white">
+                        <listcell>
+                            <label sclass="label-nome" value="${each.nome}."/>
+                            <label style="font-size: 11px" value="N◦ ${each.nrCartao}, ${each.moradia}." />
+                        </listcell>
+                    </listitem>
+                </template>	
+            </listbox>
+            <!--============================Lista para pesquisa de utentes estudantes============================-->
+            <listbox id="listEstudante" mold="paging" sclass="lista-livros" rows="6" visible="false">
+                <listhead>
+                    <listheader/>
+                </listhead>
+                <template name="model">
+                    <listitem style="background-color: white">
+                        <listcell>
+                            <label sclass="label-nome" value="${each.idutilizador.idEstudante.nomeCompleto}."/>
+                            <label style="font-size: 11px" value="N◦ ${each.nrCartao}, ${each.idutilizador.idEstudante.cursocurrente.abreviatura}." />
+                        </listcell>
+                    </listitem>
+                </template>	
+            </listbox>
+            <!--============================Lista para pesquisa de utentes funcionarios============================-->
+            <listbox id="listFuncionario" mold="paging" sclass="lista-livros" rows="6" visible="false">
+                <listhead>
+                    <listheader/>
+                </listhead>
+                <template name="model">
+                    <listitem style="background-color: white">
+                        <listcell>
+                            <label sclass="label-nome" value="${each.idutilizador.idFuncionario.nome}."/>
+                            <label style="font-size: 11px" value="N◦ ${each.nrCartao}, ${each.idutilizador.idFuncionario.faculdade.abreviatura}." />
+                        </listcell>
+                    </listitem>
+                </template>	
+            </listbox>
+        </div>
+        <div id="listagem">
+            <!--=======================Listagem de todos Utentes visitantes============================-->
+            <listbox id="utente_ident" mold="paging" emptyMessage="Lista vazia" visible="false">
+                <listhead>
+                    <listheader label="N◦ de cartão"/>
+                    <listheader label="Nome"/>
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell>
+                            <label value="${each.nrCartao}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.nome}"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+            <!--======================Listagem de todos Utentes estudantes===============================-->
+            <listbox id="listEstudantes" mold="paging" emptyMessage="Lista vazia" visible="false">
+                <listhead>
+                    <listheader label="N◦ de cartão"/>
+                    <listheader label="Nome"/>
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell>
+                            <label value="${each.nrCartao}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.idutilizador.idEstudante.nomeCompleto}"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+            <!--==================Listagem de todos Utentes Funcionarios================================-->
+            <listbox id="listFuncionarios" mold="paging" emptyMessage="Lista vazia" visible="false">
+                <listhead>
+                    <listheader label="N◦ de cartão"/>
+                    <listheader label="Nome"/>
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell>
+                            <label value="${each.nrCartao}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.idutilizador.idFuncionario.nome}"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </div>
+        <!--=======================Apresentacao do conteudo principal================================-->
+        <div sclass="row" id="editVisitante">
+            <vlayout>
+                <hlayout>
+                    <!--=======================painel para visualizacao de visitantes============================-->
+                    <div id="painelV" style="padding-left: 10px;" visible="false">
+                        <hlayout>
+                            <panel width="350px" height="205px">
+                                <panelchildren>
+                                    <vlayout>
+                                        <hlayout>
+                                            <div width="80px">
+                                                <image src="/Icons/lurio_logo1.png"></image>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                                    <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                        <label id="id_leitorV"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                        <label style="font-size: 11px;">Nome :</label>
+                                        <label id="nome_leitorV"/>
+                                        <hlayout>
+                                            <label style="font-size: 11px;">Bilhete de identidade N◦ :</label>
+                                            <label style="font-size: 11px; margin-left: 99px;">Telefone :</label>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label id="bi_leitorV"/>
+                                            <label id="tel_leitorV" style="margin-left: 130px;"/>   
+                                        </hlayout>
+                                        <hlayout>                   
+                                            <label style="font-size: 11px">Categoria : </label>
+                                            <label id="tipo_leitor"/>
+                                            <label style="margin-left: 103px" id="estado_leitor"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px;">Moradia : </label>
+                                            <label id="moradia_leitorV"/>
+                                        </hlayout>
+                                        <label value="Email:  " style="margin-left: 45px;" visible="false"/>
+                                        <label id="email_leitorV" visible="false"/>
+                                    </vlayout>
+                                </panelchildren>
+                            </panel>
+                            <div sclass="btn-group-vertical">
+                                <button sclass="btn-primary"  image="/Icons/ic_edit.png" id="editarV" tooltiptext="Editar dados"/>
+                                <button sclass="btn-primary" image="/Icons/eye.png" id="detalhesV" tooltiptext="Ver detalhes"/>
+                                <button sclass="btn-primary" image="/Icons/ic_lock.png" id="bloquearV" tooltiptext="Bloquear conta">
+                                    <attribute name="onClick">{
+                                        motivoBlock.setVisible(true);
+                                        editarV.setDisabled(true);
+                                        bloquearV.setDisabled(true);
+                                        desbloquearV.setDisabled(true);
+                                        detalhesV.setDisabled(true);
+                                        imprimirV.setDisabled(true);
+                                        }</attribute>
+                                </button>
+                                <button sclass="btn-primary" image="/Icons/ic_lock_open.png" id="desbloquearV" tooltiptext="Desbloquear conta"/>
+                                <button sclass="btn-primary" image="/Icons/printer.png" id="imprimirV" tooltiptext="Emitir cartão"/>
+                            </div>
+                        </hlayout>
+                    </div>
+                    <!--================Painel para visualizacao de estudantes===================-->
+                    <div id="painelE" style="padding-left: 10px;" visible="false">
+                        <hlayout>
+                            <panel width="350px" height="205px">
+                                <panelchildren>
+                                    <vlayout>
+                                        <hlayout>
+                                            <div width="80px">
+                                                <image src="/Icons/lurio_logo1.png"></image>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                                    <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                        <label id="id_leitorE"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                        <label style="font-size: 11px;">Nome :</label>
+                                        <label id="nome_leitorE"/>
+                                        <hlayout>
+                                            <div>
+                                                <image src="/Icons/ic_person_black_48dp_2x.png"/>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">N◦ de estudante : </label>
+                                                        <label id="nr_estudante"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">Ano de ingresso : </label>
+                                                        <label id="ano_ingresso"/>   
+                                                    </hlayout>
+                                                    <hlayout>                   
+                                                        <label style="font-size: 11px">Categoria : </label>
+                                                        <label id="categoria_leitorE"/>
+                                                        <label style="margin-left: 15px" id="estado_leitorE"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px;">Curso : </label>
+                                                        <label id="curso_leitorE"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                    </vlayout>
+                                </panelchildren>
+                            </panel>
+                            <div sclass="btn-group-vertical">
+                                <button sclass="btn-primary"  image="/Icons/eye.png" id="detalhesE" tooltiptext="Ver detalhes"/>
+                                <button sclass="btn-primary" image="/Icons/ic_lock.png" id="bloquearE" tooltiptext="Bloquear conta">
+                                    <attribute name="onClick">{
+                                        motivoBlock.setVisible(true);
+                                        bloquearE.setDisabled(true);
+                                        desbloquearE.setDisabled(true);
+                                        detalhesE.setDisabled(true);
+                                        imprimirE.setDisabled(true);
+                                        }</attribute>
+                                </button>
+                                <button sclass="btn-primary" image="/Icons/ic_lock_open.png" id="desbloquearE" tooltiptext="Desbloquear conta"/>
+                                <button sclass="btn-primary" image="/Icons/printer.png" id="imprimirE" tooltiptext="Emitir cartão"/>
+                            </div>
+                        </hlayout>
+                    </div>
+                    <!--================Painel para visualizacao de funcionarios=============-->
+                    <div id="painelF" style="padding-left: 10px;" visible="false">
+                        <hlayout>
+                            <panel width="350px" height="205px">
+                                <panelchildren>
+                                    <vlayout>
+                                        <hlayout>
+                                            <div width="80px">
+                                                <image src="/Icons/lurio_logo1.png"></image>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                                    <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                        <label id="id_leitorF"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                        <label style="font-size: 11px;">Nome :</label>
+                                        <label id="nome_leitorF"/>
+                                        <hlayout>
+                                            <div>
+                                                <image src="/Icons/ic_person_black_48dp_2x.png"/>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">N◦ de Funcionario : </label>
+                                                        <label id="nr_funcionario"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">Telefone : </label>
+                                                        <label id="telefone_leitorF"/>
+                                                    </hlayout>
+                                                    <hlayout>                   
+                                                        <label style="font-size: 11px">Categoria : </label>
+                                                        <label id="categoria_leitorF"/>
+                                                        <label style="margin-left: 15px" id="estado_leitorF"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px;">Faculdade : </label>
+                                                        <label id="faculdade_leitorF"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                    </vlayout>
+                                </panelchildren>
+                            </panel>
+                            <div sclass="btn-group-vertical">
+                                <button sclass="btn-primary"  image="/Icons/eye.png" id="detalhesF" tooltiptext="Ver detalhes"/>
+                                <button sclass="btn-primary" image="/Icons/ic_lock.png" id="bloquearF" tooltiptext="Bloquear conta">
+                                    <attribute name="onClick">{
+                                        motivoBlock.setVisible(true);
+                                        bloquearF.setDisabled(true);
+                                        desbloquearF.setDisabled(true);
+                                        detalhesF.setDisabled(true);
+                                        imprimirF.setDisabled(true);
+                                        }</attribute>
+                                </button>
+                                <button sclass="btn-primary" image="/Icons/ic_lock_open.png" id="desbloquearF" tooltiptext="Desbloquear conta"/>
+                                <button sclass="btn-primary" image="/Icons/printer.png" id="imprimirF" tooltiptext="Emitir cartão"/>
+                            </div>
+                        </hlayout>
+                    </div>
+                    <!--==================================================================-->
+                    <!--================Painel para edicao de visitantes==================-->
+                    <!--==================================================================-->
+                    <div id="painel_edicao" width="700px" style="padding-left: 15px" visible="false">
+                        <panel>
+                            <panelchildren>
+                                <div sclass="row">
+                                    <div sclass="col-lg-6">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Nome</span>
+                                            <textbox sclass="form-control" id="nomeEV"/>
+                                        </div>
+                                    </div>
+                                    <div sclass="col-lg-6">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Moradia</span>
+                                            <textbox sclass="form-control" id="moradiaEV"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <separator/>
+                                <div sclass="row">
+                                    <div sclass="col-lg-6">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Email</span>
+                                            <textbox sclass="form-control" id="emailEV"/>
+                                        </div>
+                                    </div>
+                                    <div sclass="col-lg-6">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Tel</span>
+                                            <textbox sclass="form-control" id="telefoneEV"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <separator/>
+                                <div sclass="conteudo">
+                                    <div sclass="btn-group">
+                                        <button sclass="btn-primary" id="editV" image="/Icons/ic_save.png" label="Guardar" tooltiptext="Guardar"/>
+                                        <button sclass="btn-danger" image="/Icons/ic_close.png" label="Cancelar" tooltiptext="Cancelar">
+                                            <attribute name="onClick">{
+                                                painel_edicao.setVisible(false);
+                                                editarV.setDisabled(false);
+                                                detalhesV.setDisabled(false);
+                                                imprimirV.setDisabled(false);
+                                                if(estado_leitor.getValue().equals("Activo")){
+                                                desbloquearV.setDisabled(true);
+                                                bloquearV.setDisabled(false);
+                                                } else {
+                                                bloquearV.setDisabled(true);
+                                                desbloquearV.setDisabled(false);
+                                                }
+                                                }</attribute>
+                                        </button>
+                                    </div>
+                                </div>
+                            </panelchildren>
+                        </panel>
+                    </div>
+                </hlayout>
+                <!--================Painel para insercao do motivo do bloqueio=================-->
+                <panel width="400px" id="motivoBlock" visible="false">
+                    <panelchildren>
+                        <div sclass="row">
+                            <div sclass="col-lg-12">
+                                <div sclass="input-group">
+                                    <span sclass="input-group-addon">Motivo</span>
+                                    <textbox sclass="form-control" id="motivoB" rows="3"
+                                             constraint="no empty: Preencha o campo!"/>
+                                </div>
+                                <separator/>
+                                <div sclass="conteudo btn-group">
+                                    <button sclass="btn-success" image="/Icons/ic_check.png" id="aceitarB" label="Aceitar" tooltiptext="Aceitar"/>
+                                    <button sclass="btn-danger" image="/Icons/ic_close.png" label="Cancelar" tooltiptext="Cancelar">
+                                        <attribute name="onClick">{
+                                            motivoBlock.setVisible(false);
+                                            editarV.setDisabled(false);
+                                            detalhesV.setDisabled(false);
+                                            imprimirV.setDisabled(false);
+                                            detalhesE.setDisabled(false);
+                                            imprimirE.setDisabled(false);
+                                            detalhesF.setDisabled(false);
+                                            imprimirF.setDisabled(false);
+                                            if(estado_leitor.getValue().equals("Activo") ||
+                                            estado_leitorE.getValue().equals("Activo") ||
+                                            estado_leitorF.getValue().equals("Activo")){
+                                            desbloquearF.setDisabled(true);
+                                            bloquearF.setDisabled(false);
+                                            desbloquearE.setDisabled(true);
+                                            bloquearE.setDisabled(false);
+                                            desbloquearV.setDisabled(true);
+                                            bloquearV.setDisabled(false);
+                                            } else {
+                                            bloquearF.setDisabled(true);
+                                            desbloquearF.setDisabled(false);
+                                            bloquearE.setDisabled(true);
+                                            desbloquearE.setDisabled(false);
+                                            bloquearV.setDisabled(true);
+                                            desbloquearV.setDisabled(false);
+                                            }
+                                            }</attribute>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </panelchildren>
+                </panel>
+            </vlayout>
+        </div>
+    </div>
+    <popup id="msgedit">Editar</popup>
+    <popup id="msglock">Bloquear</popup>
+    <popup id="msgunlock">Desbloquear</popup>
+    <popup id="msgaddreader">Adicionar utente</popup>
+    <popup id="msglist">Listar</popup>
+</zk>

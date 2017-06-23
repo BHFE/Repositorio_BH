@@ -1,0 +1,234 @@
+/* 
+    Created on : Apr 27, 2016, 5:30:09 PM
+    Author     : Nobrega
+*/
+
+.conteiner{
+    align-content: center;
+    max-width: 84%;
+    margin-left: auto;
+    margin-right:auto;}
+
+.minha-tab{
+    border: none;
+}
+
+.windows{
+    border: none;
+    min-width: 500px;
+    border-top: none;
+}
+
+.banner-head{
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 30px;
+    padding: 30px;}
+.cabecalho{
+    height: 100px;
+    color: white;
+    background-color: #337ab7;
+}
+.conteiner-menubar{
+    height: 34px;}
+.conteudo{
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+.footer{
+    background-color:lightgrey;}
+.menu-font{
+    font-weight: bold;
+    font-size: 15px;}
+.pagina-titulo{
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 10px;
+    color: #999;}
+.combo-box{
+    width: 200px;
+}
+.sidebar-fn{
+    font-size: 15px;
+    padding-left: 1px;
+    color: dimgray;
+}
+.button-menu-p{
+    color: darkgray;
+    background-color: #269abc;
+    font-size: 15px;
+    width: 110px;
+    height: 30px;
+}
+.filtro{
+    margin-top: 15px;
+}
+.btn-pesquisa{
+    /*height: 35px;*/
+    background-color: white;
+    color: white;
+}
+.text-pesquisa{
+    width: 250px;
+    height: 35px;
+    font-size: 14px;
+    color: dimgray;
+}
+.btn-new{
+    height: 35px;
+    font-size: 15px;
+    margin-top: 10px;
+}
+.col2{
+    margin-left: 40px;
+}
+.next-row{
+    margin-top: 15px;
+}
+.align{
+    margin-left: 53px;
+}
+.opcoes{
+    position: absolute;
+    margin-right: 0px;
+    right: -100px;   
+}
+.obra-radio{
+    margin-bottom: 10px;
+}
+
+.painel{
+    margin-top: 15px;
+}
+
+.lista :hover {
+    background-color: #ffffff;
+}
+
+.button-search{
+    background-color: dodgerblue;
+    color: white;
+}
+
+.membro{
+    font-size: 14px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.label-id-leitor{
+    color: #222;
+    font-weight: bold;
+}
+
+.label-nome{
+    font-weight: bold;
+}
+
+.label-danger{
+    background-color: #ff0033;
+    height: 10px;
+    color: #ffffff;
+}
+
+.visual{
+    border-style: outset;
+    width: 350px;
+}
+
+.lista-cadastro{
+    width: 330px;
+    height: 230px;
+    border-bottom-color: #ffffff;
+    border: #ffffff;
+    border-style: solid;
+    background-color: #ffffff;
+}
+
+.lista-autores{
+    width: 245px;
+    /*height: 294px;*/
+    border-bottom-color: #ffffff;
+    border: #ffffff;
+    border-style: solid;
+    background-color: #ffffff;
+}
+
+.lista-autores2{
+    width: 270px;
+    /*height: 298px;*/
+
+}
+
+.autores_div2{
+    padding-left: 5px;
+    padding-top: 3px;
+}
+
+.lista-livros{
+    width: 300px;
+    /*height: 300px;*/
+    border-bottom-color: #ffffff;
+    border: #ffffff;
+    border-style: solid;
+    background-color: #ffffff;
+}
+
+.z-datebox-input {  /*simlar to bootstrap's form-control class*/
+    display: table-cell;
+    width: 100%;
+    margin-bottom: 0;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.z-datebox-button {  /*simlar to bootstrap's input-group-addon class*/
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-left: 0;
+}
+.sub-menu {
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+    vertical-align: central;
+}
+
+.sub-menu-texto{
+    margin-left: 100px;
+    font-size: x-large;
+    color: #999;
+}
+
+.sub-menu-texto-1{
+    margin-left: 181px;
+    font-size: x-large;
+    color: #999;
+}
+
+.bottom-line{
+    border-bottom: 1px solid #eee;
+}

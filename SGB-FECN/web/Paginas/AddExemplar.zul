@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winAddExe" sclass="windows" action="show: slideDown; hide: slideUp" width="600px">
+        <div sclass="conteudo">
+        <div class="row" style="margin-top: 20px">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon">Quantidade</span>
+                    <textbox class="form-control" />
+                </div>
+            </div>
+            <div sclass="col-lg-6">
+                <div sclass="input-group">
+                    <span sclass="input-group-addon">Aquisição</span>
+                    <combobox width="100%">
+                        <comboitem label="Compra"/>
+                        <comboitem label="Oferta"/>
+                    </combobox>
+                </div>
+            </div>
+        </div>
+        <div sclass="conteudo">
+            <hlayout>
+                <button label="Adicionar" sclass="btn-primary"/>
+                <button label="Voltar" sclass="btn-warning" onClick="winAddExe.detach()"/>
+            </hlayout>
+        </div>
+        </div>
+    </window>
+</zk>

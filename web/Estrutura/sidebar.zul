@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<grid hflex="1" vflex="1" id="fnList" apply="Sidebar.SidebarAjaxController" sclass="sidebar-fn">
+    <columns >
+        <column style="font-size: 15px;" image="/Icons/ic_menu.png">   MENU PRINCIPAL</column>
+    </columns>
+    <rows style="font-size: 15px;"/>
+</grid>

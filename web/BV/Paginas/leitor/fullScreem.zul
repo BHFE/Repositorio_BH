@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window id="fullScreem" contentStyle="overflow-x: no-display;"  action="show: slideDown;hide: slideUp"     border="none"   apply="controlador.paginas.FullScreem">
+        <script src="/BVbootstrap/zk/js/Button-bs.js"></script>
+        <script src="/BVbootstrap/zk/js/panel-bs.js"></script>
+        
+        <vbox width="97vw" align="center" spacing="0px;" >
+            
+            
+            <div class="row" style="  margin-left:1px; margin-right:1px; ">
+                        <div style="float:left; ">
+                            <image id="" src="/imgs/logo.png" width="12vw"  height="35px" />            
+                        </div>
+                        <div style="float:right; ">
+                                                          
+                            <image tooltiptext="Voltar ao modo anterior" src="/icon/ic_fullscreen_exit_black_18dp.png"  id="voltar" style="float: right; " class="btn btn-default" />
+                            
+                        </div>
+             </div>
+        
+            <div>
+                <iframe  id="reportframe" width="90vw" height="92vh"  /> 
+            </div>
+        </vbox>
+       
+         
+    </window>
+
+</zk>

@@ -1,0 +1,98 @@
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/BV/Paginas/login/layout/template.zul"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window contentStyle="overflow:visible"  id="reservaView" vflex="1" hflex="1" self="@define(content)"   apply="controlador.paginas.Reservas"   >
+    <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+        <div sclass="container">
+            
+          
+            <vbox align="left" width="100%" spacing="5px">
+                <separator />
+                <image id="" src="/imgs/res.png" width="130px"   height="24px"/>
+                <separator bar="true"/>              
+                <div class="btn-group ">
+                    <button  image="/icon/ic_event_note_black_18dp.png"  height="40px" width="180px"  id="nova">Nova Reserva</button>
+                    <button sclass="btn-primary active" height="40px" width="180px" image="/icon/ic_format_list_bulleted_white_18dp.png" >Minhas Reservas</button>
+                    
+                    
+                </div>               
+            </vbox>
+              
+            <vbox align="right" width="100%" id="filtro">
+                <hbox align="right"  pack="end" style="margin-top: 5px;"  spacing="40px" >
+                    
+                    
+                    <vbox spacing="4px" >
+                        
+                        <div class="input-group">
+                                    
+                            <textbox id="searchArea" width="290px" height="38.5px" class="form-control"  placeholder="procurar Obra..."/>
+                                   
+                            <span class="input-group-btn">
+                                <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                            </span>
+                        </div>
+                    </vbox>
+                </hbox>
+            </vbox>
+            <separator height="10px"/>
+            <panel title="Reservas Pendentes" id="res" sclass="panel-info">
+                <panelchildren>
+                
+                    <listbox id="reservaListbox" mold="paging"   span="true"  sclass=" tabelas"  emptyMessage="Nenhuma reserva" rows="5">
+                        <listhead >
+                            <listheader  />
+                            <listheader width="135px"/> 
+                        </listhead>              
+                        <template name="model">
+                            <listitem>
+                                <listcell>
+                                    <separator height="10px"/>
+                                    <hbox align="center">
+                                        <image  src="${each.livro.obraRef.capaDir}" width="110px"  height="150px"/>
+                                        
+                                        <vbox align="left" sclass="titulo">
+                                            <hbox>
+                                                <label value="Obra : "/>
+                                                <label sclass="titulo" value="${each.livro.obraRef.titulo}" />
+                                            </hbox>
+                                            <hbox>
+                                                <label value="Data da Reserva: "/>
+                                                <label sclass="titulo" value="${each.dataReservaf}" />
+                                            </hbox>
+                                            <hbox>
+                                                <label value="Data de expiração: "/>
+                                                <label sclass="titulo" value="${each.dataExpiracaof}" />
+                                            </hbox>
+                            
+                                                
+                                                
+                                            <separator height="5px;"/> 
+                                        </vbox>
+                                    </hbox>                            
+                                </listcell>                        
+                                <listcell >
+                                    <hbox spacing="5px;">
+                                                                 
+                                        <button  tooltiptext="Cancelar reserva"  sclass="btn btn-danger" image="/icon/ic_cancel_white_18dp.png"  forward="onClick = reservaListbox.onCancelar"/>
+                                                                   
+                                    </hbox>
+                                    
+                                </listcell>         
+                            </listitem>
+                        </template>
+                    </listbox>
+                    
+                </panelchildren>
+            </panel> 
+            <separator height="5px"/>
+            
+                                     
+                    
+                   
+        </div>  
+    </div>     
+    </window>
+    
+</zk>

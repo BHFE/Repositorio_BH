@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div sclass="conteudo" apply="controlador.paginas.Circulacao1Controller">
+        <script src="bootstrap/zk/js/Button-bs.js" />
+        <script src="bootstrap/zk/js/panel-bs.js"/>
+        <menupopup id="m1">
+            <menuitem label="Devoluções" id="menuDev"/>
+            <menuitem label="Multas" id="menuMul"/>
+            <menuseparator />
+            <menuitem label="Separated link" />
+        </menupopup>
+        <div sclass="sub-menu">
+            <hlayout>
+                <div sclass="btn-group">
+                    <button label="Empréstimo" sclass="btn-primary" tooltiptext="Novo empréstimo" height="38px">
+                        <attribute name="onClick">{
+                            final Window win = (Window) Executions.createComponents(
+                            "/Paginas/NovoEmprestimo.zul", null, null);
+                            win.position =  &quot;center&quot;;
+                            win.setMaximizable(true);
+                            win.doModal();
+                            }</attribute>
+                    </button>
+                    <button label="Reserva" sclass="btn-primary" height="38px"/>
+                    <button class="btn-default dropdown-toggle btn-primary"
+                            popup="m1, after_start" image="/Icons/ic_list.png" label="Listar"/>
+                </div>
+                <label sclass="sub-menu-texto">Gestão de Empréstimos</label>
+            </hlayout>
+        </div>
+        <div sclass="filtro row">
+            <div sclass="col-lg-4">
+                <div class="input-group">
+                    <textbox class="form-control" placeholder="Pesquisa por N◦ de utente" style="height: 38px"/>
+                    <span class="input-group-btn">
+                        <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                    </span>
+                </div>
+            </div>
+            <div sclass="col-lg-4">
+                <div class="input-group">
+                    <textbox class="form-control" placeholder="Pesquisa por N◦ de exemplar" style="height: 38px"/>
+                    <span class="input-group-btn">
+                        <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                    </span>
+                </div>
+            </div>
+            <button image="/Icons/reload.png" sclass="btn-primary" style="margin-left: 310px"
+                    tooltiptext="Actualizar lista" id="reloadEmprestimo"/>
+        </div>
+        <separator/>
+        <div>
+            <listbox emptyMessage="Lista vazia" rows="6" id="emprestimoLista">
+                <listhead>
+                    <listheader label="Exemplar" width="70px" align="center" tooltiptext="N◦ de registo"/>
+                    <listheader label="Título" align="center" tooltiptext="Título da obra"/>
+                    <listheader label="Utente" width="200px" align="center" tooltiptext="Nome d utente"/>
+                    <listheader label="Leitura" width="100px" align="center" tooltiptext="Tipo de empréstimo"/>
+                    <listheader label="Data Empréstimo" width="120px" align="center" tooltiptext="Data de empréstimo"/>
+                    <listheader label="Data Devolução" width="120px" align="center" tooltiptext="Data de devolução" visible="false" id="colunaDev"/>
+                    <listheader label="Multa" width="100px" align="center" tooltiptext="Valor da multa" visible="false" id="colunaMulta"/>
+                    <listheader label="Operação" width="150px" align="center" tooltiptext="Operações disponíveis" id="colunaOperacao1"/>
+                    <listheader label="Operação" width="100px" align="center" tooltiptext="Operações disponíveis" visible="false" id="colunaOperacao2"/>
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell>
+                            <label value="${each.exemplarRef.nrRegisto}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.exemplarRef.obraRef.titulo}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.idLeitor.nome} ${each.idLeitor.idutilizador.idEstudante.nomeCompleto}
+                                            ${each.idLeitor.idutilizador.idFuncionario.nome}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.tipoEmprestimo}"/>
+                        </listcell>
+                        <listcell>
+                            <label  value="${each.dataEmprestimo.date}-${each.dataEmprestimo.month+1}-${each.dataEmprestimo.year+1900}"/>
+                        </listcell>
+                        <listcell>
+                            <label  value="${each.dataDevolucao.date}-${each.dataDevolucao.month+1}-${each.dataDevolucao.year+1900}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.multaValor}MT"/>
+                        </listcell>
+                        <listcell>
+                            <image src="/Icons/Return_Book.png" tooltiptext="Renovar empréstimo"/>
+                            <image src="/Icons/eye-black.png" style="margin-left: 10px" tooltiptext="Ver detalhes"/>
+                            <image src="Icons/Borrow_Book.png" style="margin-left:10px" tooltiptext="Devolver obra"
+                                   forward="onClick=emprestimoLista.onDevolverObra"/>
+                        </listcell>
+                        <listcell>
+                            <image src="/Icons/cash-multiple.png" tooltiptext="Pagar multa"/>
+                            <image src="Icons/close24x24.png" style="margin-left: 10px" tooltiptext="Retirar multa"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </div>
+    </div>
+</zk>

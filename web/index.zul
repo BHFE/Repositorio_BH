@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
+<?init class="servicos.AutenticacaoInit"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Estrutura/template.zul"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <include id="mainInclude" self="@define(content)" src="/Paginas/Utente.zul"/>
+</zk>

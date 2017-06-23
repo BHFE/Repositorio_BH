@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="win" width="850px" action="show: slideDown; hide: slideUp" apply="controlador.paginas.CirculacaoController">
+        <div sclass="conteudo">
+            <div class="row" style="margin-bottom: 3px; margin-top: 20px;">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <decimalbox id="utente_search" class="form-control"
+                                    placeholder="Pesquisa por N◦ de utente" style="height: 38px"/>
+                        <span class="input-group-btn">
+                            <button id="btn_utente_search" image="/Icons/ic_search.png" sclass="btn-primary"/>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <textbox class="form-control"  placeholder="Pesquisa por titulo" style="height: 38px"
+                                 id="titlesearch"/>
+                        <span class="input-group-btn">
+                            <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div sclass="row bottom-line" height="275px">
+                <!--============================================================================================-->
+                <!--                                 Coluna para utentes                                        -->
+                <!--============================================================================================-->
+                <div sclass="col-lg-6">
+                    <separator/>
+                    <!--                       Painel para visualizacao de visitantes                           -->
+                    <panel width="350px" height="245px" visible="false" id="painelV">
+                        <panelchildren>
+                            <vlayout>
+                                <hlayout>
+                                    <div width="80px">
+                                        <image src="/Icons/lurio_logo1.png"></image>
+                                    </div>
+                                    <div>
+                                        <vlayout>
+                                            <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                            <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                            <hlayout>
+                                                <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                <label id="id_leitorV"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </div>
+                                </hlayout>
+                                <label style="font-size: 11px;">Nome :</label>
+                                <label id="nome_leitorV"/>
+                                <hlayout>
+                                    <label style="font-size: 11px;">Bilhete de identidade N◦ :</label>
+                                    <label style="font-size: 11px; margin-left: 99px;">Telefone :</label>
+                                </hlayout>
+                                <hlayout>
+                                    <label id="bi_leitorV"/>
+                                    <label id="tel_leitorV" style="margin-left: 130px;"/>   
+                                </hlayout>
+                                <hlayout>                   
+                                    <label style="font-size: 11px">Categoria : </label>
+                                    <label id="tipo_leitor"/>
+                                    <label style="margin-left: 103px" id="estado_leitor"/>
+                                </hlayout>
+                                <hlayout>
+                                    <label style="font-size: 11px;">Moradia : </label>
+                                    <label id="moradia_leitorV"/>
+                                </hlayout>
+                            </vlayout>
+                        </panelchildren>
+                    </panel>
+                    <!--                      Painel para visualizacao de estudantes                            -->
+                    <panel width="350px" height="245px" visible="false" id="painelE">
+                        <panelchildren>
+                            <vlayout>
+                                <hlayout>
+                                    <div width="80px">
+                                        <image src="/Icons/lurio_logo1.png"></image>
+                                    </div>
+                                    <div>
+                                        <vlayout>
+                                            <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                            <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                            <hlayout>
+                                                <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                <label id="id_leitorE"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </div>
+                                </hlayout>
+                                <label style="font-size: 11px;">Nome :</label>
+                                <label id="nome_leitorE"/>
+                                <hlayout>
+                                    <div>
+                                        <image src="/Icons/ic_person_black_48dp_2x.png"/>
+                                    </div>
+                                    <div>
+                                        <vlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px">N◦ de estudante : </label>
+                                                <label id="nr_estudante"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px">Ano de ingresso : </label>
+                                                <label id="ano_ingresso"/>   
+                                            </hlayout>
+                                            <hlayout>                   
+                                                <label style="font-size: 11px">Categoria : </label>
+                                                <label id="categoria_leitorE"/>
+                                                <label style="margin-left: 15px" id="estado_leitorE"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px;">Curso : </label>
+                                                <label id="curso_leitorE"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </div>
+                                </hlayout>
+                            </vlayout>
+                        </panelchildren>
+                    </panel>
+                    <!--                         Painel para visualizacao de funcionarios                       -->
+                    <panel width="350px" height="245px" visible="false" id="painelF">
+                        <panelchildren>
+                            <vlayout>
+                                <hlayout>
+                                    <div width="80px">
+                                        <image src="/Icons/lurio_logo1.png"></image>
+                                    </div>
+                                    <div>
+                                        <vlayout>
+                                            <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                            <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                            <hlayout>
+                                                <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                <label id="id_leitorF"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </div>
+                                </hlayout>
+                                <label style="font-size: 11px;">Nome :</label>
+                                <label id="nome_leitorF"/>
+                                <hlayout>
+                                    <div>
+                                        <image src="/Icons/ic_person_black_48dp_2x.png"/>
+                                    </div>
+                                    <div>
+                                        <vlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px">N◦ de Funcionario : </label>
+                                                <label id="nr_funcionario"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px">Telefone : </label>
+                                                <label id="telefone_leitorF"/>
+                                            </hlayout>
+                                            <hlayout>                   
+                                                <label style="font-size: 11px">Categoria : </label>
+                                                <label id="categoria_leitorF"/>
+                                                <label style="margin-left: 15px" id="estado_leitorF"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px;">Faculdade : </label>
+                                                <label id="faculdade_leitorF"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </div>
+                                </hlayout>
+                            </vlayout>
+                        </panelchildren>
+                    </panel>
+                </div>
+                <!--============================================================================================-->
+                <!--                                 Coluna para obras                                          -->
+                <!--============================================================================================-->
+                <div sclass="col-lg-6">
+                    <separator/>
+                    <!--                         Lista para seleccao da obra                                    -->
+                    <listbox id="livros" mold="paging" sclass="lista-livros" rows="4" visible="false">
+                        <listhead>
+                            <listheader/>
+                        </listhead>
+                        <template name="model">
+                            <listitem style="background-color: white">
+                                <listcell>
+                                    <label sclass="label-nome" value="${each.titulo}."/>
+                                    <label style="font-size: 11px" value="${each.tipoObra}, Cota: ${each.cota}, ${each.edicaoCidade}, (${each.publicacaoAno})." />
+                                </listcell>
+                            </listitem>
+                        </template>	
+                    </listbox>
+                    <!--                          Painel para visualizacao da obra                              -->
+                    <panel id="painelLivro" width="380px" visible="false" height="245px">
+                        <panelchildren>
+                            <div>
+                                <vlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Nome:" id="nomeLabel"/>
+                                        <label id="nomeJornal"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Titulo: "/>
+                                        <label id="tituloLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Cota:"/>
+                                        <label id="cotaLivro"/>
+                                        <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Volume:" id="volumeLabel"/>
+                                        <label id="volumeLivro"/>
+                                        <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Edição:" id="edicaoLabel"/>
+                                        <label id="edicaoLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Tipo:"/>
+                                        <label id="tipoLivro"/>
+                                        <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="ISBN:" id="isbnLabel"/>
+                                        <label id="isbnLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Local de edição:"/>
+                                        <label id="localEdicaoLivro"/>
+                                        <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Editora:" id="editoraLabel"/>
+                                        <label id="editoraLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Ano de publicação:"/>
+                                        <label id="anoLivro"/>
+                                        <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Categoria:"/>
+                                        <label id="categoriaLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Idioma:"/>
+                                        <label id="idiomaLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Área:"/>
+                                        <label id="areaLivro"/>
+                                    </hlayout>
+                                    <hlayout>
+                                        <label style="font-size: 11px; font-weight: bold;" value="Exemplar(es):"/>
+                                        <label id="exemplaresLivro"/>
+                                        <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Data de registo:"/>
+                                        <label id="dataRegistoLivro"/>
+                                    </hlayout>
+                                </vlayout>
+                            </div>
+                        </panelchildren>
+                    </panel>
+                </div>
+            </div>
+            <separator/>
+            <div sclass="row">
+                <div sclass="col-lg-6">
+                    <div sclass="row">
+                        <div sclass="col-lg-8">
+                            <label value="Emprestar para leitura" style="font-weight: bold;"/>
+                            <radiogroup>
+                                <radio selected="true" sclass="input-group-addon" style="padding-left: 10px"
+                                       tooltiptext="Leitura interna" id="interna"/>
+                                <span sclass="input-group-addon">Interna</span>
+                                <radio sclass="input-group-addon" style="padding-left: 15px" 
+                                       tooltiptext="Leitura domiciliar" id="domiciliar"/>
+                                <span sclass="input-group-addon">Domiciliar</span>
+                            </radiogroup>
+                        </div>
+                    </div>
+                    <div sclass="row">
+                        <div sclass="conteudo">
+                            <div sclass="btn-group">
+                                <button sclass="btn-primary" tooltiptext="Emprestar obra" height="38px" id="emprestar">Emprestar</button>
+                                <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" onClick="win.detach()" tooltiptext="Sair"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div sclass="col-lg-3">
+                    <label value="Emprestar Exemplar N◦" style="font-weight: bold"/>
+                    <div class="input-group">
+                        <decimalbox sclass="form-control" id="nrExemplar" height="38px" disabled="true"/>
+                        <span class="input-group-btn">
+                            <button image="/Icons/ic_edit.png" sclass="btn-primary" tooltiptext="Habilitar edição" id="editNrExemplar">
+                                <attribute name="onClick">
+                                    nrExemplar.setDisabled(false);
+                                </attribute>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </window>
+</zk>

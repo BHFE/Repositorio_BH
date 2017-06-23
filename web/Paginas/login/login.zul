@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    
+    
+    <div align="center" style="padding-top: 150px" id="loginWin" apply="controlador.paginas.LoginController">
+        <script src="/bootstrap/zk/js/panel-bs.js"/>
+        <script src="/bootstrap/zk/js/Button-bs.js" />
+        <hbox pack="center" align="center">
+            <image src="/Icons/logo2.png"/>
+        </hbox>
+        <separator height="10px"/>
+        <panel width="350px">
+            <panelchildren>
+                <div sclass="row">
+                    <div sclass="col-lg-12">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">
+                                <image src="/Icons/account.png"/>
+                            </span>
+                            <textbox sclass="form-control" height="38px" placeholder="Utilizador"
+                            id="account"/>
+                        </div>
+                    </div>
+                    <separator height="50px"/>
+                    <div sclass="col-lg-12">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">
+                                <image src="/Icons/account-key.png"/>
+                            </span>
+                            <textbox sclass="form-control" height="38px" type="password" placeholder="Senha"
+                            id="password"/>
+                        </div>
+                    </div>
+                    <separator height="50px"/>
+                    <label value="&#160;" sclass=" label label-danger" visible="false" id="message"/>
+                    <separator height="40px"/>
+                    <div sclass="col-lg-12">
+                        <button sclass="btn-primary" label="Entrar" hflex="1" vflex="1" id="login"/>
+                    </div>
+                </div>
+            </panelchildren>
+        </panel>
+    </div>
+</zk>

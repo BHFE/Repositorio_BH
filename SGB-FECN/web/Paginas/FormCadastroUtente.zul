@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="win1" width="800px" action="show: slideDown; hide: slideUp"
+            apply="controlador.paginas.UtenteController">
+        <tabbox>
+            <tabs>
+                <tab label="Interno"/>
+                <tab label="Visitante"/>
+            </tabs>
+            <tabpanels>
+                <!--==================================================================================-->
+                <!--========================Painel para cadastro de utente interno====================-->
+                <!--==================================================================================-->
+                <tabpanel sclass="minha-tab">
+                    <div class="row" style="margin-bottom: 3px; margin-top: 20px;">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <textbox instant="true" class="form-control" placeholder="Pesquisa por nome do estudante"
+                                         id="text_pesquisa" style="height: 38px"/>
+                                <span class="input-group-btn">
+                                    <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-4">
+                            <hlayout>
+                                <radiogroup Id="rd">
+                                    <radio selected="true" sclass="input-group-addon" id="estudante" tooltiptext="Estudantes"/>
+                                    <span sclass="input-group-addon"><image src="/Icons/student-male-24.png" tooltiptext="Estudantes"/></span>
+                                    <radio style="padding-left: 10px" sclass="input-group-addon" id="funcionario" tooltiptext="Funcionários"/>
+                                    <span sclass="input-group-addon"><image src="/Icons/Businessman-24.png" tooltiptext="Funcionários"/></span>
+                                </radiogroup>
+                            </hlayout>
+                        </div>
+                    </div>
+                    <separator id="espaco" height="240px"/>
+                    
+                    <!--===============================================================-->
+                    <!--================Lista para funcionarios========================-->
+                    <!--===============================================================-->
+                    
+                    <hlayout>
+                        <listbox id="funcionarioListBox" mold="paging" sclass="lista-cadastro" visible="false">
+                            <listhead>
+                                <listheader />
+                            </listhead>
+                            <template name="model">
+                                <listitem>
+                                    <listcell>
+                                        <vlayout>
+                                            <hlayout>
+                                                <label sclass="label-nome" value="${each.nome},"/>
+                                                <label style="font-size: 11px" value="${each.nrfuncionario}"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </listcell>
+                                </listitem>
+                            </template>		
+                        </listbox>
+                    
+                        <!--===============================================================-->
+                        <!--==================Lista para estudantes========================-->
+                        <!--===============================================================-->
+                    
+                        <listbox id="estudanteListBox" mold="paging" sclass="lista-cadastro" visible="false">
+                            <listhead>
+                                <listheader />
+                            </listhead>
+                            <template name="model">
+                                <listitem>
+                                    <listcell>
+                                        <vlayout>
+                                            <hlayout>
+                                                <label sclass="label-nome" value="${each.nomeCompleto},"/>
+                                                <label style="font-size: 11px" value="${each.cursocurrente.abreviatura}"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </listcell>
+                                </listitem>
+                            </template>		
+                        </listbox>
+                        
+                        <!--=============================================================================-->
+                        <!--==========Painel para visualizacao do cartao de leitor de estudantes=========-->
+                        <!--=============================================================================-->
+                        
+                        <div style="padding-left: 40px; padding-top: 20px;" id="cce" visible="false">
+                            <panel width="350px" height="220px">
+                                <panelchildren>
+                                    <vlayout>
+                                        <hlayout>
+                                            <div width="80px">
+                                                <image src="/Icons/lurio_logo1.png"></image>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                                    <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                        <label id="id_leitorE"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px;">Nome :</label>
+                                            <label id="nome_leitorE"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <div>
+                                                <image src="/Icons/ic_person_black_48dp_2x.png"/>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">N◦ de estudante : </label>
+                                                        <label id="nr_estudante"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">Ano de ingresso : </label>
+                                                        <label id="ano_ingresso"/>   
+                                                    </hlayout>
+                                                    <hlayout>                   
+                                                        <label style="font-size: 11px">Categoria : </label>
+                                                        <label id="categoria_leitorE"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px;">Curso : </label>
+                                                        <label id="curso_leitorE"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                    </vlayout>
+                                </panelchildren>
+                            </panel>
+                        </div>
+                        
+                        <!--===============================================================================-->
+                        <!--==========Painel para visualizacao do cartao de leitor de funcionarios=========-->
+                        <!--===============================================================================-->
+                        
+                        <div style="padding-left: 40px; padding-top: 20px;" visible="false" id="ccf">
+                            <panel width="350px" height="220px">
+                                <panelchildren>
+                                    <vlayout>
+                                        <hlayout>
+                                            <div width="80px">
+                                                <image src="/Icons/lurio_logo1.png"></image>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <label sclass="membro" style="margin-left: 13px">UNIVERSIDADE LÚRIO</label>
+                                                    <label sclass="membro">MEMBRO DA BIBLIOTECA</label>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px; margin-left: 60px;">N◦ : </label>
+                                                        <label id="id_leitorF"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px;">Nome :</label>
+                                            <label id="nome_leitorF"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <div>
+                                                <image src="/Icons/ic_person_black_48dp_2x.png"/>
+                                            </div>
+                                            <div>
+                                                <vlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">N◦ de Funcionário : </label>
+                                                        <label id="nr_funcionario"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px">Telefone : </label>
+                                                        <label id="telefone_leitorF"/>
+                                                    </hlayout>
+                                                    <hlayout>                   
+                                                        <label style="font-size: 11px">Categoria : </label>
+                                                        <label id="categoria_leitorF"/>
+                                                    </hlayout>
+                                                    <hlayout>
+                                                        <label style="font-size: 11px;">Faculdade : </label>
+                                                        <label id="faculdade_leitorF"/>
+                                                    </hlayout>
+                                                </vlayout>
+                                            </div>
+                                        </hlayout>
+                                    </vlayout>
+                                </panelchildren>
+                            </panel>
+                        </div>
+                    </hlayout>
+                    <div sclass="conteudo">
+                        <div sclass="btn-group">
+                            <button sclass="btn-primary" image="/Icons/account-card-details.png"
+                                    label="Gerar" tooltiptext="Gerar cartão" id="gerarC" disabled="true"/>
+                            <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" onClick="win1.detach()" tooltiptext="Sair"/>
+                        </div>
+                    </div>
+                </tabpanel>
+                
+                <!--=====================================================================================-->
+                <!--============================Painel para cadastro de visitantes=======================-->
+                <!--=====================================================================================-->
+                
+                <tabpanel sclass="minha-tab">
+                    <div sclass="row" style="margin-top: 20px">
+                        <div sclass="col-lg-6">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Nome</span>
+                                <textbox sclass="form-control" id="nome_visitante"/>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-6">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Moradia</span>
+                                <textbox sclass="form-control" id="moradia_visitante"/>
+                            </div>
+                        </div>
+                    </div>
+                    <separator/>
+                    <div sclass="row">
+                        <div sclass="col-lg-4">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Email</span>
+                                <textbox sclass="form-control" id="email_visitante"/>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-4">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Tel</span>
+                                <textbox sclass="form-control" id="telefone_visitante"/>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-4">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">BI</span>
+                                <textbox sclass="form-control" id="bi_visitante"/>
+                            </div>
+                        </div>
+                    </div>
+                    <separator/>
+                    <div sclass="conteudo">
+                        <div sclass="btn-group">
+                            <button sclass="btn-primary" id="save_visitante" image="/Icons/ic_save.png" label="Guardar" tooltiptext="Guardar"/>
+                            <button sclass="btn-danger" onClick="win1.detach()" image="/Icons/ic_close.png" label="Sair" tooltiptext="Sair"/>
+                        </div>
+                    </div>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+    </window>
+    <zscript>
+        
+        void doEstudante(){
+        document.getElementById("name").hidden = true;
+        }
+    </zscript>
+</zk>

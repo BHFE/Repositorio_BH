@@ -1,0 +1,35 @@
+<?link rel="stylesheet" type="text/css" href="/BV/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BV/bootstrap/v3/css/bootstrap.css"?>
+<!--<?init class="servicos.AutenticacaoInit"?>-->
+<zk>
+    
+
+    <script src="/BV/bootstrap/zk/js/Button-bs.js"></script>
+    <script src="/BV/bootstrap/zk/js/panel-bs.js"></script>
+
+    <div sclass="testa"  >
+        <style>
+            .testa{
+            background-image: linear-gradient(to bottom,#F0F0F0 ,#fff );
+            }
+        </style>
+        <div if="${not sessionScope.userCredential.anonymous}">
+            <div>
+                <include src="/BV/Estrutura/bannerAdmin.zul"/> 
+            </div>
+    
+            <div id="mainContent"  self="@insert(content)">
+        
+            </div>
+    
+            <div  >
+                <include src="/BV/Estrutura/footer.zul"/> 
+            </div>
+        </div>
+        <div if="${sessionScope.userCredential.anonymous}">
+            Redirecionando para pagina de login.....
+        </div>
+    </div>
+
+</zk>
+

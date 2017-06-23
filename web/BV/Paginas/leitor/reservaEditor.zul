@@ -1,0 +1,64 @@
+
+<!-- it is a login page, no authentication protection and use anonymous template -->
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="servicos.AutenticacaoInit"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+   
+    <window contentStyle="overflow:visible" id="parent" border="none" hflex="1"    apply="" position="center,center" closable="false" 
+	action="show: slideDown;hide: slideUp" width="30vw" height="auto" style=" background-color:transparent; "  > 
+        
+                    
+                        <panel title="Detalhes da Reserva" width="30vw" height="auto" sclass="panel-primary">
+                        <panelchildren>
+                                    
+                                    <vbox  spacing="30px">
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label   value="Obra :  "  />
+                                            </span>
+                                            <label id="obra" value="nada" sclass="titulo"/>
+                        
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label sclass="tituloi"  value="Data do Emprestimo :  "  />
+                                            </span>
+                                            <datebox mold="rounded" id="data1" buttonVisible="false" readonly="true"/>
+                        
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label sclass="tituloi"  value="Data de devolucao :  "  />
+                                            </span>
+                                            <datebox mold="rounded" id="data2" buttonVisible="false" readonly="true"/>
+                        
+                                        </div>
+                                        
+                                        <separator/>
+                                        <hbox align="center" height="100%">
+                                        <checkbox id="notificar"  onCheck="" />
+                                        <label value="Notificar-me se ficar disponivel antes da data"/>
+                                        </hbox>
+                                        <separator/>
+                                            
+                                            
+                                        
+                                        
+                                    </vbox>
+                                    <vbox align="right" width="100%">
+                                            <hbox spacing="5px">
+                                                <button  id="gravar" label="confirmar" tooltiptext="Confirmar agenda" image="/icon/ic_done_white_18dp.png"  sclass="btn btn-success"  />
+                                                <button  id="cancelar" label="cancelar" tooltiptext="Cancelar agenda"  image="/icon/ic_close_white_18dp.png"  sclass="btn btn-danger"  />
+                                            </hbox> 
+  
+                                    </vbox>
+                        </panelchildren>
+                        </panel>
+                                
+    </window>
+    
+
+</zk>

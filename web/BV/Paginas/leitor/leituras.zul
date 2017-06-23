@@ -1,0 +1,108 @@
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/BV/Paginas/login/layout/template.zul"?>
+<?page title="Biblioteca Virtual - Leituras" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+    
+    
+
+    <window contentStyle="overflow:visible" self="@define(content)"   sclass="paginas" apply="" >
+       <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+
+           <div class="container" >
+            <vbox align="left" width="100%" spacing="5px" style="margin-top:5px">
+                
+                <image id="" src="/imgs/lei.png" width="120px" height="22px"/>
+                <separator bar="true" width="50vw" />
+
+            </vbox>
+            <hbox class=" " spacing="20px" pack="middle" width="100%">                  
+                
+                <!-- the main content will be insert to here -->
+                <vbox height="auto" width="50vw"  style=" margin-left:10px;  margin-bottom:1px; margin-top:2px; "  >
+                    <separator />
+                    <div class="row" width="50vw" style="margin-left:1px; margin-right:1px; ">
+                        <div style="float:left; ">
+                                 
+                            <label id="actual" sclass="infor"  /> 
+                                
+                                    
+                        </div>
+                        <div style="float:right; "> 
+                                                      
+                            <image tooltiptext="Tela cheia" id="fullBtn" src="/icon/ic_fullscreen_black_18dp.png" sclass="btn btn-default"  />
+                            
+                        </div>
+                    </div>
+                    <iframe  id="reportframe" width="50vw" height="70.5vh"  />
+                    <separator height="20px"/>
+                    <div width="50vw" id="desc" height="auto"  visible="false" style="border:none; text-justify: auto; text-align: justify;">
+                        
+                        <label sclass="titulo" value="Descrição"/>
+                        <label style="border:none; text-justify: auto; text-align: justify;" id="descricao" multiline="true" class="form-control" height="auto" width="50vw"/>
+                        <separator height="30px"/>
+                        <label sclass="titulo" value="Direitos"/>
+                        <label style="border:none; text-justify: auto;" id="direitos" multiline="true" class="form-control" height="auto" width="50vw"/>
+                    </div>
+                    <separator height="30px"/>
+                    
+                        
+                </vbox>
+                
+
+                
+    
+                <div class="" style="margin-right:10px;" >
+                    <hbox sclass="listas"  style="magin-bottom:10px; margin-top:6.7vh;" align="center" width="100%">
+                        <div class="input-group">
+                                    
+                            <textbox id="searchArea" width="17.8vw" height="38.5px" class="form-control"  placeholder="procurar artigo..."/>
+                                   
+                            <span class="input-group-btn">
+                                <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                            </span>
+                        </div>
+                    </hbox>
+                    <separator height="20px"/>
+                            
+                            
+                    <listbox id="artigoListbox"  mold="paging" width="21.5vw" sclass="tabelas" emptyMessage="Nenhum  resultado para mostrar" >
+             
+                        <template name="model">
+                            <listitem>
+                        
+                                <listcell forward="onClick = artigoListbox.onAbrir" >
+                                
+                                    <label value="${each.titulo}"  width="auto" sclass="infor" style="margin-bottom: 4px;" multiline="true"  />
+                                
+                                    <label value="Autor: " sclass="letra" />
+                                    <label value="${each.autor}" sclass="letra" /> 
+                                    <label value=";publicado em  " sclass="letra" />
+                      
+                                                 
+                                    <label value="${each.dataPublicacaof}" sclass="letra"/> 
+                                
+                                    <separator height="20px;"/>                                                  
+                                </listcell>      
+                            </listitem>
+                        </template>
+                         
+                    </listbox>
+                           
+                        
+                    <separator height="5px;"/> 
+                                
+                </div>
+                     
+                        
+            </hbox>
+        </div>
+                   
+                
+       </div>    
+    </window>
+    
+
+    
+</zk>

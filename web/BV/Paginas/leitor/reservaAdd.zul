@@ -1,0 +1,139 @@
+
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Paginas/login/layout/template.zul"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window contentStyle="overflow:visible"   self="@define(content)"  hflex="1" sclass="paginas" apply="controlador.paginas.ReservaAdd" >
+        <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+            <div sclass="container">  
+
+                <vbox  align="left" width="100%" spacing="5px" >
+                    <separator />
+                    <image id="" src="/imgs/res.png" width="130px"   height="24px"/>
+                    <separator bar="true"/>
+                
+                    <div class="btn-group ">
+                        <button sclass="btn-primary "   image="/icon/ic_event_note_white_18dp.png" height="40px" width="180px"  >Nova Reserva</button>
+                        <button image="/icon/ic_format_list_bulleted_black_18dp.png" sclass="btn-default" height="40px" width="180px"  id="nova"  >Minhas Reservas</button>
+                        
+                    
+                    </div>
+                </vbox> 
+            
+                <div id="on">
+        
+                    <vbox align="right" width="100%" id="filtro">
+            
+                
+                        <hbox align="right" pack="end" style="margin-top: 5px;"  spacing="40px" >        
+                            <hbox spacing="4px" align="center">
+                                <label sclass="titulo"  value="Área:"  />
+                                <listbox id="categorias" height="38.5px" mold="select" width="auto"  sclass="form-control"  >
+                                    <template name="model">
+                                        <listitem label="${each.descricao}" />
+                                    </template>
+                                </listbox>  
+                            </hbox>
+                            <vbox spacing="4px" align="">
+                            
+                                <hbox align="center">
+                                    <div class="input-group">
+                                    
+                                        <textbox id="searchArea" width="290px" height="38.5px" class="form-control"  placeholder="Procurar Obra..."/>
+                                   
+                                        <span class="input-group-btn">
+                                            <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                                        </span>
+                                    </div>                             
+                                
+                                
+                                </hbox>
+                            </vbox>
+                            
+                        </hbox>              
+                      
+                    </vbox>
+        
+                    <separator height="10px"/>
+                    <panel title="Lista de Obras" sclass="panel-info">
+                        <panelchildren>
+        
+        
+                            <listbox id="obraListbox" mold="paging"  span="true"  sclass="tabelas"  emptyMessage="Nenhuma Obra" >
+                                <listhead >
+                                    <listheader  />
+                                    <listheader width="125px"/> 
+                                </listhead>              
+                                <template name="model">
+                                    <listitem>
+                                        <listcell>
+                                            <separator height="10px"/>
+                                            <hbox>
+                                                <image src="${each.capaDir}" width="110px"  height="150px"/>
+                                       
+                                                <vbox align="left">
+                                                    <hbox>
+                                                        <label value="Titulo: "/>
+                                                        <label sclass="titulo" value="${each.titulo}" />
+                                                    </hbox>
+                                            
+                                                    <hbox>
+                                                        <label value="Autor: "/>
+                                                        <label sclass="titulo" value="${each.sgObraAutorLists}" />
+                                                    </hbox>
+                                        
+                                                    <hbox>
+                                                        <label value="Área : "/>
+                                                        <label sclass="titulo" value="${each.area.descricao}" />
+                                                    </hbox>
+                                                    <hbox>
+                                                        <label value="Ano: "/>
+                                                        <label sclass="titulo" value="${each.publicacaoAno}" />
+                                                    </hbox>
+                            
+                                                    <hbox>
+                                                        <label value="Edição : "/>
+                                                        <label sclass="titulo" value="${each.edicao}" />
+                                                    </hbox>
+                            
+                                                </vbox>
+                                            </hbox>
+                                            <separator height="10px"/>
+                                                                 
+                                        </listcell>                        
+                                        <listcell >
+                                            <vbox align="right">                           
+                                        
+                                                <button label="reservar" tooltiptext="Reservar obra"  sclass="btn btn-success" image="/icon/ic_event_available_white_18dp.png" forward="onClick = obraListbox.onReservar"/>                                   
+                                            </vbox>
+                                        </listcell>         
+                                    </listitem>
+                                </template>
+                            </listbox>
+                            <separator height="5px"/>
+                        </panelchildren>
+                    </panel>
+                </div>
+            
+                <div id="off" visible="false">
+                    <separator height="20px"/>
+                    <panel title="Agenda" id="ocupacao" sclass="panel-primary">
+                        <panelchildren>                     
+                            <separator height="10px"/>
+                            <separator/>
+                            <label class="alert alert-danger " id="message"  visible="false" />
+                            <separator /> 
+                            <separator height="10px"/>
+                            <calendars id="c"  width="100%" height="50vh"/>
+                            <separator height="20px"/>
+                        
+                            
+                        </panelchildren>
+                    </panel>
+                    <separator height="50px"/>
+                </div>       
+            </div>
+        </div>
+    </window>
+</zk>

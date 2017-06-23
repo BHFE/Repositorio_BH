@@ -1,0 +1,104 @@
+
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/BV/Paginas/login/layout/template.zul"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window contentStyle="overflow:visible"  vflex="1" hflex="1" self="@define(content)" apply="" >
+        <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+
+            <div sclass="container">
+          
+                <vbox align="left" width="100%" spacing="5px">
+                    <separator />
+                    <image id="" src="/imgs/pub.png" width="150px"   height="25px"/>
+                    <separator bar="true"/>
+                    <div class="btn-group ">
+                        <button height="40px" width="180px" image="/icon/ic_note_add_white_18dp.png" sclass="btn-primary active"    >Nova submissão</button>
+                        <button id="avaliador" visible="false" sclass="btn-primary active" height="40px" width="180px" image="/icon/ic_format_list_bulleted_white_18dp.png" >Avaliar Submissões</button>
+                        <button height="40px" width="180px" image="/icon/ic_format_list_bulleted_black_18dp.png" sclass="btn-default" id="nova" >Minhas Submissões</button>
+                        
+                    
+                    </div>
+                </vbox> 
+            
+           
+            
+            
+                <separator height="30px"/>
+                <panel title="Formulario de submissão de artigos" sclass="panel-primary" width="auto"> 
+                    <panelchildren>
+	    			
+	    			
+	                     
+                        <div class="row ">
+                
+                            <div class="col-lg-6">
+                                <hbox>
+                                    <vbox align="right" spacing="25px">
+                                        <label sclass="tituloi"  value="Autor(es):"  />
+                                        <label sclass="tituloi" value="Titulo: " width="10%"/>
+                                        <label sclass="tituloi" value="Categoria  :" width="10%"/>
+                                        <label sclass="tituloi" value="Dóminio  :" width="10%"/>
+                                        <label sclass="tituloi" value="Língua  :" width="10%"/>
+                                    
+                                    </vbox>
+                                    <vbox spacing="10px">
+                                        <textbox id="autor" width="350px" class="form-control" constraint="no empty:Campo obrigatório " />
+                                        <textbox id="titulo" width="350px" class="form-control" constraint="no empty:Campo obrigatório " />
+                                        <listbox id="categorias" mold="select" width="350px" sclass="form-control">
+                                            <template name="model">
+                                                <listitem label="${each.categoria}" />
+                                            </template>
+                                        </listbox>
+                                        <listbox id="area" mold="select" width="350px" sclass="form-control">
+                                            <template name="model">
+                                                <listitem label="${each.descricao}" />
+                                            </template>
+                                        </listbox>
+                                        <listbox id="lingua" mold="select" width="350px" sclass="form-control">
+                                            <template name="model">
+                                                <listitem label="${each}" />
+                                            </template>
+                                        </listbox>
+                                        <hbox align="center">
+                                            <button id="up" image="/icon/ic_attach_file_white_18dp.png"  upload="true" sclass="btn btn-info" label="Anexar ficheiro" />
+                                            <label id="lbl" />
+                                        </hbox>
+                                        <separator />
+                                    </vbox>
+                                </hbox>
+                           
+                            </div><!-- /.col-lg-6 -->
+                            <div class="col-lg-6">
+                                <hbox >
+                                    <vbox spacing="90px" align="right">
+                                        <label sclass="tituloi" value="Descrição :" width="10%"/>
+                                        <label sclass="tituloi" value="Direitos :" width="10%"/>
+                                    </vbox>
+                                    <vbox spacing="10px">
+                                        <textbox  id="descricao" multiline="true" class="form-control" height="100px" width="350px"/>
+                                        <textbox id="direitos" multiline="true" class="form-control" height="100px" width="350px"/>
+                                    
+                                        <hbox  style="float:right"> 
+                                          
+                                            <button  id="submeter" label="Submeter" tooltiptext="Submeter publicação" image="/icon/ic_done_white_18dp.png"  sclass="btn btn-success"  />
+                                            <!--<button id="cancelar" tooltiptext="ancelar a publicação" image="/icon/ic_close_white_18dp.png"  sclass="btn btn-danger"/>-->                         
+                                        </hbox>
+                                    </vbox>
+                                </hbox>
+                            
+                        
+                            </div>
+                        </div><!-- /.row -->
+                    
+                    </panelchildren>
+                </panel>
+                           
+               
+
+            </div>
+        </div>
+        
+    </window>
+</zk>

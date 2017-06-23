@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <script src="bootstrap/zk/js/Button-bs.js"/>
+    <script src="bootstrap/zk/js/panel-bs.js"/>
+</zk>

@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div sclass="conteudo" apply="controlador.paginas.ObraController">
+        <menupopup id="m1">
+            <menuitem label="Action" />
+            <menuitem label="Another action" />
+            <menuseparator />
+            <menuitem label="Separated link" />
+        </menupopup>
+        <div sclass="sub-menu">
+            <hlayout>
+                <div sclass="btn-group">
+                    <button image="/Icons/ic_book_add.png" label="Adicionar" sclass="btn-primary" tooltiptext="Nova obra" id="add">
+                        <attribute name="onClick">{
+                            final Window win = (Window) Executions.createComponents(
+                            "/Paginas/FormCadastroObra.zul", null, null);
+                            win.position =  &quot;center&quot;;
+                            win.doModal();
+                            }</attribute>
+                    </button>
+                    <button class="btn-default dropdown-toggle btn-primary"
+                            popup="m1, after_start" image="/Icons/ic_list.png" label="Listar" tooltiptext="Listar obras"/>
+                </div>
+                <label sclass="sub-menu-texto-1">Gestão de Obras</label>
+            </hlayout>
+        </div>
+        <!--=========================================================================================-->
+        <!--                            Conteudo Principal                                           -->
+        <!--=========================================================================================-->
+        <div id="divPrincipal">
+            <div sclass="filtro row">
+                <div sclass="col-lg-4">
+                    <div class="input-group">
+                        <textbox class="form-control" placeholder="Pesquisa por titulo" style="height: 38px" id="titlesearch"/>
+                        <span class="input-group-btn">
+                            <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                        </span>
+                    </div>
+                </div>
+                <div sclass="col-lg-4">
+                    <div class="input-group">
+                        <textbox class="form-control" placeholder="Pesquisa por N◦ de exemplar" style="height: 38px" id="nrExemplarSearch"/>
+                        <span class="input-group-btn">
+                            <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <listbox id="livros" mold="paging" sclass="lista-livros" rows="6" visible="false">
+                <listhead>
+                    <listheader/>
+                </listhead>
+                <template name="model">
+                    <listitem style="background-color: white">
+                        <listcell>
+                            <label sclass="label-nome" value="${each.titulo}."/>
+                            <label style="font-size: 11px" value="${each.tipoObra}, Cota: ${each.cota}, ${each.edicaoCidade}, (${each.publicacaoAno})." />
+                        </listcell>
+                    </listitem>
+                </template>	
+            </listbox>
+            <!--=========================================================================================-->
+            <!--                            Painel para Livros                                           -->
+            <!--=========================================================================================-->
+            <separator/>
+            <div id="divLivro" visible="false">
+                <hlayout>
+                    <div id="painelLivro">
+                        <hlayout>
+                            <panel width="400px">
+                                <panelchildren>
+                                    <div>
+                                        <vlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Nome:" id="nomeLabel"/>
+                                                <label id="nomeJornal"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Titulo: "/>
+                                                <label id="tituloLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Cota:"/>
+                                                <label id="cotaLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Volume:" id="volumeLabel"/>
+                                                <label id="volumeLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Edição:" id="edicaoLabel"/>
+                                                <label id="edicaoLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Tipo:"/>
+                                                <label id="tipoLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="ISBN:" id="isbnLabel"/>
+                                                <label id="isbnLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Local de edição:"/>
+                                                <label id="localEdicaoLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Editora:" id="editoraLabel"/>
+                                                <label id="editoraLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Ano de publicação:"/>
+                                                <label id="anoLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Formato:"/>
+                                                <label id="formatoLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Idioma:"/>
+                                                <label id="idiomaLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Área:"/>
+                                                <label id="areaLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Categoria:"/>
+                                                <label id="categoriaLivro"/>
+                                            </hlayout>
+                                            <hlayout>
+                                                <label style="font-size: 11px; font-weight: bold;" value="Exemplar(es):"/>
+                                                <label id="exemplaresLivro"/>
+                                                <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Data de registo:"/>
+                                                <label id="dataRegistoLivro"/>
+                                            </hlayout>
+                                        </vlayout>
+                                    </div>
+                                </panelchildren>
+                            </panel>
+                            <div sclass="btn-group-vertical" >
+                                <button sclass="btn-primary" image="/Icons/ic_edit.png" id="editarObra" tooltiptext="Editar dados"/>
+                                <button sclass="btn-primary" image="/Icons/ic_book_add.png" id="addExemplar" tooltiptext="Adicionar exemplar">
+                                    <attribute name="onClick">
+                                        divAddObra.setVisible(true);
+                                        editarObra.setDisabled(true);
+                                        addExemplar.setDisabled(true);
+                                        removeExemplar.setDisabled(true);
+                                    </attribute>
+                                </button>
+                                <button sclass="btn-primary" image="/Icons/ic_book_minus.png" id="removeExemplar" tooltiptext="Remover exemplar"/>
+                            </div>
+                        </hlayout>
+                    </div>
+                    <!--                                                                                                 -->
+                    <!--                                     Visualizacao de exemplar                                    -->
+                    <!--                                                                                                 -->
+                    <div id="painelExemplar">
+                        <hlayout>
+                            <panel width="400px">
+                                <panelchildren>
+                                    <vlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="N◦ de registo: "/>
+                                            <label id="nrRegisto"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Nome:" id="nomeLabelExe"/>
+                                            <label id="nomeJornalExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Titulo: "/>
+                                            <label id="tituloLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Cota:"/>
+                                            <label id="cotaLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Volume:" id="volumeLabelExe"/>
+                                            <label id="volumeLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Edição:" id="edicaoLabelExe"/>
+                                            <label id="edicaoLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Tipo:"/>
+                                            <label id="tipoLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="ISBN:" id="isbnLabelExe"/>
+                                            <label id="isbnLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Local de edição:"/>
+                                            <label id="localEdicaoLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Editora:" id="editoraLabelExe"/>
+                                            <label id="editoraLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Ano de publicação:"/>
+                                            <label id="anoLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Idioma:"/>
+                                            <label id="idiomaLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Área:"/>
+                                            <label id="areaLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Categoria:"/>
+                                            <label id="categoriaLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Data de registo:"/>
+                                            <label id="dataRegistoLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 20px; font-weight: bold;" value="Data de aquisição:"/>
+                                            <label id="dataAquisicaoLivroExe"/>
+                                        </hlayout>
+                                        <hlayout>
+                                            <label style="font-size: 11px; font-weight: bold;" value="Exemplar(es):"/>
+                                            <label id="exemplaresLivroExe"/>
+                                            <label style="font-size: 11px; padding-left: 50px; font-weight: bold;" value="Estado:"/>
+                                            <label id="estadoExe"/>
+                                        </hlayout>
+                                    </vlayout>
+                                </panelchildren>
+                            </panel>
+                        </hlayout>
+                    </div>
+                    <!--                                                                                                 -->
+                    <!--                                     Div para adicao de exemplar                                 -->
+                    <!--                                                                                                 -->
+                    <div style="padding-left: 20px" id="divAddObra" visible="false">
+                        <panel width="600px">
+                            <panelchildren>
+                                <div sclass="row" style="margin-top: 15px">
+                                    <div sclass="col-lg-6">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Aquisição</span>
+                                            <listbox sclass="form-control" mold="select" id="comboAquis">
+                                                <listitem label="Compra"/>
+                                                <listitem label="Oferta"/>
+                                            </listbox>
+                                        </div>
+                                    </div>
+                                    <div sclass="col-lg-">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Data aquisição</span>
+                                            <datebox sclass="form-input input-group" id="dataAquis" format="yyyy/MM/dd" constraint="no future"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div sclass="row" style="margin-top: 15px">
+                                    <div sclass="col-lg-6">
+                                        <div sclass="input-group">
+                                            <span sclass="input-group-addon">Quantidade</span>
+                                            <textbox sclass="form-control" id="qtdExemplares"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <separator/>
+                                <div sclass="conteudo">
+                                    <div sclass="btn-group">
+                                        <button sclass="btn-primary" id="Addexe" image="/Icons/ic_save.png" label="Guardar" tooltiptext="Guardar"/>
+                                        <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" tooltiptext="Sair">
+                                            <attribute name="onClick">
+                                                divAddObra.setVisible(false);
+                                                editarObra.setDisabled(false);
+                                                addExemplar.setDisabled(false);
+                                                removeExemplar.setDisabled(false);
+                                            </attribute>
+                                        </button>
+                                    </div>
+                                </div>
+                            </panelchildren>
+                        </panel>
+                    </div>
+                </hlayout>
+            </div>
+        </div>
+        <div id="divEdicao" visible="false">
+            <div sclass="row">
+                <div sclass="col-lg-6">
+                    <div class="row" style="margin-top: 20px">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">Título</span>
+                                <textbox class="form-control" id="titulo"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--=======================Segunda linha============================-->
+                    <div sclass="row" style="margin-top: 15px">
+                        <div sclass="col-lg-6" id="cat">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Categoria</span>
+                                <listbox width="100%" id="combo_categoria" mold="select" sclass="form-control">
+                                    <template name="model">
+                                        <listitem label="${each.descricao}"/>
+                                    </template>
+                                </listbox>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-6" id="vol">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Volume</span>
+                                <textbox sclass="form-control" id="volume"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--=======================Terceira linha============================-->
+                    <div sclass="row" style="margin-top: 15px">
+                        <div sclass="col-lg-6" id="nom" visible="false">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Nome</span>
+                                <textbox sclass="form-control" id="nome"/>
+                            </div>
+                        </div><!--
+                        <div sclass="col-lg-6" id="isb">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">ISBN</span>
+                                <textbox sclass="form-control" id="isbn"/>
+                            </div>
+                        </div>-->
+                        <div sclass="col-lg-6" visible="false" id="cur">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Curso</span>
+                                <listbox width="100%" id="combo_curso" mold="select" sclass="form-control">
+                                    <template name="model">
+                                        <listitem label="${each.abreviatura}"/>
+                                    </template>
+                                </listbox>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-6">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Cota</span>
+                                <textbox sclass="form-control" id="cota"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--=======================Quarta linha============================-->
+                    <div sclass="row" style="margin-top: 15px">
+                        <div sclass="col-lg-6" id="edit">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Editora</span>
+                                <textbox sclass="form-control" id="editora"/>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-6" id="local_edic">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Local de edição</span>
+                                <textbox sclass="form-control" id="local_edicao"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--=======================Quinta linha============================-->
+                    <div sclass="row" style="margin-top: 15px">
+                        <div sclass="col-lg-6">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon" style="height: 20px">Idioma</span>
+                                <listbox id="comboidioma" width="100%" mold="select" sclass="form-control"/>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-6">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Área</span>
+                                <listbox sclass="form-control" id="combo_area" mold="select" width="100%">
+                                    <template name="model">
+                                        <listitem label="${each.descricao}"/>
+                                    </template>
+                                </listbox>
+                            </div>
+                        </div>
+                    </div>
+                    <!--=======================sexta linha=============================-->
+                    <div sclass="row" style="margin-top: 15px">
+                        <div sclass="col-lg-6" id="edic">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Edição</span>
+                                <textbox sclass="form-control" id="edicao"/>
+                            </div>
+                        </div>
+                        <div sclass="col-lg-6" id="ano_pub">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Ano de publicação</span>
+                                <textbox sclass="form-control" id="ano_publicacao"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================================================================-->
+                <!--==============================coluna de autores========================-->
+                <!--=======================================================================-->
+                <div sclass="col-lg-6">
+                    <div sclass="row" style="margin-top: 20px">
+                        <div sclass="col-lg-8">
+                            <div sclass="input-group">
+                                <span sclass="input-group-addon">Autor</span>
+                                <textbox sclass="form-control" id="autor_search"/>
+                                <span class="input-group-btn">
+                                    <button label="+" tooltiptext="Adicionar autor" id="add_author"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hlayout>
+                        <div id="div_lista_autores" width="245px">
+                            <separator id="sep" height="230px" visible="false"/>
+                            <listbox id="lista_autores" mold="paging" sclass="lista-autores" rows="7">
+                                <listhead>
+                                    <listheader />
+                                </listhead>
+                                <template name="model">
+                                    <listitem style="background-color: white">
+                                        <listcell>
+                                            <label sclass="label-nome" value="${each.nome}"/>
+                                        </listcell>
+                                    </listitem>
+                                </template>		
+                            </listbox>
+                        </div>
+                        <div sclass="autores_div2">
+                            <listbox id="lista_autores2" mold="paging" sclass="lista-autores2" rows="7">
+                                <listhead>
+                                    <listheader width="233px"/>
+                                    <listheader width="35px"/>
+                                </listhead>
+                                <template name="model">
+                                    <listitem style="background-color: white">
+                                        <listcell>
+                                            <label sclass="label-nome" value="${each.nome}"/>
+                                        </listcell>
+                                        <listcell>
+                                            <image src="/Icons/close24x24.png"  tooltiptext="Retirar da lista" forward="onClick=lista_autores2.onTodoDelete"/>
+                                        </listcell>
+                                    </listitem>
+                                </template>		
+                            </listbox>
+                        </div>
+                    </hlayout>
+                </div>
+            </div>
+            <separator/>
+            <div sclass="conteudo">
+                <div sclass="btn-group">
+                    <button sclass="btn-primary" image="/Icons/ic_save.png" label="Guardar" tooltiptext="Guardar" id="guardarEdicao"/>
+                    <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" tooltiptext="Sair">
+                        <attribute name="onClick">
+                            divLivro.setVisible(true);
+                            divEdicao.setVisible(false);
+                        </attribute>
+                    </button>
+                </div>
+            </div>
+            <zscript>
+                String[] _dict = {"Português","Inglês","Espanhol","Francês"};
+                ListModel idioma = new SimpleListModel(_dict);
+                comboidioma.setModel(idioma);
+            </zscript>
+        </div>
+    </div>
+</zk>

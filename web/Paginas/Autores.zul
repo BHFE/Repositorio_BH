@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winAutor" action="show: slideDown; hide: slideUp" width="600px" apply="controlador.paginas.AutorController">
+        
+        <div sclass="conteudo">
+            <separator height="2%"/>
+            <div sclass="filtro row">
+                <div sclass="col-lg-8">
+                    <div class="input-group">
+                        <textbox class="form-control" placeholder="Pesquisa por nome" style="height: 38px" id="autor_search"/>
+                        <span class="input-group-btn">
+                            <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                            <button class="btn-primary dropdown-toggle" image="Icons/ic_save.png"
+                                    tooltiptext="Guardar novo autor" id="add_author"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <hlayout>
+                <div id="div_lista_autores" width="270px">
+                    <separator id="sep" height="230px" visible="false"/>
+                    <listbox id="lista_autores" mold="paging" sclass="lista-autores">
+                        <listhead>
+                            <listheader />
+                        </listhead>
+                        <template name="model">
+                            <listitem style="background-color: white">
+                                <listcell>
+                                    <label sclass="label-nome" value="${each.nome}"/>
+                                </listcell>
+                            </listitem>
+                        </template>		
+                    </listbox>
+                </div>
+                <div sclass="autores_div2">
+                    <listbox id="lista_autores2" mold="paging" sclass="lista-autores2">
+                        <listhead>
+                            <listheader width="233px"/>
+                            <listheader width="35px"/>
+                        </listhead>
+                        <template name="model">
+                            <listitem style="background-color: white">
+                                <listcell>
+                                    <label sclass="label-nome" value="${each.nome}"/>
+                                </listcell>
+                                <listcell>
+                                    <image src="/Icons/close24x24.png"  tooltiptext="Retirar da lista" forward="onClick=lista_autores2.onTodoDelete"/>
+                                </listcell>
+                            </listitem>
+                        </template>		
+                    </listbox>
+                </div>
+            </hlayout>
+            <separator/>
+            <div sclass="conteudo">
+                <div sclass="btn-group">
+                    <button sclass="btn-success" image="/Icons/ic_check.png" label="Aceitar" tooltiptext="Aceitar"/>
+                    <button sclass="btn-danger" image="/Icons/ic_close.png" label="Cancelar" tooltiptext="Cancelar" onClick="winAutor.detach();"/>
+                </div>
+            </div>
+        </div>
+    </window>
+</zk>

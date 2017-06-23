@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="win" border="none" width="1100px"
+            action="show: slideDown; hide: slideUp" apply="controlador.paginas.ObraController">
+        <style>
+            
+        </style>
+        <!--=======================Primeira linha============================-->
+        <div sclass="row">
+            <div sclass="col-lg-6" align="righ">
+                <listbox mold="select" id="list_tipo">
+                    <listitem label="Livro" selected="true"/>
+                    <listitem label="Monografia"/>
+                    <listitem label="Revista"/>
+                    <listitem label="Jornal"/>
+                </listbox>
+            </div>
+        </div>
+        <div sclass="row">
+            <div sclass="col-lg-6">
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">Título</span>
+                            <textbox class="form-control" id="titulo"/>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================Segunda linha============================-->
+                <div sclass="row" style="margin-top: 15px">
+                    <div sclass="col-lg-6" id="cat">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Categoria</span>
+                            <listbox width="100%" id="combo_categoria" mold="select" sclass="form-control">
+                                <template name="model">
+                                    <listitem label="${each.descricao}"/>
+                                </template>
+                            </listbox>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6" id="vol">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Volume</span>
+                            <textbox sclass="form-control" id="volume"/>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================Terceira linha============================-->
+                <div sclass="row" style="margin-top: 15px">
+                    <div sclass="col-lg-6" id="nom" visible="false">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Nome</span>
+                            <textbox sclass="form-control" id="nome"/>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6" id="isb">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">ISBN</span>
+                            <textbox sclass="form-control" id="isbn"/>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6" visible="false" id="cur">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Curso</span>
+                            <listbox width="100%" id="combo_curso" mold="select" sclass="form-control">
+                                <template name="model">
+                                    <listitem label="${each.abreviatura}"/>
+                                </template>
+                            </listbox>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Cota</span>
+                            <textbox sclass="form-control" id="cota"/>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================Quarta linha============================-->
+                <div sclass="row" style="margin-top: 15px">
+                    <div sclass="col-lg-6" id="edit">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Editora</span>
+                            <textbox sclass="form-control" id="editora"/>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6" id="local_edic">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Local de edição</span>
+                            <textbox sclass="form-control" id="local_edicao"/>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================Quinta linha============================-->
+                <div sclass="row" style="margin-top: 15px">
+                    <div sclass="col-lg-6">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon" style="height: 20px">Idioma</span>
+                            <listbox id="comboidioma" width="100%" mold="select" sclass="form-control"/>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Área</span>
+                            <listbox sclass="form-control" id="combo_area" mold="select" width="100%">
+                                <template name="model">
+                                    <listitem label="${each.descricao}"/>
+                                </template>
+                            </listbox>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================sexta linha=============================-->
+                <div sclass="row" style="margin-top: 15px">
+                    <div sclass="col-lg-6" id="edic">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Edição</span>
+                            <textbox sclass="form-control" id="edicao"/>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-6" id="ano_pub">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Ano de publicação</span>
+                            <textbox sclass="form-control" id="ano_publicacao"/>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================Setima linha============================-->
+                <div sclass="row" style="margin-top: 15px">
+                    <div sclass="col-lg-4">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Exemplares</span>
+                            <textbox sclass="form-control" id="exemplares"/>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-8">
+                        <div sclass="input-group">
+                            <checkbox sclass="input-group-addon" id="rd_directory">
+                            </checkbox>
+                            <textbox sclass="form-control" disabled="true" id="text_directory"/>
+                            <span sclass="input-group-btn">
+                                <button label="Carregar" id="up" upload="true">
+                                    <!--<attribute name="onClick">{
+                                        Object media = Fileupload.get();
+                                        if (media instanceof org.zkoss.image.Image) {
+                                        Image image = new Image();
+                                        image.setContent(media);
+                                        image.setParent(pics);
+                                        } else if (media != null)
+                                        Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                        }</attribute>-->
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--=======================oitava linha=============================-->
+                <div sclass="row" style="margin-top: 15px" id="extra" visible="false">
+                    <div sclass="col-lg-6">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Aquisição</span>
+                            <listbox sclass="form-control" mold="select" id="comboAquisicao">
+                                <listitem label="Compra"/>
+                                <listitem label="Oferta"/>
+                            </listbox>
+                        </div>
+                    </div>
+                    <div sclass="col-lg-">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Data aquisição</span>
+                            <datebox sclass="form-input input-group" readonly="true" id="dataAquisicao" format="yyyy/MM/dd" constraint="no future"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--=======================================================================-->
+            <!--==============================coluna de autores========================-->
+            <!--=======================================================================-->
+            <div sclass="col-lg-6">
+                <div sclass="row" style="margin-top: 20px">
+                    <div sclass="col-lg-8">
+                        <div sclass="input-group">
+                            <span sclass="input-group-addon">Autor</span>
+                            <textbox sclass="form-control" id="autor_search"/>
+                            <span class="input-group-btn">
+                                <button label="+" tooltiptext="Adicionar autor" id="add_author"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <hlayout>
+                    <div id="div_lista_autores" width="245px">
+                        <separator id="sep" height="230px" visible="false"/>
+                        <listbox id="lista_autores" mold="paging" sclass="lista-autores" rows="9">
+                            <listhead>
+                                <listheader />
+                            </listhead>
+                            <template name="model">
+                                <listitem style="background-color: white">
+                                    <listcell>
+                                        <label sclass="label-nome" value="${each.nome}"/>
+                                    </listcell>
+                                </listitem>
+                            </template>		
+                        </listbox>
+                    </div>
+                    <div sclass="autores_div2">
+                        <listbox id="lista_autores2" mold="paging" sclass="lista-autores2" rows="9">
+                            <listhead>
+                                <listheader width="233px"/>
+                                <listheader width="35px"/>
+                            </listhead>
+                            <template name="model">
+                                <listitem style="background-color: white">
+                                    <listcell>
+                                        <label sclass="label-nome" value="${each.nome}"/>
+                                    </listcell>
+                                    <listcell>
+                                        <image src="/Icons/close24x24.png"  tooltiptext="Retirar da lista" forward="onClick=lista_autores2.onTodoDelete"/>
+                                    </listcell>
+                                </listitem>
+                            </template>		
+                        </listbox>
+                    </div>
+                </hlayout>
+            </div>
+        </div>
+        <separator/>
+        <div sclass="conteudo">
+            <div sclass="btn-group">
+                <button sclass="btn-primary" image="/Icons/ic_save.png" label="Guardar" tooltiptext="Guardar" id="guardar"/>
+                <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" tooltiptext="Sair" onClick="win.detach();"/>
+            </div>
+        </div>
+        <zscript>
+            String[] _dict = {"Português","Inglês","Espanhol","Francês"};
+            ListModel idioma = new SimpleListModel(_dict);
+            comboidioma.setModel(idioma);
+        </zscript>
+    </window>
+</zk>

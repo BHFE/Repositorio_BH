@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <borderlayout hflex="1" vflex="1">
+        <north height="80px" border="none">
+            <include src="/Estrutura/banner.zul"/>
+        </north>
+        <west width="210px" border="none" collapsible="true" minsize="300">
+            <include src="/Estrutura/sidebar.zul"/>
+        </west>
+        <center id="mainContent" border="none" autoscroll="true" self="@insert(content)"></center>
+        <south height="30px" border="none">
+            <include src="/Estrutura/footer.zul"/>
+        </south>
+    </borderlayout>
+</zk>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <script src="bootstrap/zk/js/Button-bs.js"/>
+    <div sclass="conteudo">
+        <div class="btn-group">
+            <button>Left</button>
+            <button label="right">
+            <attribute name="onClick">{
+    			Object media = Fileupload.get();
+    			if (media instanceof org.zkoss.image.Image) {
+    				Image image = new Image();
+    				image.setContent(media);
+    				image.setParent(pics);
+    			} else if (media != null)
+    				Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+    		}</attribute>
+            </button>
+            
+            
+        </div>
+    </div>
+</zk>

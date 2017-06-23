@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Paginas/login/layout/templateAdmin.zul"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window contentStyle="overflow:visible"  id="admins" self="@define(content)"  apply="controlador.paginas.Admin">
+     <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+   
+        <div sclass="container">
+            <vbox align="left" width="100%" spacing="5px">                       
+                
+                <image id="" src="/imgs/admin.png" width="170px"   height="27px"/>
+                <separator bar="true"/>
+                <div class="btn-group ">
+                                       
+                    <button sclass="" height="40px" width="150px" image="/icon/ic_format_list_bulleted_black_18dp.png" id="nova" >Leitores</button>
+                    <button  image="/icon/ic_event_note_white_18dp.png" height="40px" width="180px" sclass="btn-primary active"   id="nova1">Acessos</button>
+                    <button  image="/icon/ic_description_black_18dp.png" height="40px" width="180px" sclass="btn-default"   id="nova2">Publicações</button>
+                </div>                                     
+            </vbox>
+            
+            <separator height="40px"/>
+            <div id="on" visible="false" class="conteiner">
+                <separator height="20px"/>
+                
+                <panel title="ACESSO" id="ver" sclass="panel-primary">
+                    <panelchildren>
+                        <div class="row" style="margin:18px;" >
+                            <div class="col-lg-6">
+                                <hbox spacing="20px">
+                                    <image id="foto" src="/imgs/perfil/profile.png" width="120px"  height="120px"/>
+                                    <vbox spacing="8px" align="left" width="100%">
+                                        <div class="input-group">
+                                            <label id="" value="Cartão  : "/>
+                                            <label id="cartao" sclass="titulo" />
+                                            <label id="acesso" sclass="titulo"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <label id="" value="Nome  : "/>
+                                            <label id="nome" sclass="titulo" />
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label id="" value="Posição  :  "/>
+                                            <label id="posicao" sclass="titulo"/>
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label id="" value="Conta  :  "/>
+                                            <label id="conta" sclass="titulo"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <label id="" value="Estado  :  "/>
+                                            <label id="estado" sclass="titulo"/>
+                                        </div>
+                                        
+                                    </vbox>
+                                </hbox>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <vbox width="100%" align="right">
+                                    <button label="Bloquear Acesso" width="150px;" sclass="btn btn-danger" image="/icon/ic_lock_white_18dp.png" id="block" onClick=""></button>
+                                    <button label="Modificar area" id="mod" width="150px;" class="btn-warning"  image="/icon/ic_person_add_white_18dp.png" onClick=""></button>
+                                    <button label="Tornar Avaliador" width="150px;" class="btn-info" id="tornar" image="/icon/ic_person_add_white_18dp.png" onClick=""></button>
+                                    
+                                    <vbox align="left" id="mot" visible="false">
+                                        <label sclass="tituloi" value="Informar Motivo :" width="10%"/>                                       
+                                        <textbox  id="descricao" multiline="true" class="form-control" height="100px" width="350px"/>
+                                        <hbox>
+                                        <button label="" image="/icon/ic_done_white_18dp.png" class="btn-success" id="blocked"/>
+                                        <button label="" image="/icon/ic_cancel_white_18dp.png" class="btn-danger" id="cancelb"/>
+                                        </hbox>
+                                    </vbox>
+                                    
+                                    <vbox align="left" id="are" visible="false">
+                                        <label sclass="tituloi" value="Area :" width="10%"/>                                       
+                                        <listbox id="area" mold="select" width="350px" sclass="form-control">
+                                            <template name="model">
+                                                <listitem label="${each.descricao}" />
+                                            </template>
+                                        </listbox>
+                                       <hbox>
+                                        <button label="" image="/icon/ic_done_white_18dp.png" class="btn-success" id="tornado"/>
+                                        <button label="" image="/icon/ic_cancel_white_18dp.png" class="btn-danger" id="cancelt"/>
+                                        </hbox>
+                                    </vbox>
+                                    
+                                </vbox>
+                                
+                            </div>
+                           
+                        </div>
+                        
+                        
+                        <panel title="Motivo do bloqueio" id="motivop" visible="false" sclass="panel-info" style="margin:25px;">
+                            <panelchildren>
+                                <vbox width="100%" align="center" >
+                                    
+                                    <vbox align="right" spacing="5px">
+                                        <checkbox id="alterar" label="Alterar Senha " class="form" onCheck="" /> 
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label  value="Utilizador:"  />
+                                            </span>
+                                            <textbox sclass="tituloi" id="utilizador" width="350px" class="form-control" constraint="no empty:Campo obrigatório " />
+                        
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label  value="Senha:"  />
+                                            </span>
+                                            <textbox sclass="tituloi" id="senha" width="350px" class="form-control" constraint="no empty:Campo obrigatório " />
+                        
+                                        </div>
+                                        <div id="al" visible="false">
+                                            
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label  value="Nova senha:"  />
+                                            </span>
+                                            <textbox sclass="tituloi" id="novas" width="350px" class="form-control" constraint="no empty:Campo obrigatório " />
+                        
+                                        </div>
+                                        <separator/>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <label  value="Confirmar senha:"  />
+                                            </span>
+                                            <textbox sclass="tituloi" id="senhar" width="350px" class="form-control" constraint="no empty:Campo obrigatório " />
+                        
+                                        </div>
+                                        <separator/>
+                                        <div class="input-group">
+                                            
+                                                <button  id="gravar" label="Gravar" image="/icon/ic_done_white_18dp.png"  sclass="btn btn-success"  />
+                                                
+  
+                                        </div>
+                                            
+                                            
+                                        </div>
+                                        
+                                    </vbox>
+                                </vbox>
+                        
+                            </panelchildren>
+                        </panel>
+                        
+                    </panelchildren>
+                </panel>
+                <separator height="40px"/> 
+                
+            </div>
+            
+            
+            <div id="off" >
+                <separator height="20px"/>
+                <vbox align="right" width="100%" >
+                    
+                    
+                    <hbox width="100%" spacing="30px">
+                        
+                        <!-- <hbox spacing="4px" align="center">
+                            <label  value="Tipo de Conta:"  />
+                            <listbox id="contaLiistbox" mold="select" width="200px" height="38.5px"   sclass="form-control" style="margin-right: 60px;" >
+                                <template name="model">
+                                    <listitem label="${}" />
+                                </template>
+                            </listbox>  
+                        </hbox> -->
+        
+                        <div class="input-group">
+                                    
+                            <textbox id="searchArea" width="290px" height="38.5px" class="form-control"  placeholder="procurar artigo..."/>
+                                   
+                            <span class="input-group-btn">
+                                <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                            </span>
+                        </div>
+                    </hbox>
+
+                </vbox>
+            
+                                                 
+   
+                
+                <separator height="10px"/>
+                <panel id="panel" title="Contas" visible="true"  sclass="panel-info">
+                    <panelchildren>
+                        <listbox id="userListbox" mold="paging"     sclass=" tabelas"  emptyMessage="Nada para mostrar" rows="5">
+                            <listhead >
+                                <listheader  />
+                                <listheader width="125px"/> 
+                            </listhead>              
+                            <template name="model">
+                                <listitem>
+                                    <listcell>
+                                        <vbox align="left" sclass="titulo" style="margin-top:5px; margin-bottom:10px">
+                                            <hbox>
+                                                <label  value="Nome : "/>
+                                                <label class="titulo" value="${each.idutilizador.nome}" />
+                                            </hbox>
+                                
+                                            <hbox>
+                                                <label  value="Conta : "/>
+                                                <label sclass="titulo" value="${each.tipoLeitor}" />
+                                            </hbox>
+                                                                          
+                                            <hbox>
+                                                <label  value="Estado : "/>
+                                                <label sclass="titulo" value="${each.estado}" />
+                                            </hbox>
+                                        </vbox>
+                                                                 
+                                    </listcell>                        
+                                    <listcell >
+                                        <vbox spacing="5px;" style="">                           
+                                            <button   sclass="btn btn-primary" image="/icon/ic_visibility_white_18dp.png"  forward="onClick = userListbox.onVer"/>                                    
+                                        </vbox>
+                                    </listcell>         
+                                </listitem>
+                            </template>
+                        </listbox>
+                    </panelchildren>
+                
+                </panel>
+                <separator height="40px"/> 
+            </div>
+            
+            
+        </div>
+     </div>
+           
+    </window>
+</zk>

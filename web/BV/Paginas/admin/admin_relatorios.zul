@@ -1,0 +1,56 @@
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Paginas/login/layout/templateAdmin.zul"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    
+    <window contentStyle="overflow:visible" id="userView" self="@define(content)"  apply="relatorios.Reservas">
+        <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+
+            <div sclass="container">
+                <vbox align="left" width="100%" spacing="5px">                       
+                    <separator />
+                    <image id="" src="/imgs/admin.png" width="180px"   height="28px"/>
+                    <separator bar="true"/>
+                    <div class="btn-group ">        
+                        <button  image="/icon/ic_description_white_18dp.png" height="40px" width="180px" sclass="btn-primary" id="nova"  >Relatórios</button>                   
+                    </div>                                     
+                </vbox>
+                <separator height="20px"/>
+                
+                <hbox align="center" spacing="40px" height="100%">
+                    <hbox spacing="4px" align="center">
+                        <label  value="Relatório de:"  />
+                        <listbox id="categorias" mold="select" width="300px"  sclass="form-control"  >
+                            <template name="model">
+                                <listitem label="${}" />
+                            </template>
+                        </listbox>  
+                    </hbox>
+                    
+                    <vbox>                       
+                        <groupbox>
+                            <caption image="" label="Tipo de Relatório:"/>
+                        <radiogroup Id="" onCheck="">
+                            <hbox align="center" spacing="30px" width="100%">                          
+                            <radio label="Diario"/>
+                            <radio label="Mensal" />
+                            <radio label="Parametrizado"/>
+                            </hbox>
+                        </radiogroup>
+                        </groupbox>
+                    </vbox>
+                    <datebox id="dataRela"/>
+                    <button label="gerar" onClick="" id="gerar" ></button>
+            
+                    
+                </hbox>
+                
+                <separator height="20px"/>
+                <iframe src="http://www.google.com" id="relatorio" width="80vw" height="95vh" style="border: 1px solid gray"/>
+            
+            </div>
+        </div>
+    </window>
+</zk>

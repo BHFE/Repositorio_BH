@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/BibliotecaVirtual">
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="Boa" password="mindouazela" type="javax.sql.DataSource" url="jdbc:postgresql://localhost:5432/fecn1" username="postgres"/>
+</Context>

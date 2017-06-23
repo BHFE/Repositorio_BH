@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="win2"  width="750px" action="show: slideDown; hide: slideUp"
+            apply="controlador.paginas.UtenteController">
+        
+        <div sclass="row" style="margin-top: 20px">
+            <div sclass="col-lg-6">
+                <div sclass="input-group">
+                    <span sclass="input-group-addon">Nome</span>
+                    <textbox sclass="form-control" id="nomeEV"/>
+                </div>
+            </div>
+            <div sclass="col-lg-6">
+                <div sclass="input-group">
+                    <span sclass="input-group-addon">Moradia</span>
+                    <textbox sclass="form-control" id="moradiaEV"/>
+                </div>
+            </div>
+        </div>
+        <separator/>
+        <div sclass="row">
+            <div sclass="col-lg-4">
+                <div sclass="input-group">
+                    <span sclass="input-group-addon">Email</span>
+                    <textbox sclass="form-control" id="emailEV"/>
+                </div>
+            </div>
+            <div sclass="col-lg-4">
+                <div sclass="input-group">
+                    <span sclass="input-group-addon">Tel</span>
+                    <textbox sclass="form-control" id="telefoneEV"/>
+                </div>
+            </div>
+            <div sclass="col-lg-4">
+                <div sclass="input-group">
+                    <span sclass="input-group-addon">BI</span>
+                    <textbox sclass="form-control" id="biEV"/>
+                </div>
+            </div>
+        </div>
+        <separator/>
+        <div sclass="conteudo">
+            <div sclass="btn-group">
+                <button sclass="btn-info" id="editV" image="/Icons/ic_save.png"/>
+                <button sclass="btn-danger" onClick="win2.detach()" image="/Icons/ic_close.png"/>
+            </div>
+        </div>   
+    </window>
+</zk>

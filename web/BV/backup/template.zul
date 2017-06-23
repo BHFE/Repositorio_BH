@@ -1,0 +1,34 @@
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<zk>
+    <vbox   sclass="test" apply="controlador.paginas.LoginController" vflex="1" hflex="1">
+        
+     <style>
+                .test{
+                background-color: #135474;
+                }
+            </style>
+            <style>
+                .test2{
+                background-color: #135474;
+                }
+            </style>
+    
+    <!-- create only when the currentUser is not an anonymous  -->
+    <borderlayout  hflex="1"  vflex="1" if="${not sessionScope.userCredential.anonymous}">
+        <north height="autor" border="none" >
+            <include src="/Estrutura/banner.zul"/>
+        </north>
+
+				
+        <center id="mainContent" autoscroll="true" sclass="test2" border="none" self="@insert(content)">
+            <!-- the main content will be insert to here -->
+        </center>
+        
+
+    </borderlayout>
+    <div if="${sessionScope.userCredential.anonymous}">
+        Redirecionando para a página de autenticação.....
+    </div>
+    </vbox>
+
+</zk>

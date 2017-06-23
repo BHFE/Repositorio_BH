@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winAddCat" sclass="windows" action="show: slideDown; hide: slideUp">
+        <div sclass="input-group">
+            <combobox/>
+        </div>
+        <separator/>
+        <div sclass="conteudo">
+            <hlayout>
+                <button label="Guardar" sclass="btn-primary"/>
+                <button label="Voltar" sclass="btn-warning" onClick="winAddCat.detach()"/>
+            </hlayout>
+        </div>
+    </window>
+</zk>

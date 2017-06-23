@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/BV/Paginas/login/layout/template.zul"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    
+    <window contentStyle="overflow:visible"   id="publicacoesView"   self="@define(content)"  hflex="1"  sclass="paginas"  apply="" >
+        
+          <div  style="min-height:68vh; height:auto !important; height:100%;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+
+        
+            <div sclass="container"  id="leitor" >   
+    
+            <vbox align="left" width="100%" spacing="5px">
+                <separator />
+                <image id="" src="/imgs/pub.png" width="150px"   height="25px"/>
+                <separator bar="true"/>                       
+                <div class="btn-group ">
+                    <button id="avaliador" visible="false" sclass="btn-primary active" height="40px" width="180px" image="/icon/ic_format_list_bulleted_white_18dp.png" >Avaliar Submissão</button>
+                    <button id="lista" sclass="btn-primary active" height="40px" width="180px" image="/icon/ic_format_list_bulleted_white_18dp.png" >Minhas Publicações</button>
+                    <button  image="/icon/ic_note_add_black_18dp.png" sclass="btn-default" height="40px" width="180px"   id="nova">Submeter material</button>                   
+                </div>
+            </vbox>
+            
+                                                    
+            <div id="minhasPub" >                                      
+                <vbox align="right" width="100%" >
+                    <hbox align="right" pack="end"  spacing="3px" >
+                        <div class="input-group">
+                                    
+                            <textbox id="searchArea" width="290px" height="38.5px" class="form-control"  placeholder="procurar artigo..."/>
+                                   
+                            <span class="input-group-btn">
+                                <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                            </span>
+                        </div>                               
+                        
+                        
+                    </hbox>
+                </vbox>
+                        
+            
+                <separator height="10px"/>
+                <panel title="Minhas Publicações" id="minhas" sclass="panel-primary">
+                    <panelchildren>
+                        
+                              
+                        <listbox id="artigoListbox1" mold="paging"  span="true"  sclass="tabelas"  emptyMessage="Nada para mostrar" >
+                            <listhead >
+                                <listheader  />
+                                <listheader width="125px"/> 
+                            </listhead>              
+                            <template name="model">
+                                <listitem>
+                                    <listcell>
+                                        <vbox align="left">
+                                            <hbox>
+                                                <label  value="Titulo: "/>
+                                                <label sclass="titulo" value="${each.titulo}" />
+                                            </hbox>
+                                            <hbox>
+                                                <label  value="Autor(s): "/>
+                                                <label sclass="titulo" value="${each.autor}" />
+                                            </hbox>
+                                            <hbox>
+                                                <label  value="Area : "/>
+                                                <label sclass="titulo" value="${each.area.descricao}" />
+                                            </hbox>
+                                   
+                                            <hbox>
+                                                <label  value="Publicado em : "/>
+                                                <label sclass="titulo" value="${each.dataPublicacaof}" />
+                                            </hbox>
+                                            <separator height="3px;"/> 
+                                        </vbox>
+                                                                 
+                                    </listcell>                        
+                                    <listcell >
+                                            
+                                        <button tooltiptext="Ver mais detalhes" sclass="btn btn-primary" image="/icon/ic_subject_white_18dp.png"  forward="onClick = artigoListbox.onEditar"/>                          
+                                                    
+                                            
+                                    </listcell>         
+                                </listitem>
+                            </template>
+                        </listbox>
+                    </panelchildren>
+                </panel>
+            </div>
+            
+            <div id="avaliacao" visible="false" apply="">
+                
+                <div id="off" visible="true" >
+                    <vbox align="right" width="100%" >
+                        <hbox align="right" pack="end"  spacing="3px" >                               
+                            <div class="input-group">
+                                    
+                            <textbox id="searchArea1" width="290px" height="38.5px" class="form-control"  placeholder="procurar artigo..."/>
+                                   
+                            <span class="input-group-btn">
+                                <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                            </span>
+                        </div>
+                        </hbox>
+                    </vbox>
+                    <separator height="10px"/>
+                    <panel title="Sbmissões por Avaliar" id="panelsub" sclass="panel-primary">
+                        <panelchildren>
+                        
+                              
+                            <listbox id="artigoListbox" mold="paging"  span="true"  sclass="tabelas"  emptyMessage="Nada para mostrar" rows="5">
+                                <listhead >
+                                    <listheader  />
+                                    <listheader width="155px"/> 
+                                </listhead>              
+                                <template name="model">
+                                    <listitem>
+                                        <listcell>
+                                            <vbox align="left">
+                                                <hbox>
+                                                    <label  value="Titulo: "/>
+                                                    <label sclass="titulo" value="${each.titulo}" />
+                                                </hbox>
+                                                <hbox>
+                                                    <label  value="Leitor: "/>
+                                                    <label sclass="titulo" value="${each.publicador.idutilizador.nome}" />
+                                                </hbox>
+                                        
+                                   
+                                                <hbox>
+                                                    <label  value="Data de submissão : "/>
+                                                    <label sclass="titulo" value="${each.dataSubmissaof}" />
+                                                </hbox>
+                                                <hbox>
+                                                    <label  value="Estado: "/>
+                                                    <label sclass="titulo" value="${each.estado}" />
+                                                </hbox>
+                                                <separator height="3px;"/> 
+                                            </vbox>                          
+                                        </listcell>
+                                                            
+                                        <listcell >
+                                            
+                                            <button label="Avaliar" sclass="btn btn-primary" image="/icon/ic_visibility_white_18dp.png"  forward="onClick = artigoListbox.onEditar"/>                                                                
+                                        </listcell>         
+                                    </listitem>
+                                </template>
+                            </listbox>
+                        
+                        </panelchildren>
+                    </panel>
+                </div>
+                <separator height="40px"/>
+                
+                <div id="on" visible="false"  >
+                    <separator height="30px"/>
+                    <panel title="Ver detalhes" id="panelon" sclass="panel-primary">
+                        <panelchildren>
+                            <div class="row">
+                
+                                <div class="col-lg-6">
+                                    <vbox align="left" spacing="10px">
+                                        <div class="input-group ">
+                                            <label sclass="sub"  value="Titulo:"  />
+                                            <label sclass="titulo" id="titulo"/>                                    
+                                        </div>
+                                   
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Autor:"  />
+                                            <label sclass="titulo" id="autor"/>                                    
+                                        </div>
+                                    
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Publicador:"  />
+                                            <label sclass="titulo" id="publicador"/>                                    
+                                        </div>
+                                    
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Lingua:"  />
+                                            <label sclass="titulo" id="idioma"/>                                    
+                                        </div>
+                                    
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Categoria:"  />
+                                            <label sclass="titulo" id="categorias"/>                                    
+                                        </div>
+                                    
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Area Tematica:"  />
+                                            <label sclass="titulo" id="area"/>                                    
+                                        </div>
+                                    
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Formato:"  />
+                                            <label sclass="titulo" id="formato"/>                                    
+                                        </div>
+                                    </vbox>
+                                </div><!-- /.col-lg-6 -->
+                            
+                                <div class="col-lg-6">
+                                    <vbox align="left" spacing="10px">
+                                
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Data de Submissão:"  />
+                                            <label sclass="titulo" id="submissao"/>                                    
+                                        </div>
+                                
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Assunto:"  />
+                                            <label sclass="titulo" id="descricao" multiline="true" height="100px" width="350px"/>                                    
+                                        </div>
+                                
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Direitos autorais:"  />
+                                            <label sclass="titulo" id="direitos" multiline="true" height="100px" width="350px"/>                                    
+                                        </div>
+                                
+                                        <div class="input-group">
+                                            <label sclass="sub"  value="Estado:"  />
+                                            <label sclass="titulo" id="estado"/>                                    
+                                        </div>
+                                        <separator height="20px"/>
+                                
+                                        <button id="abrir" label="Abrir ficheiro" image="/icon/ic_local_library_white_18dp.png"  sclass="btn btn-primary" onClick="" />                                                                      
+                                
+                                
+                                
+                                        <separator height="10px"/>
+                                    </vbox>
+                                </div>
+                            </div><!-- /.row -->
+                        
+                            
+                            <hbox  style="float:right">
+                                <vbox align="left" id="mot" visible="false">
+                                        <label sclass="tituloi" value="Informar Motivo :" width="10%"/>                                       
+                                        <textbox  id="moti_desc" multiline="true" class="form-control" height="150px" width="450px"/>
+                                        <hbox>
+                                        <button label="confirmar" image="/icon/ic_done_white_18dp.png" class="btn-success" id="confirmar"/>
+                                        <button label="cancelar" image="/icon/ic_cancel_white_18dp.png" class="btn-danger" id="cancelar"/>
+                                        </hbox>
+                            </vbox>
+                                 
+                                        
+                                <button  id="publicar" label="Aprovar" image="/icon/ic_done_white_18dp.png"  sclass="btn btn-success"  />
+                                <button id="rejeitar" label="Reprovar" image="/icon/ic_close_white_18dp.png"  sclass="btn btn-danger"/>                         
+                                <button id="voltar" label="Voltar" class="btn btn-default" image="/icon/ic_keyboard_backspace_black_18dp.png" onClick=""/> 
+                                
+                            </hbox>
+                        
+                        </panelchildren>
+                    </panel>
+                
+                </div>
+                
+                
+                
+            </div>
+            
+            </div>
+                                  
+        
+          </div>
+        
+    </window>  
+             
+</zk>

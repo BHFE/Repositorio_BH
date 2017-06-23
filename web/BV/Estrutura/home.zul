@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Paginas/login/layout/template.zul"?>
+
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    
+    <window title="" self="@define(content)" vflex="1" sclass="paginas" hflex="1" 
+    >
+        <vbox vflex="1" hflex="1" align="center"
+          pack="center" >
+            
+            <label value="Leituras Recentes"/>
+            	
+            <listbox id="historico" mold="paging" apply="controlador.paginas.Home" sclass="tabelas" emptyMessage="Nenhum Livro lido recentemente" >
+                <listhead>
+                    <listheader label="Titulo" />
+                    <listheader label="Autor" />
+                    <listheader label="Data da leitura"/>
+                
+                    <template name="model">
+                        <listitem>
+                            <listcell>
+                                <label value="${each.titulo}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.autor}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.publicacaoLocal}" />
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listhead>
+            </listbox>
+            
+            <separator bar="false"/>
+            <label value="Notificações de Multas"/>
+            
+            <listbox id="multas" mold="paging" apply="controlador.paginas.Multas" sclass="tabelas" emptyMessage="Nenhuma multa não paga">
+                <listhead>
+                    <listheader label="Valor da multa"/>
+                    <listheader label="Livro referente"/>
+                    <listheader label="Data Emprestimo"/>
+                    <listheader label="Devolucão Prevista"/>
+                    
+                    <template name="model">
+                        <listitem>
+                            <listcell>
+                                <label value="${each.multa}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.emprestimo.livro.titulo}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.emprestimo.dataEmprestimo()}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.emprestimo.dataEntrega}"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listhead>			
+            </listbox>
+            
+            <separator bar="false"/>
+            <label value="Livros na posse"/>
+            
+            <listbox id="posse" mold="paging" sclass="tabelas" emptyMessage="Nenhum livro em posse" apply="controlador.paginas.Posse" >
+                <listhead>
+                    <listheader label="Titulo do Livro"/>
+                    <listheader label="ISBN"/>
+                    <listheader label="Data Emprestimo"/>
+                    <listheader label="Devolucão Prevista"/>
+                    <template name="model">
+                        <listitem>
+                            
+                            <listcell>
+                                <label value = "${each.titulo}"/>
+                            </listcell>
+                            
+                            <listcell>
+                                <label value = "${each.isbn}"/>
+                            </listcell>
+                            
+                            <listcell>
+                                <label value = "${each.emprestimo.dataEmprestimo}"/>
+                            </listcell>
+                            
+                            <listcell>
+                                <label value = "${eacj.dataEntrega}"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listhead>
+						
+            </listbox>
+            
+        </vbox>            
+    </window>  
+</zk>

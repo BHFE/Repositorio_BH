@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div hflex="1" vflex="1" sclass="footer">
+        <vbox hflex="1" vflex="1" align="center">
+            <separator/>
+            Todos Direitos Reservados © - 2016 UniLúrio
+        </vbox>
+    </div>
+</zk>

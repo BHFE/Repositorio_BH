@@ -1,0 +1,99 @@
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Paginas/login/layout/templateAdmin.zul"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    
+    <window contentStyle="overflow:visible" id="userView" self="@define(content)"  apply="controlador.paginas.CircReserva">
+        <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
+
+        <div sclass="container">
+            <vbox align="left" width="100%" spacing="5px">                       
+                <separator />
+                <image id="" src="/imgs/circ.png" width="135px"   height="27px"/>
+                <separator bar="true"/>
+                <div class="btn-group ">
+                    <button sclass="btn-default " height="40px" width="150px" image="/icon/ic_format_list_bulleted_black_18dp.png" id="nova1" >Utilizadores</button>
+                    <button  image="/icon/ic_event_note_white_18dp.png" height="40px" width="180px" sclass="btn-primary active" id="nova2"   >Reservas</button>
+                    <button  image="/icon/ic_description_black_18dp.png" height="40px" width="180px" sclass="btn-default" id="nova"  >Submissões</button>                   
+                </div>                                     
+            </vbox>
+            
+            <separator height="30px"/>
+            <vbox align="right" width="100%" id="filtro">
+                <hbox align="right"  pack="end" style="margin-top: 5px;"  spacing="40px" >
+                    <vbox spacing="4px" >
+                        <label  value="Data da reserva:"  /> 
+                        <datebox id="db"  mold="rounded" constraint="no future" format="dd/MM/yyyy"  lenient="false" compact="false" buttonVisible="true"/>  
+                    </vbox>
+                    
+                    
+                    <vbox spacing="4px" >
+                        <label  value="por Estado:"  /> 
+                        <listbox id="categorias" mold="select" width="100px" height="27px" sclass="form-control">
+                                        <template name="model">
+                                            <listitem label="${}" />
+                                        </template>
+                       </listbox>
+                    </vbox>
+                    <vbox spacing="4px" >
+                        <label  value="Procurar por obra:"  /> 
+                        <div class="input-group">
+                                    
+                            <textbox id="searchArea" width="290px" height="38.5px" class="form-control"  placeholder="procurar artigo..."/>
+                                   
+                            <span class="input-group-btn">
+                                <button image="/icon/ic_search_white_24dp.png" height="38.5px" class="btn-primary"  />
+                            </span>
+                        </div>
+                    </vbox> 
+                </hbox>               
+            </vbox>
+            
+            <separator height="50px"/>
+            <panel id="panel" title="Lista de Reservas"  sclass="panel-primary">
+                <panelchildren>
+                <separator height="40px"/>
+                    <listbox id="reservaListbox" mold="paging"   span="true"  sclass=" tabelas"  emptyMessage="Nenhuma reserva" >
+                        <listhead >
+                            <listheader label="Exemplar" />
+                            <listheader label="Leitor" />
+                            <listheader label="Data da Reserva" />
+                            <listheader label="Data de Expiração" />
+                            <listheader label="Estado" />
+                            
+                             
+                        </listhead>              
+                        <template name="model">
+                            <listitem>
+                                
+                                <listcell>
+                                    <label value="${each.livro.obraRef.titulo}" />
+                                </listcell>
+                                <listcell>
+                                    <label value="${each.utilizador.nome}" />
+                                </listcell>
+                                <listcell>
+                                    <label value="${each.dataReserva}" />
+                                </listcell>
+                                <listcell>
+                                    <label value="${each.dataExpiracao}" />
+                                </listcell>
+                                <listcell>
+                                    <label value="${each.estado}" />
+                                </listcell>
+                                                   
+                                        
+                            </listitem>
+                        </template>
+                    </listbox>
+                    <separator height="40px"/>
+                </panelchildren>
+            </panel>
+            <separator height="40px"/> 
+        </div>
+        </div>
+    </window>
+
+</zk>

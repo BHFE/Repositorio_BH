@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cf4dbb94-2496-433b-a26c-4d419dc6c072">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" uuid="6b81cebf-91de-4774-945d-a25ac914aed8">
+		<queryString language="SQL">
+			<![CDATA[SELECT
+     b_reserva."data_emprestimo" AS b_reserva_data_emprestimo,
+     b_reserva."data_reserva" AS b_reserva_data_reserva,
+     b_reserva."estado" AS b_reserva_estado,
+     b_reserva."livro" AS b_reserva_livro,
+     b_reserva."leitor" AS b_reserva_leitor,
+     b_reserva."data_devolucao" AS b_reserva_data_devolucao
+FROM
+     "fecn1"."b_reserva" b_reserva]]>
+		</queryString>
+		<field name="b_reserva_data_emprestimo" class="java.sql.Date"/>
+		<field name="b_reserva_data_reserva" class="java.sql.Date"/>
+		<field name="b_reserva_estado" class="java.lang.String"/>
+		<field name="b_reserva_livro" class="java.lang.Long"/>
+		<field name="b_reserva_leitor" class="java.lang.Long"/>
+		<field name="b_reserva_data_devolucao" class="java.sql.Date"/>
+		<group name="b_reserva_leitor">
+			<groupExpression><![CDATA[$F{b_reserva_leitor}]]></groupExpression>
+		</group>
+		<group name="b_reserva_data_emprestimo">
+			<groupExpression><![CDATA[$F{b_reserva_data_emprestimo}]]></groupExpression>
+		</group>
+		<group name="b_reserva_data_devolucao">
+			<groupExpression><![CDATA[$F{b_reserva_data_devolucao}]]></groupExpression>
+		</group>
+		<group name="b_reserva_estado">
+			<groupExpression><![CDATA[$F{b_reserva_estado}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Table Dataset 1" uuid="b991c78d-3d87-43a2-91a3-07128a4ef789"/>
+	<subDataset name="Table Dataset 2" uuid="5275785c-50da-4987-9247-c0e7b547b3c4"/>
+	<parameter name="data_reserva" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     b_reserva."data_emprestimo" AS b_reserva_data_emprestimo,
+     b_reserva."data_reserva" AS b_reserva_data_reserva,
+     b_reserva."estado" AS b_reserva_estado,
+     b_reserva."livro" AS b_reserva_livro,
+     b_reserva."leitor" AS b_reserva_leitor,
+     b_reserva."via" AS b_reserva_via,
+     b_reserva."bibliotecario" AS b_reserva_bibliotecario,
+     b_reserva."data_devolucao" AS b_reserva_data_devolucao,
+     b_reserva."idagenda" AS b_reserva_idagenda,
+	sg_obra."titulo" AS sg_obra_titulo,
+users."nome" AS users_nome
+FROM
+     "fecn1"."b_reserva" b_reserva,
+"fecn1"."sg_obra" sg_obra,
+"fecn1"."users" users,
+"fecn1"."b_leitor" b_leitor
+
+WHERE
+	data_reserva = $P{data_reserva} and b_reserva."livro" = sg_obra."idlivro" and b_reserva."leitor" = b_leitor."nr_cartao" and b_leitor."idutilizador" = users."utilizador"]]>
+	</queryString>
+	<field name="b_reserva_data_emprestimo" class="java.sql.Date"/>
+	<field name="b_reserva_data_reserva" class="java.sql.Date"/>
+	<field name="b_reserva_estado" class="java.lang.String"/>
+	<field name="b_reserva_livro" class="java.lang.Long"/>
+	<field name="b_reserva_leitor" class="java.lang.Long"/>
+	<field name="b_reserva_via" class="java.lang.String"/>
+	<field name="b_reserva_bibliotecario" class="java.lang.Long"/>
+	<field name="b_reserva_data_devolucao" class="java.sql.Date"/>
+	<field name="b_reserva_idagenda" class="java.lang.Integer"/>
+	<field name="sg_obra_titulo" class="java.lang.String"/>
+	<field name="users_nome" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="217" y="0" width="150" height="55" uuid="6ccaaad0-f398-4c0d-8ccf-763ab44be42a"/>
+				<imageExpression><![CDATA["C:\\Users\\Almerindo Uazela\\OneDrive\\Documentos\\BDU\\web\\imgs\\perfil\\relatorio.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="242" y="4" width="82" height="24" uuid="e5359583-d475-4808-950c-d6145866f3c3"/>
+				<textElement>
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="91" splitType="Stretch">
+			<staticText>
+				<reportElement x="14" y="69" width="158" height="20" uuid="323b86f7-b6a1-4073-bb99-722d33f1bf2e"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Leitor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="69" width="181" height="20" uuid="a901423d-e57f-40eb-acb7-3a6956fbe1c7"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Titulo da Obra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="69" width="79" height="20" uuid="c850ac0f-a9ed-4ffd-b4d2-850a1ab133b1"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="69" width="112" height="20" uuid="da0bfad5-1079-4d56-bb9e-71d5139775ab"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expiração]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="14" width="121" height="19" uuid="07829f0c-31e2-4272-b927-d62b8cf2c015"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_reserva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="173" y="13" width="115" height="20" uuid="397aad4e-7de3-4176-bba7-81121afcabac"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reservas do dia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="51" splitType="Stretch">
+			<textField>
+				<reportElement x="14" y="4" width="158" height="20" uuid="3b972182-ba7a-40e3-ac95-d81a21ade8de"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{users_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="173" y="5" width="181" height="20" uuid="93e5ddf6-1d10-47ad-84cc-03c964e9c37b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sg_obra_titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="4" width="79" height="20" uuid="cce768c2-f95b-4782-bfad-a23ab9e30b06"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{b_reserva_estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="4" width="112" height="20" uuid="034881e2-10e2-4370-b0a6-66d2d04e09a0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{b_reserva_data_emprestimo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="399" y="17" width="46" height="20" uuid="4082ae81-80ca-4934-9837-c7479f8036e9"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Pemba -]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="445" y="17" width="100" height="20" uuid="bff1ca2a-6a2c-4cdb-9484-7cd640e258bd"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
