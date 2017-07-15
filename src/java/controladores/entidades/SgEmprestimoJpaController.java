@@ -68,23 +68,23 @@ public class SgEmprestimoJpaController implements Serializable {
             }
             em.persist(sgEmprestimo);
             if (idLeitor != null) {
-                idLeitor.getSgEmprestimoCollection().add(sgEmprestimo);
+                idLeitor.getSgEmprestimoList().add(sgEmprestimo);
                 idLeitor = em.merge(idLeitor);
             }
             if (reservaRef != null) {
-                reservaRef.getSgEmprestimoCollection().add(sgEmprestimo);
+                reservaRef.getSgEmprestimoList().add(sgEmprestimo);
                 reservaRef = em.merge(reservaRef);
             }
             if (parametrosRef != null) {
-                parametrosRef.getSgEmprestimoCollection().add(sgEmprestimo);
+                parametrosRef.getSgEmprestimoList().add(sgEmprestimo);
                 parametrosRef = em.merge(parametrosRef);
             }
             if (exemplarRef != null) {
-                exemplarRef.getSgEmprestimoCollection().add(sgEmprestimo);
+                exemplarRef.getSgEmprestimoList().add(sgEmprestimo);
                 exemplarRef = em.merge(exemplarRef);
             }
             if (agenteBibliot != null) {
-                agenteBibliot.getSgEmprestimoCollection().add(sgEmprestimo);
+                agenteBibliot.getSgEmprestimoList().add(sgEmprestimo);
                 agenteBibliot = em.merge(agenteBibliot);
             }
             em.getTransaction().commit();
@@ -133,43 +133,43 @@ public class SgEmprestimoJpaController implements Serializable {
             }
             sgEmprestimo = em.merge(sgEmprestimo);
             if (idLeitorOld != null && !idLeitorOld.equals(idLeitorNew)) {
-                idLeitorOld.getSgEmprestimoCollection().remove(sgEmprestimo);
+                idLeitorOld.getSgEmprestimoList().remove(sgEmprestimo);
                 idLeitorOld = em.merge(idLeitorOld);
             }
             if (idLeitorNew != null && !idLeitorNew.equals(idLeitorOld)) {
-                idLeitorNew.getSgEmprestimoCollection().add(sgEmprestimo);
+                idLeitorNew.getSgEmprestimoList().add(sgEmprestimo);
                 idLeitorNew = em.merge(idLeitorNew);
             }
             if (reservaRefOld != null && !reservaRefOld.equals(reservaRefNew)) {
-                reservaRefOld.getSgEmprestimoCollection().remove(sgEmprestimo);
+                reservaRefOld.getSgEmprestimoList().remove(sgEmprestimo);
                 reservaRefOld = em.merge(reservaRefOld);
             }
             if (reservaRefNew != null && !reservaRefNew.equals(reservaRefOld)) {
-                reservaRefNew.getSgEmprestimoCollection().add(sgEmprestimo);
+                reservaRefNew.getSgEmprestimoList().add(sgEmprestimo);
                 reservaRefNew = em.merge(reservaRefNew);
             }
             if (parametrosRefOld != null && !parametrosRefOld.equals(parametrosRefNew)) {
-                parametrosRefOld.getSgEmprestimoCollection().remove(sgEmprestimo);
+                parametrosRefOld.getSgEmprestimoList().remove(sgEmprestimo);
                 parametrosRefOld = em.merge(parametrosRefOld);
             }
             if (parametrosRefNew != null && !parametrosRefNew.equals(parametrosRefOld)) {
-                parametrosRefNew.getSgEmprestimoCollection().add(sgEmprestimo);
+                parametrosRefNew.getSgEmprestimoList().add(sgEmprestimo);
                 parametrosRefNew = em.merge(parametrosRefNew);
             }
             if (exemplarRefOld != null && !exemplarRefOld.equals(exemplarRefNew)) {
-                exemplarRefOld.getSgEmprestimoCollection().remove(sgEmprestimo);
+                exemplarRefOld.getSgEmprestimoList().remove(sgEmprestimo);
                 exemplarRefOld = em.merge(exemplarRefOld);
             }
             if (exemplarRefNew != null && !exemplarRefNew.equals(exemplarRefOld)) {
-                exemplarRefNew.getSgEmprestimoCollection().add(sgEmprestimo);
+                exemplarRefNew.getSgEmprestimoList().add(sgEmprestimo);
                 exemplarRefNew = em.merge(exemplarRefNew);
             }
             if (agenteBibliotOld != null && !agenteBibliotOld.equals(agenteBibliotNew)) {
-                agenteBibliotOld.getSgEmprestimoCollection().remove(sgEmprestimo);
+                agenteBibliotOld.getSgEmprestimoList().remove(sgEmprestimo);
                 agenteBibliotOld = em.merge(agenteBibliotOld);
             }
             if (agenteBibliotNew != null && !agenteBibliotNew.equals(agenteBibliotOld)) {
-                agenteBibliotNew.getSgEmprestimoCollection().add(sgEmprestimo);
+                agenteBibliotNew.getSgEmprestimoList().add(sgEmprestimo);
                 agenteBibliotNew = em.merge(agenteBibliotNew);
             }
             em.getTransaction().commit();
@@ -203,27 +203,27 @@ public class SgEmprestimoJpaController implements Serializable {
             }
             BLeitor idLeitor = sgEmprestimo.getIdLeitor();
             if (idLeitor != null) {
-                idLeitor.getSgEmprestimoCollection().remove(sgEmprestimo);
+                idLeitor.getSgEmprestimoList().remove(sgEmprestimo);
                 idLeitor = em.merge(idLeitor);
             }
             BReserva reservaRef = sgEmprestimo.getReservaRef();
             if (reservaRef != null) {
-                reservaRef.getSgEmprestimoCollection().remove(sgEmprestimo);
+                reservaRef.getSgEmprestimoList().remove(sgEmprestimo);
                 reservaRef = em.merge(reservaRef);
             }
             SgEmprestimoParametros parametrosRef = sgEmprestimo.getParametrosRef();
             if (parametrosRef != null) {
-                parametrosRef.getSgEmprestimoCollection().remove(sgEmprestimo);
+                parametrosRef.getSgEmprestimoList().remove(sgEmprestimo);
                 parametrosRef = em.merge(parametrosRef);
             }
             SgExemplar exemplarRef = sgEmprestimo.getExemplarRef();
             if (exemplarRef != null) {
-                exemplarRef.getSgEmprestimoCollection().remove(sgEmprestimo);
+                exemplarRef.getSgEmprestimoList().remove(sgEmprestimo);
                 exemplarRef = em.merge(exemplarRef);
             }
             Users agenteBibliot = sgEmprestimo.getAgenteBibliot();
             if (agenteBibliot != null) {
-                agenteBibliot.getSgEmprestimoCollection().remove(sgEmprestimo);
+                agenteBibliot.getSgEmprestimoList().remove(sgEmprestimo);
                 agenteBibliot = em.merge(agenteBibliot);
             }
             em.remove(sgEmprestimo);

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report5" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f8151d49-3e28-4b94-804c-960e3fa33d53">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     b_leitor."nome" AS b_leitor_nome,
+     sg_emprestimo."data_devolucao" AS sg_emprestimo_data_devolucao,
+     sg_emprestimo."data_emprestimo" AS sg_emprestimo_data_emprestimo,
+     sg_emprestimo."multa_estado" AS sg_emprestimo_multa_estado,
+     sg_emprestimo."multa_valor" AS sg_emprestimo_multa_valor,
+     sg_emprestimo."tipo_emprestimo" AS sg_emprestimo_tipo_emprestimo,
+     sg_emprestimo."agente_bibliot" AS sg_emprestimo_agente_bibliot,
+     sg_emprestimo."estado" AS sg_emprestimo_estado,
+     sg_emprestimo."estado_renovacao" AS sg_emprestimo_estado_renovacao,
+     sg_obra."tipo_obra" AS sg_obra_tipo_obra,
+     users."nome" AS users_nome,
+     sg_obra."titulo" AS sg_obra_titulo
+FROM
+     "public"."b_leitor" b_leitor INNER JOIN "public"."sg_emprestimo" sg_emprestimo ON b_leitor."nr_cartao" = sg_emprestimo."id_leitor"
+     INNER JOIN "public"."users" users ON b_leitor."idagente" = users."utilizador"
+     AND users."utilizador" = b_leitor."idutilizador"
+     AND users."utilizador" = sg_emprestimo."agente_bibliot"
+     INNER JOIN "public"."sg_obra" sg_obra ON users."utilizador" = sg_obra."bibliotecario"]]>
+	</queryString>
+	<field name="b_leitor_nome" class="java.lang.String"/>
+	<field name="sg_emprestimo_data_devolucao" class="java.sql.Date"/>
+	<field name="sg_emprestimo_data_emprestimo" class="java.sql.Date"/>
+	<field name="sg_emprestimo_multa_estado" class="java.lang.String"/>
+	<field name="sg_emprestimo_multa_valor" class="java.lang.String"/>
+	<field name="sg_emprestimo_tipo_emprestimo" class="java.lang.String"/>
+	<field name="sg_emprestimo_agente_bibliot" class="java.lang.String"/>
+	<field name="sg_emprestimo_estado" class="java.lang.String"/>
+	<field name="sg_emprestimo_estado_renovacao" class="java.lang.String"/>
+	<field name="sg_obra_tipo_obra" class="java.lang.String"/>
+	<field name="users_nome" class="java.lang.String"/>
+	<field name="sg_obra_titulo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="682" y="0" width="62" height="20" uuid="3c37aba5-aad3-4d5b-a94a-5d45811d6eb7"/>
+				<textFieldExpression><![CDATA[$F{sg_obra_titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

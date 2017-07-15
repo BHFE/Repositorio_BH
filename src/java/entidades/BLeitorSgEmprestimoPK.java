@@ -18,10 +18,10 @@ import javax.persistence.Embeddable;
 public class BLeitorSgEmprestimoPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "bleitor_nr_cartao")
+    @Column(name = "bleitor_nr_cartao", nullable = false)
     private long bleitorNrCartao;
     @Basic(optional = false)
-    @Column(name = "sgemprestimolist_idemprestimo")
+    @Column(name = "sgemprestimolist_idemprestimo", nullable = false)
     private long sgemprestimolistIdemprestimo;
 
     public BLeitorSgEmprestimoPK() {

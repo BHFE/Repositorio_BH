@@ -57,11 +57,11 @@ public class BvLeituraJpaController implements Serializable {
             }
             em.persist(bvLeitura);
             if (BLeitor != null) {
-                BLeitor.getBvLeituraCollection().add(bvLeitura);
+                BLeitor.getBvLeituraList().add(bvLeitura);
                 BLeitor = em.merge(BLeitor);
             }
             if (bvArtigo != null) {
-                bvArtigo.getBvLeituraCollection().add(bvLeitura);
+                bvArtigo.getBvLeituraList().add(bvLeitura);
                 bvArtigo = em.merge(bvArtigo);
             }
             em.getTransaction().commit();
@@ -99,19 +99,19 @@ public class BvLeituraJpaController implements Serializable {
             }
             bvLeitura = em.merge(bvLeitura);
             if (BLeitorOld != null && !BLeitorOld.equals(BLeitorNew)) {
-                BLeitorOld.getBvLeituraCollection().remove(bvLeitura);
+                BLeitorOld.getBvLeituraList().remove(bvLeitura);
                 BLeitorOld = em.merge(BLeitorOld);
             }
             if (BLeitorNew != null && !BLeitorNew.equals(BLeitorOld)) {
-                BLeitorNew.getBvLeituraCollection().add(bvLeitura);
+                BLeitorNew.getBvLeituraList().add(bvLeitura);
                 BLeitorNew = em.merge(BLeitorNew);
             }
             if (bvArtigoOld != null && !bvArtigoOld.equals(bvArtigoNew)) {
-                bvArtigoOld.getBvLeituraCollection().remove(bvLeitura);
+                bvArtigoOld.getBvLeituraList().remove(bvLeitura);
                 bvArtigoOld = em.merge(bvArtigoOld);
             }
             if (bvArtigoNew != null && !bvArtigoNew.equals(bvArtigoOld)) {
-                bvArtigoNew.getBvLeituraCollection().add(bvLeitura);
+                bvArtigoNew.getBvLeituraList().add(bvLeitura);
                 bvArtigoNew = em.merge(bvArtigoNew);
             }
             em.getTransaction().commit();
@@ -145,12 +145,12 @@ public class BvLeituraJpaController implements Serializable {
             }
             BLeitor BLeitor = bvLeitura.getBLeitor();
             if (BLeitor != null) {
-                BLeitor.getBvLeituraCollection().remove(bvLeitura);
+                BLeitor.getBvLeituraList().remove(bvLeitura);
                 BLeitor = em.merge(BLeitor);
             }
             BvArtigo bvArtigo = bvLeitura.getBvArtigo();
             if (bvArtigo != null) {
-                bvArtigo.getBvLeituraCollection().remove(bvLeitura);
+                bvArtigo.getBvLeituraList().remove(bvLeitura);
                 bvArtigo = em.merge(bvArtigo);
             }
             em.remove(bvLeitura);

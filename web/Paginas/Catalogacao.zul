@@ -251,7 +251,7 @@
                                     <div sclass="col-lg-6">
                                         <div sclass="input-group">
                                             <span sclass="input-group-addon">Quantidade</span>
-                                            <textbox sclass="form-control" id="qtdExemplares"/>
+                                            <decimalbox sclass="form-control" id="qtdExemplares"/>
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +301,7 @@
                         <div sclass="col-lg-6" id="vol">
                             <div sclass="input-group">
                                 <span sclass="input-group-addon">Volume</span>
-                                <textbox sclass="form-control" id="volume"/>
+                                <decimalbox sclass="form-control" id="volume"/>
                             </div>
                         </div>
                     </div>
@@ -381,7 +381,7 @@
                         <div sclass="col-lg-6" id="ano_pub">
                             <div sclass="input-group">
                                 <span sclass="input-group-addon">Ano de publicação</span>
-                                <textbox sclass="form-control" id="ano_publicacao"/>
+                                <decimalbox sclass="form-control" id="ano_publicacao"/>
                             </div>
                         </div>
                     </div>

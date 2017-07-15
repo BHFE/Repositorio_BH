@@ -15,10 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.BvAvaliador;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import entidades.BvArtigo;
 import entidades.BvArtigoCategoria;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -38,45 +37,45 @@ public class BvArtigoCategoriaJpaController implements Serializable {
     }
 
     public void create(BvArtigoCategoria bvArtigoCategoria) throws PreexistingEntityException, Exception {
-        if (bvArtigoCategoria.getBvAvaliadorCollection() == null) {
-            bvArtigoCategoria.setBvAvaliadorCollection(new ArrayList<BvAvaliador>());
+        if (bvArtigoCategoria.getBvAvaliadorList() == null) {
+            bvArtigoCategoria.setBvAvaliadorList(new ArrayList<BvAvaliador>());
         }
-        if (bvArtigoCategoria.getBvArtigoCollection() == null) {
-            bvArtigoCategoria.setBvArtigoCollection(new ArrayList<BvArtigo>());
+        if (bvArtigoCategoria.getBvArtigoList() == null) {
+            bvArtigoCategoria.setBvArtigoList(new ArrayList<BvArtigo>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<BvAvaliador> attachedBvAvaliadorCollection = new ArrayList<BvAvaliador>();
-            for (BvAvaliador bvAvaliadorCollectionBvAvaliadorToAttach : bvArtigoCategoria.getBvAvaliadorCollection()) {
-                bvAvaliadorCollectionBvAvaliadorToAttach = em.getReference(bvAvaliadorCollectionBvAvaliadorToAttach.getClass(), bvAvaliadorCollectionBvAvaliadorToAttach.getIdLeitor());
-                attachedBvAvaliadorCollection.add(bvAvaliadorCollectionBvAvaliadorToAttach);
+            List<BvAvaliador> attachedBvAvaliadorList = new ArrayList<BvAvaliador>();
+            for (BvAvaliador bvAvaliadorListBvAvaliadorToAttach : bvArtigoCategoria.getBvAvaliadorList()) {
+                bvAvaliadorListBvAvaliadorToAttach = em.getReference(bvAvaliadorListBvAvaliadorToAttach.getClass(), bvAvaliadorListBvAvaliadorToAttach.getIdLeitor());
+                attachedBvAvaliadorList.add(bvAvaliadorListBvAvaliadorToAttach);
             }
-            bvArtigoCategoria.setBvAvaliadorCollection(attachedBvAvaliadorCollection);
-            Collection<BvArtigo> attachedBvArtigoCollection = new ArrayList<BvArtigo>();
-            for (BvArtigo bvArtigoCollectionBvArtigoToAttach : bvArtigoCategoria.getBvArtigoCollection()) {
-                bvArtigoCollectionBvArtigoToAttach = em.getReference(bvArtigoCollectionBvArtigoToAttach.getClass(), bvArtigoCollectionBvArtigoToAttach.getIdartigo());
-                attachedBvArtigoCollection.add(bvArtigoCollectionBvArtigoToAttach);
+            bvArtigoCategoria.setBvAvaliadorList(attachedBvAvaliadorList);
+            List<BvArtigo> attachedBvArtigoList = new ArrayList<BvArtigo>();
+            for (BvArtigo bvArtigoListBvArtigoToAttach : bvArtigoCategoria.getBvArtigoList()) {
+                bvArtigoListBvArtigoToAttach = em.getReference(bvArtigoListBvArtigoToAttach.getClass(), bvArtigoListBvArtigoToAttach.getIdartigo());
+                attachedBvArtigoList.add(bvArtigoListBvArtigoToAttach);
             }
-            bvArtigoCategoria.setBvArtigoCollection(attachedBvArtigoCollection);
+            bvArtigoCategoria.setBvArtigoList(attachedBvArtigoList);
             em.persist(bvArtigoCategoria);
-            for (BvAvaliador bvAvaliadorCollectionBvAvaliador : bvArtigoCategoria.getBvAvaliadorCollection()) {
-                BvArtigoCategoria oldIdAreaOfBvAvaliadorCollectionBvAvaliador = bvAvaliadorCollectionBvAvaliador.getIdArea();
-                bvAvaliadorCollectionBvAvaliador.setIdArea(bvArtigoCategoria);
-                bvAvaliadorCollectionBvAvaliador = em.merge(bvAvaliadorCollectionBvAvaliador);
-                if (oldIdAreaOfBvAvaliadorCollectionBvAvaliador != null) {
-                    oldIdAreaOfBvAvaliadorCollectionBvAvaliador.getBvAvaliadorCollection().remove(bvAvaliadorCollectionBvAvaliador);
-                    oldIdAreaOfBvAvaliadorCollectionBvAvaliador = em.merge(oldIdAreaOfBvAvaliadorCollectionBvAvaliador);
+            for (BvAvaliador bvAvaliadorListBvAvaliador : bvArtigoCategoria.getBvAvaliadorList()) {
+                BvArtigoCategoria oldIdAreaOfBvAvaliadorListBvAvaliador = bvAvaliadorListBvAvaliador.getIdArea();
+                bvAvaliadorListBvAvaliador.setIdArea(bvArtigoCategoria);
+                bvAvaliadorListBvAvaliador = em.merge(bvAvaliadorListBvAvaliador);
+                if (oldIdAreaOfBvAvaliadorListBvAvaliador != null) {
+                    oldIdAreaOfBvAvaliadorListBvAvaliador.getBvAvaliadorList().remove(bvAvaliadorListBvAvaliador);
+                    oldIdAreaOfBvAvaliadorListBvAvaliador = em.merge(oldIdAreaOfBvAvaliadorListBvAvaliador);
                 }
             }
-            for (BvArtigo bvArtigoCollectionBvArtigo : bvArtigoCategoria.getBvArtigoCollection()) {
-                BvArtigoCategoria oldTipodocOfBvArtigoCollectionBvArtigo = bvArtigoCollectionBvArtigo.getTipodoc();
-                bvArtigoCollectionBvArtigo.setTipodoc(bvArtigoCategoria);
-                bvArtigoCollectionBvArtigo = em.merge(bvArtigoCollectionBvArtigo);
-                if (oldTipodocOfBvArtigoCollectionBvArtigo != null) {
-                    oldTipodocOfBvArtigoCollectionBvArtigo.getBvArtigoCollection().remove(bvArtigoCollectionBvArtigo);
-                    oldTipodocOfBvArtigoCollectionBvArtigo = em.merge(oldTipodocOfBvArtigoCollectionBvArtigo);
+            for (BvArtigo bvArtigoListBvArtigo : bvArtigoCategoria.getBvArtigoList()) {
+                BvArtigoCategoria oldTipodocOfBvArtigoListBvArtigo = bvArtigoListBvArtigo.getTipodoc();
+                bvArtigoListBvArtigo.setTipodoc(bvArtigoCategoria);
+                bvArtigoListBvArtigo = em.merge(bvArtigoListBvArtigo);
+                if (oldTipodocOfBvArtigoListBvArtigo != null) {
+                    oldTipodocOfBvArtigoListBvArtigo.getBvArtigoList().remove(bvArtigoListBvArtigo);
+                    oldTipodocOfBvArtigoListBvArtigo = em.merge(oldTipodocOfBvArtigoListBvArtigo);
                 }
             }
             em.getTransaction().commit();
@@ -98,62 +97,62 @@ public class BvArtigoCategoriaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             BvArtigoCategoria persistentBvArtigoCategoria = em.find(BvArtigoCategoria.class, bvArtigoCategoria.getCategoria());
-            Collection<BvAvaliador> bvAvaliadorCollectionOld = persistentBvArtigoCategoria.getBvAvaliadorCollection();
-            Collection<BvAvaliador> bvAvaliadorCollectionNew = bvArtigoCategoria.getBvAvaliadorCollection();
-            Collection<BvArtigo> bvArtigoCollectionOld = persistentBvArtigoCategoria.getBvArtigoCollection();
-            Collection<BvArtigo> bvArtigoCollectionNew = bvArtigoCategoria.getBvArtigoCollection();
+            List<BvAvaliador> bvAvaliadorListOld = persistentBvArtigoCategoria.getBvAvaliadorList();
+            List<BvAvaliador> bvAvaliadorListNew = bvArtigoCategoria.getBvAvaliadorList();
+            List<BvArtigo> bvArtigoListOld = persistentBvArtigoCategoria.getBvArtigoList();
+            List<BvArtigo> bvArtigoListNew = bvArtigoCategoria.getBvArtigoList();
             List<String> illegalOrphanMessages = null;
-            for (BvAvaliador bvAvaliadorCollectionOldBvAvaliador : bvAvaliadorCollectionOld) {
-                if (!bvAvaliadorCollectionNew.contains(bvAvaliadorCollectionOldBvAvaliador)) {
+            for (BvAvaliador bvAvaliadorListOldBvAvaliador : bvAvaliadorListOld) {
+                if (!bvAvaliadorListNew.contains(bvAvaliadorListOldBvAvaliador)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain BvAvaliador " + bvAvaliadorCollectionOldBvAvaliador + " since its idArea field is not nullable.");
+                    illegalOrphanMessages.add("You must retain BvAvaliador " + bvAvaliadorListOldBvAvaliador + " since its idArea field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<BvAvaliador> attachedBvAvaliadorCollectionNew = new ArrayList<BvAvaliador>();
-            for (BvAvaliador bvAvaliadorCollectionNewBvAvaliadorToAttach : bvAvaliadorCollectionNew) {
-                bvAvaliadorCollectionNewBvAvaliadorToAttach = em.getReference(bvAvaliadorCollectionNewBvAvaliadorToAttach.getClass(), bvAvaliadorCollectionNewBvAvaliadorToAttach.getIdLeitor());
-                attachedBvAvaliadorCollectionNew.add(bvAvaliadorCollectionNewBvAvaliadorToAttach);
+            List<BvAvaliador> attachedBvAvaliadorListNew = new ArrayList<BvAvaliador>();
+            for (BvAvaliador bvAvaliadorListNewBvAvaliadorToAttach : bvAvaliadorListNew) {
+                bvAvaliadorListNewBvAvaliadorToAttach = em.getReference(bvAvaliadorListNewBvAvaliadorToAttach.getClass(), bvAvaliadorListNewBvAvaliadorToAttach.getIdLeitor());
+                attachedBvAvaliadorListNew.add(bvAvaliadorListNewBvAvaliadorToAttach);
             }
-            bvAvaliadorCollectionNew = attachedBvAvaliadorCollectionNew;
-            bvArtigoCategoria.setBvAvaliadorCollection(bvAvaliadorCollectionNew);
-            Collection<BvArtigo> attachedBvArtigoCollectionNew = new ArrayList<BvArtigo>();
-            for (BvArtigo bvArtigoCollectionNewBvArtigoToAttach : bvArtigoCollectionNew) {
-                bvArtigoCollectionNewBvArtigoToAttach = em.getReference(bvArtigoCollectionNewBvArtigoToAttach.getClass(), bvArtigoCollectionNewBvArtigoToAttach.getIdartigo());
-                attachedBvArtigoCollectionNew.add(bvArtigoCollectionNewBvArtigoToAttach);
+            bvAvaliadorListNew = attachedBvAvaliadorListNew;
+            bvArtigoCategoria.setBvAvaliadorList(bvAvaliadorListNew);
+            List<BvArtigo> attachedBvArtigoListNew = new ArrayList<BvArtigo>();
+            for (BvArtigo bvArtigoListNewBvArtigoToAttach : bvArtigoListNew) {
+                bvArtigoListNewBvArtigoToAttach = em.getReference(bvArtigoListNewBvArtigoToAttach.getClass(), bvArtigoListNewBvArtigoToAttach.getIdartigo());
+                attachedBvArtigoListNew.add(bvArtigoListNewBvArtigoToAttach);
             }
-            bvArtigoCollectionNew = attachedBvArtigoCollectionNew;
-            bvArtigoCategoria.setBvArtigoCollection(bvArtigoCollectionNew);
+            bvArtigoListNew = attachedBvArtigoListNew;
+            bvArtigoCategoria.setBvArtigoList(bvArtigoListNew);
             bvArtigoCategoria = em.merge(bvArtigoCategoria);
-            for (BvAvaliador bvAvaliadorCollectionNewBvAvaliador : bvAvaliadorCollectionNew) {
-                if (!bvAvaliadorCollectionOld.contains(bvAvaliadorCollectionNewBvAvaliador)) {
-                    BvArtigoCategoria oldIdAreaOfBvAvaliadorCollectionNewBvAvaliador = bvAvaliadorCollectionNewBvAvaliador.getIdArea();
-                    bvAvaliadorCollectionNewBvAvaliador.setIdArea(bvArtigoCategoria);
-                    bvAvaliadorCollectionNewBvAvaliador = em.merge(bvAvaliadorCollectionNewBvAvaliador);
-                    if (oldIdAreaOfBvAvaliadorCollectionNewBvAvaliador != null && !oldIdAreaOfBvAvaliadorCollectionNewBvAvaliador.equals(bvArtigoCategoria)) {
-                        oldIdAreaOfBvAvaliadorCollectionNewBvAvaliador.getBvAvaliadorCollection().remove(bvAvaliadorCollectionNewBvAvaliador);
-                        oldIdAreaOfBvAvaliadorCollectionNewBvAvaliador = em.merge(oldIdAreaOfBvAvaliadorCollectionNewBvAvaliador);
+            for (BvAvaliador bvAvaliadorListNewBvAvaliador : bvAvaliadorListNew) {
+                if (!bvAvaliadorListOld.contains(bvAvaliadorListNewBvAvaliador)) {
+                    BvArtigoCategoria oldIdAreaOfBvAvaliadorListNewBvAvaliador = bvAvaliadorListNewBvAvaliador.getIdArea();
+                    bvAvaliadorListNewBvAvaliador.setIdArea(bvArtigoCategoria);
+                    bvAvaliadorListNewBvAvaliador = em.merge(bvAvaliadorListNewBvAvaliador);
+                    if (oldIdAreaOfBvAvaliadorListNewBvAvaliador != null && !oldIdAreaOfBvAvaliadorListNewBvAvaliador.equals(bvArtigoCategoria)) {
+                        oldIdAreaOfBvAvaliadorListNewBvAvaliador.getBvAvaliadorList().remove(bvAvaliadorListNewBvAvaliador);
+                        oldIdAreaOfBvAvaliadorListNewBvAvaliador = em.merge(oldIdAreaOfBvAvaliadorListNewBvAvaliador);
                     }
                 }
             }
-            for (BvArtigo bvArtigoCollectionOldBvArtigo : bvArtigoCollectionOld) {
-                if (!bvArtigoCollectionNew.contains(bvArtigoCollectionOldBvArtigo)) {
-                    bvArtigoCollectionOldBvArtigo.setTipodoc(null);
-                    bvArtigoCollectionOldBvArtigo = em.merge(bvArtigoCollectionOldBvArtigo);
+            for (BvArtigo bvArtigoListOldBvArtigo : bvArtigoListOld) {
+                if (!bvArtigoListNew.contains(bvArtigoListOldBvArtigo)) {
+                    bvArtigoListOldBvArtigo.setTipodoc(null);
+                    bvArtigoListOldBvArtigo = em.merge(bvArtigoListOldBvArtigo);
                 }
             }
-            for (BvArtigo bvArtigoCollectionNewBvArtigo : bvArtigoCollectionNew) {
-                if (!bvArtigoCollectionOld.contains(bvArtigoCollectionNewBvArtigo)) {
-                    BvArtigoCategoria oldTipodocOfBvArtigoCollectionNewBvArtigo = bvArtigoCollectionNewBvArtigo.getTipodoc();
-                    bvArtigoCollectionNewBvArtigo.setTipodoc(bvArtigoCategoria);
-                    bvArtigoCollectionNewBvArtigo = em.merge(bvArtigoCollectionNewBvArtigo);
-                    if (oldTipodocOfBvArtigoCollectionNewBvArtigo != null && !oldTipodocOfBvArtigoCollectionNewBvArtigo.equals(bvArtigoCategoria)) {
-                        oldTipodocOfBvArtigoCollectionNewBvArtigo.getBvArtigoCollection().remove(bvArtigoCollectionNewBvArtigo);
-                        oldTipodocOfBvArtigoCollectionNewBvArtigo = em.merge(oldTipodocOfBvArtigoCollectionNewBvArtigo);
+            for (BvArtigo bvArtigoListNewBvArtigo : bvArtigoListNew) {
+                if (!bvArtigoListOld.contains(bvArtigoListNewBvArtigo)) {
+                    BvArtigoCategoria oldTipodocOfBvArtigoListNewBvArtigo = bvArtigoListNewBvArtigo.getTipodoc();
+                    bvArtigoListNewBvArtigo.setTipodoc(bvArtigoCategoria);
+                    bvArtigoListNewBvArtigo = em.merge(bvArtigoListNewBvArtigo);
+                    if (oldTipodocOfBvArtigoListNewBvArtigo != null && !oldTipodocOfBvArtigoListNewBvArtigo.equals(bvArtigoCategoria)) {
+                        oldTipodocOfBvArtigoListNewBvArtigo.getBvArtigoList().remove(bvArtigoListNewBvArtigo);
+                        oldTipodocOfBvArtigoListNewBvArtigo = em.merge(oldTipodocOfBvArtigoListNewBvArtigo);
                     }
                 }
             }
@@ -187,20 +186,20 @@ public class BvArtigoCategoriaJpaController implements Serializable {
                 throw new NonexistentEntityException("The bvArtigoCategoria with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<BvAvaliador> bvAvaliadorCollectionOrphanCheck = bvArtigoCategoria.getBvAvaliadorCollection();
-            for (BvAvaliador bvAvaliadorCollectionOrphanCheckBvAvaliador : bvAvaliadorCollectionOrphanCheck) {
+            List<BvAvaliador> bvAvaliadorListOrphanCheck = bvArtigoCategoria.getBvAvaliadorList();
+            for (BvAvaliador bvAvaliadorListOrphanCheckBvAvaliador : bvAvaliadorListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This BvArtigoCategoria (" + bvArtigoCategoria + ") cannot be destroyed since the BvAvaliador " + bvAvaliadorCollectionOrphanCheckBvAvaliador + " in its bvAvaliadorCollection field has a non-nullable idArea field.");
+                illegalOrphanMessages.add("This BvArtigoCategoria (" + bvArtigoCategoria + ") cannot be destroyed since the BvAvaliador " + bvAvaliadorListOrphanCheckBvAvaliador + " in its bvAvaliadorList field has a non-nullable idArea field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<BvArtigo> bvArtigoCollection = bvArtigoCategoria.getBvArtigoCollection();
-            for (BvArtigo bvArtigoCollectionBvArtigo : bvArtigoCollection) {
-                bvArtigoCollectionBvArtigo.setTipodoc(null);
-                bvArtigoCollectionBvArtigo = em.merge(bvArtigoCollectionBvArtigo);
+            List<BvArtigo> bvArtigoList = bvArtigoCategoria.getBvArtigoList();
+            for (BvArtigo bvArtigoListBvArtigo : bvArtigoList) {
+                bvArtigoListBvArtigo.setTipodoc(null);
+                bvArtigoListBvArtigo = em.merge(bvArtigoListBvArtigo);
             }
             em.remove(bvArtigoCategoria);
             em.getTransaction().commit();

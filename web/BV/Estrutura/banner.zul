@@ -15,7 +15,6 @@
         sites.put("principal","/Paginas/pincipal.zul");
         sites.put("conta","/Paginas/conta.zul");
         sites.put("artigo","/Paginas/publicacaoList.zul");
-        sites.put("reserva","/Paginas/reservas.zul");
         sites.put("leitura","/Paginas/leituras.zul");
 
         void redirect(String name){
@@ -37,7 +36,7 @@
                             <label value="Feeds"  onClick='redirect("principal")' />
                             <label value="Leituras"  onClick='redirect("leitura")'  />
                             <label value="Publicações"  onClick='redirect("artigo")' />
-                            <label value="Reservas"  onClick='redirect("reserva")'/>
+                         
                             <label value="Conta"  onClick='redirect("conta")'/>
                         </hbox> 
                    

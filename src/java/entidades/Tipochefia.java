@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "tipochefia", catalog = "fecn2", schema = "public")
+@Table(name = "tipochefia", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tipochefia.findAll", query = "SELECT t FROM Tipochefia t")
@@ -35,13 +35,13 @@ public class Tipochefia implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "idfuncionario")
+    @Column(name = "idfuncionario", nullable = false)
     private Long idfuncionario;
     @Column(name = "cargochefia")
     private Integer cargochefia;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 2147483647)
     private String descricao;
-    @JoinColumn(name = "idfuncionario", referencedColumnName = "id_funcionario", insertable = false, updatable = false)
+    @JoinColumn(name = "idfuncionario", referencedColumnName = "id_funcionario", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Funcionario funcionario;
 

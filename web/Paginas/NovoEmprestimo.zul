@@ -66,7 +66,7 @@
                                     <label style="margin-left: 103px" id="estado_leitor"/>
                                 </hlayout>
                                 <hlayout>
-                                    <label style="font-size: 11px;">Moradia : </label>
+                                    <label style="font-size: 11px;">Morada : </label>
                                     <label id="moradia_leitorV"/>
                                 </hlayout>
                             </vlayout>
@@ -271,7 +271,7 @@
                         <div sclass="conteudo">
                             <div sclass="btn-group">
                                 <button sclass="btn-primary" tooltiptext="Emprestar obra" height="38px" id="emprestar">Emprestar</button>
-                                <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" onClick="win.detach()" tooltiptext="Sair"/>
+                                <button sclass="btn-danger" image="/Icons/ic_close.png" label="Sair" onClick="win.detach()" id="sair" tooltiptext="Sair"/>
                             </div>
                         </div>
                     </div>

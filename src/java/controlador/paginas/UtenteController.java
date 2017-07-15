@@ -9,14 +9,12 @@ import conexao.JPA;
 import controladores.entidades.EstudanteJpaController;
 import controladores.entidades.FuncionarioJpaController;
 import controladores.entidades.BLeitorJpaController;
-import controladores.entidades.BNotificacaoJpaController;
 import controladores.entidades.SgEmprestimoParametrosJpaController;
 import controladores.entidades.UsergrupoJpaController;
 import controladores.entidades.UsersJpaController;
 import entidades.Estudante;
 import entidades.Funcionario;
 import entidades.BLeitor;
-import entidades.BNotificacao;
 import entidades.Users;
 import java.util.Date;
 import org.zkoss.lang.Strings;
@@ -370,47 +368,47 @@ public class UtenteController extends SelectorComposer<Component> {
         } else if (leitor.getEstado().equals("Activo")) {
             leitor.setEstado("Inactivo");
             Email emai = new Email();
-            BNotificacao notif = new BNotificacao();
-            notif.setIdNotificacao(Long.MIN_VALUE);
-            notif.setIdLeitor(leitor);
-            notif.setEmissor(currentUser.getUtilizador());
-            notif.setDataEnvio(new Date());
-            notif.setMensagem(motivoB.getValue());
+            //BNotificacao notif = new BNotificacao();
+//            notif.setIdNotificacao(Long.MIN_VALUE);
+//            notif.setIdLeitor(leitor);
+//            notif.setEmissor(currentUser.getUtilizador());
+//            notif.setDataEnvio(new Date());
+//            notif.setMensagem(motivoB.getValue());
             try {
                 new BLeitorJpaController(new JPA().getEmf()).edit(leitor);
-                new BNotificacaoJpaController(new JPA().getEmf()).create(notif);
+//                new BNotificacaoJpaController(new JPA().getEmf()).create(notif);
                 motivoBlock.setVisible(false);
                 Clients.showNotification("Utente bloqueado com sucesso!", "info", null, null, 3000);
             } catch (Exception ex) {
                 Clients.showNotification("Não foi possível bloquear o utente!", "warning", null, null, 3000);
             }
             if (leitor.getTipoLeitor().equals("Visitante")) {
-                try {
-                    emai.sendBlockEmail(leitor.getEmail(), notif.getMensagem());
-                } catch (EmailException ex) {
-                    Clients.showNotification("O envio do email falhou", "warning", null, null, 3000);
-                }
+//                try {
+//                    emai.sendBlockEmail(leitor.getEmail(), notif.getMensagem());
+//                } catch (EmailException ex) {
+//                    Clients.showNotification("O envio do email falhou", "warning", null, null, 3000);
+//                }
                 alterarEstadoV(leitor, estado_leitor, desbloquearV, bloquearV);
                 editarV.setDisabled(false);
                 detalhesV.setDisabled(false);
                 imprimirV.setDisabled(false);
             }
             if (leitor.getTipoLeitor().equals("Estudante")) {
-                try {
-                    emai.sendBlockEmail(leitor.getIdutilizador().getEmail(), notif.getMensagem());
-                } catch (EmailException ex) {
-                    Clients.showNotification("O envio do email falhou", "warning", null, null, 3000);
-                }
+//                try {
+//                    emai.sendBlockEmail(leitor.getIdutilizador().getEmail(), notif.getMensagem());
+//                } catch (EmailException ex) {
+//                    Clients.showNotification("O envio do email falhou", "warning", null, null, 3000);
+//                }
                 alterarEstadoV(leitor, estado_leitorE, desbloquearE, bloquearE);
                 detalhesE.setDisabled(false);
                 imprimirE.setDisabled(false);
             }
             if (leitor.getTipoLeitor().equals("Funcionario")) {
-                try {
-                    emai.sendBlockEmail(leitor.getIdutilizador().getEmail(), notif.getMensagem());
-                } catch (EmailException ex) {
-                    Clients.showNotification("O envio do email falhou", "warning", null, null, 3000);
-                }
+//                try {
+//                    emai.sendBlockEmail(leitor.getIdutilizador().getEmail(), notif.getMensagem());
+//                } catch (EmailException ex) {
+//                    Clients.showNotification("O envio do email falhou", "warning", null, null, 3000);
+//                }
                 alterarEstadoV(leitor, estado_leitorF, desbloquearF, bloquearF);
                 detalhesF.setDisabled(false);
                 imprimirF.setDisabled(false);
@@ -462,8 +460,8 @@ public class UtenteController extends SelectorComposer<Component> {
         nr_funcionario.setSclass("label-nome");
         telefone_leitorF.setValue(leitorF.getIdutilizador().getIdFuncionario().getContacto());
         telefone_leitorF.setSclass("label-nome");
-        categoria_leitorF.setValue(leitorF.getTipoLeitor().toUpperCase());
-        categoria_leitorF.setSclass("label-nome");
+//        categoria_leitorF.setValue(leitorF.getTipoLeitor().toUpperCase());
+//        categoria_leitorF.setSclass("label-nome");
         faculdade_leitorF.setValue(leitorF.getIdutilizador().getIdFuncionario().getFaculdade().getAbreviatura());
         faculdade_leitorF.setSclass("label-nome");
         alterarEstadoV(leitorF, estado_leitorF, desbloquearF, bloquearF);
@@ -480,10 +478,10 @@ public class UtenteController extends SelectorComposer<Component> {
         nome_leitorE.setSclass("label-nome");
         nr_estudante.setValue(leitorE.getIdutilizador().getIdEstudante().getNrEstudante());
         nr_estudante.setSclass("label-nome");
-        ano_ingresso.setValue(leitorE.getIdutilizador().getIdEstudante().getAnoIngresso().toString());
-        ano_ingresso.setSclass("label-nome");
-        categoria_leitorE.setValue(leitorE.getTipoLeitor().toUpperCase());
-        categoria_leitorE.setSclass("label-nome");
+//        ano_ingresso.setValue(leitorE.getIdutilizador().getIdEstudante().getAnoIngresso().toString());
+//        ano_ingresso.setSclass("label-nome");
+//        categoria_leitorE.setValue(leitorE.getTipoLeitor().toUpperCase());
+//        categoria_leitorE.setSclass("label-nome");
         curso_leitorE.setValue(leitorE.getIdutilizador().getIdEstudante().getCursocurrente().getAbreviatura());
         curso_leitorE.setSclass("label-nome");
         alterarEstadoV(leitorE, estado_leitorE, desbloquearE, bloquearE);
@@ -604,12 +602,11 @@ public class UtenteController extends SelectorComposer<Component> {
                     l.setDataRegisto(new Date());
                     l.setIdagente(currentUser);
               
+                    u.setIdGrupo("Leitor");
+                    u.setDataAlocacao(new Date());
+                  
+                    u.setUtilizador(usr);
                  
-                   g.setIdGrupo("Leitor");
-                   
-                    
-                    u.setGrupo(g);
-                    u.setUsers(usr);
                     
                     
                     
@@ -746,7 +743,7 @@ public class UtenteController extends SelectorComposer<Component> {
     public void mostrarListaSelectUtente(InputEvent event) {
         String frase = event.getValue().toUpperCase();
         div_pesquisar.setVisible(true);
-        editVisitante.setVisible(false);
+        //editVisitante.setVisible(false);
         listagem.setVisible(false);
 
         if (Strings.isBlank(frase)) {
@@ -847,15 +844,15 @@ public class UtenteController extends SelectorComposer<Component> {
         }
 
         if (leitor.getTipoLeitor().equals("Visitante")) {
-            editVisitante.setVisible(true);
+            //editVisitante.setVisible(true);
             painelV.setVisible(true);
             preencherV(leitor);
         } else if (leitor.getTipoLeitor().equals("Funcionario")) {
-            editVisitante.setVisible(true);
+            //editVisitante.setVisible(true);
             painelF.setVisible(true);
             preencherF(leitor);
         } else {
-            editVisitante.setVisible(true);
+           // editVisitante.setVisible(true);
             painelE.setVisible(true);
             preencherE(leitor);
         }

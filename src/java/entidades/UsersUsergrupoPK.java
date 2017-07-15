@@ -21,17 +21,17 @@ import javax.persistence.TemporalType;
 public class UsersUsergrupoPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "users_utilizador")
+    @Column(name = "users_utilizador", nullable = false, length = 255)
     private String usersUtilizador;
     @Basic(optional = false)
-    @Column(name = "data_alocacao")
+    @Column(name = "data_alocacao", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataAlocacao;
     @Basic(optional = false)
-    @Column(name = "utilizador")
+    @Column(name = "utilizador", nullable = false, length = 255)
     private String utilizador;
     @Basic(optional = false)
-    @Column(name = "id_grupo")
+    @Column(name = "id_grupo", nullable = false, length = 255)
     private String idGrupo;
 
     public UsersUsergrupoPK() {

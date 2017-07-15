@@ -6,9 +6,11 @@
 package controlador.paginas;
 
 import conexao.JPA;
+import controladores.entidades.BLeitorJpaController;
 import controladores.entidades.BReservaJpaController;
 import controladores.entidades.BvArtigoJpaController;
 import controladores.entidades.BvLeituraJpaController;
+import controladores.entidades.SgEmprestimoJpaController;
 import controladores.entidades.UsersJpaController;
 import controladores.entidades.exceptions.IllegalOrphanException;
 import controladores.entidades.exceptions.NonexistentEntityException;
@@ -85,31 +87,31 @@ public class PrincipalLeitor extends SelectorComposer<Component> {
 
         //Pegando Utilizador actual
         UserCredential cre = authService.getUserCredential();
-       // this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
+//      this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
 
         //Abrindo novos Artigos
-        publicacaoRecentes();
-        reservaPendente();
+////        publicacaoRecentes();
+//        reservaPendente();
         multasPorpagar();
-        emprestimosPendentes();
+//        emprestimosPendentes();
 
-        Thread threadInfo = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    chekin();
-                } catch (Exception ex) {
+//        Thread threadInfo = new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    chekin();
+//                } catch (Exception ex) {
 //                    Logger.getLogger(Reservas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        };
+//                }
+//            }
+//        };
 
     }
 
     public void multasPorpagar() {
         int i = 0;
 //        List<SgEmprestimo> emp = currentUser.getSgEmprestimoList();
-List<SgEmprestimo> emp = (List<SgEmprestimo>) currentUser.getSgEmprestimoCollection();
+ List<SgEmprestimo> emp =new SgEmprestimoJpaController(new JPA().getEmf()).findSgEmprestimoEntities();
         for (Iterator<SgEmprestimo> iterator = emp.iterator(); iterator.hasNext();) {
             SgEmprestimo value = iterator.next();
             if (value.getMultaEstado() != null) {
@@ -134,8 +136,7 @@ List<SgEmprestimo> emp = (List<SgEmprestimo>) currentUser.getSgEmprestimoCollect
     public void emprestimosPendentes() {
         Date hoje = new Date();
         int i = 0;
-//        List<SgEmprestimo> emp = currentUser.getSgEmprestimoList();
-List<SgEmprestimo> emp = (List<SgEmprestimo>) currentUser.getSgEmprestimoCollection();
+        List<SgEmprestimo> emp = currentUser.getSgEmprestimoList();
         for (Iterator<SgEmprestimo> iterator = emp.iterator(); iterator.hasNext();) {
             SgEmprestimo value = iterator.next();
             if (value.getEstado() != null) {
@@ -186,9 +187,7 @@ List<SgEmprestimo> emp = (List<SgEmprestimo>) currentUser.getSgEmprestimoCollect
     public void reservaPendente() {
         int i = 0;
         Date hoje = new Date();
-//        todas = currentUser.getBReservaList();
-todas = (List<BReserva>) currentUser.getBReservaCollection();
-        
+        todas = currentUser.getBReservaList();
         for (Iterator<BReserva> iterator = todas.iterator(); iterator.hasNext();) {
             BReserva value = iterator.next();
             if (value.getEstado().equals("Pendente")) {
@@ -208,56 +207,56 @@ todas = (List<BReserva>) currentUser.getBReservaCollection();
         }
     }
 
-    @Listen("onAbrir = #artigoListbox")
-    public void abrirBvArtigo(ForwardEvent evt) throws FileNotFoundException, IOException {
-        Button btn = (Button) evt.getOrigin().getTarget();
-        Listitem litem = (Listitem) btn.getParent().getParent();
+//    @Listen("onAbrir = #artigoListbox")
+//    public void abrirBvArtigo(ForwardEvent evt) throws FileNotFoundException, IOException {
+//        Button btn = (Button) evt.getOrigin().getTarget();
+//        Listitem litem = (Listitem) btn.getParent().getParent();
+//
+//        artigo = (BvArtigo) litem.getValue();
+//
+//        leitura = new BvLeitura(new Date(), artigo.getIdartigo(), new Date(), currentUser.getNrCartao());
+//        try {
+//            new BvLeituraJpaController(new JPA().getEmf()).create(leitura);
+//        } catch (Exception ex) {
+//            Logger.getLogger(Leituras.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        HashMap<String, BvArtigo> args = new HashMap<String, BvArtigo>();
+//        args.put("artigo", artigo);
+//        Window window = (Window) Executions.getCurrent().createComponents("fullScreem.zul", fullScreem, args);
+//        window.doHighlighted();
+//    }
 
-        artigo = (BvArtigo) litem.getValue();
-
-        leitura = new BvLeitura(new Date(), artigo.getIdartigo(), new Date(), currentUser.getNrCartao());
-        try {
-            new BvLeituraJpaController(new JPA().getEmf()).create(leitura);
-        } catch (Exception ex) {
-            //Logger.getLogger(Leituras.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        HashMap<String, BvArtigo> args = new HashMap<String, BvArtigo>();
-        args.put("artigo", artigo);
-        Window window = (Window) Executions.getCurrent().createComponents("fullScreem.zul", fullScreem, args);
-        window.doHighlighted();
-    }
-
-    @Listen("onCancelar=#reservaListbox")
-    public void removerPublicacao(ForwardEvent evt) throws Exception {
-        Button btn = (Button) evt.getOrigin().getTarget();
-        Listitem litem = (Listitem) btn.getParent().getParent().getParent();
-
-        reserva = (BReserva) litem.getValue();
-        try {
-            reserva.setEstado("Cancelada");
-            new BReservaJpaController(new JPA().getEmf()).edit(reserva);
-            Clients.showNotification("Reserva Cancelada");
-            doAfterCompose(principal);
-        } catch (IllegalOrphanException ex) {
-            Clients.showNotification("!Erro ao cancelar a reserva", true);
-
-        } catch (NonexistentEntityException ex) {
+//    @Listen("onCancelar=#reservaListbox")
+//    public void removerPublicacao(ForwardEvent evt) throws Exception {
+//        Button btn = (Button) evt.getOrigin().getTarget();
+//        Listitem litem = (Listitem) btn.getParent().getParent().getParent();
+//
+//        reserva = (BReserva) litem.getValue();
+//        try {
+//            reserva.setEstado("Cancelada");
+//            new BReservaJpaController(new JPA().getEmf()).edit(reserva);
+//            Clients.showNotification("Reserva Cancelada");
+//            doAfterCompose(principal);
+//        } catch (IllegalOrphanException ex) {
+//            Clients.showNotification("!Erro ao cancelar a reserva", true);
+//
+//        } catch (NonexistentEntityException ex) {
 //            Logger.getLogger(Publicacoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        }
+//
+//    }
 
-    }
-
-    public void chekin() throws Exception {
-        while (true) {
-            for (BReserva r : currentUser.getBReservaCollection()) {
-                if (r.getDataEmprestimo().before(new Date()) && r.getEstado().equals("Pendente")) {
-                    r.setEstado("Expirada");
-                    new BReservaJpaController(new JPA().getEmf()).edit(r);
-                }
-            }
-            Thread.sleep(3600000); //a cada 1 horas verifica o estado da reserva (86400000 = 1dia) 
-        }
-
-    }
+//    public void chekin() throws Exception {
+//        while (true) {
+//            for (BReserva r : currentUser.getBReservaList()) {
+//                if (r.getDataEmprestimo().before(new Date()) && r.getEstado().equals("Pendente")) {
+//                    r.setEstado("Expirada");
+//                    new BReservaJpaController(new JPA().getEmf()).edit(r);
+//                }
+//            }
+//            Thread.sleep(3600000); //a cada 1 horas verifica o estado da reserva (86400000 = 1dia) 
+//        }
+//
+//    }
 
 }

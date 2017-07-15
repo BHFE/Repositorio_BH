@@ -16,9 +16,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.Roles;
 import java.util.ArrayList;
-import java.util.Collection;
-import entidades.Item;
 import java.util.List;
+import entidades.Item;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -38,45 +37,45 @@ public class CategoriaJpaController implements Serializable {
     }
 
     public void create(Categoria categoria) throws PreexistingEntityException, Exception {
-        if (categoria.getRolesCollection() == null) {
-            categoria.setRolesCollection(new ArrayList<Roles>());
+        if (categoria.getRolesList() == null) {
+            categoria.setRolesList(new ArrayList<Roles>());
         }
-        if (categoria.getItemCollection() == null) {
-            categoria.setItemCollection(new ArrayList<Item>());
+        if (categoria.getItemList() == null) {
+            categoria.setItemList(new ArrayList<Item>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Roles> attachedRolesCollection = new ArrayList<Roles>();
-            for (Roles rolesCollectionRolesToAttach : categoria.getRolesCollection()) {
-                rolesCollectionRolesToAttach = em.getReference(rolesCollectionRolesToAttach.getClass(), rolesCollectionRolesToAttach.getRolesPK());
-                attachedRolesCollection.add(rolesCollectionRolesToAttach);
+            List<Roles> attachedRolesList = new ArrayList<Roles>();
+            for (Roles rolesListRolesToAttach : categoria.getRolesList()) {
+                rolesListRolesToAttach = em.getReference(rolesListRolesToAttach.getClass(), rolesListRolesToAttach.getRolesPK());
+                attachedRolesList.add(rolesListRolesToAttach);
             }
-            categoria.setRolesCollection(attachedRolesCollection);
-            Collection<Item> attachedItemCollection = new ArrayList<Item>();
-            for (Item itemCollectionItemToAttach : categoria.getItemCollection()) {
-                itemCollectionItemToAttach = em.getReference(itemCollectionItemToAttach.getClass(), itemCollectionItemToAttach.getItem());
-                attachedItemCollection.add(itemCollectionItemToAttach);
+            categoria.setRolesList(attachedRolesList);
+            List<Item> attachedItemList = new ArrayList<Item>();
+            for (Item itemListItemToAttach : categoria.getItemList()) {
+                itemListItemToAttach = em.getReference(itemListItemToAttach.getClass(), itemListItemToAttach.getItem());
+                attachedItemList.add(itemListItemToAttach);
             }
-            categoria.setItemCollection(attachedItemCollection);
+            categoria.setItemList(attachedItemList);
             em.persist(categoria);
-            for (Roles rolesCollectionRoles : categoria.getRolesCollection()) {
-                Categoria oldCategoriaOfRolesCollectionRoles = rolesCollectionRoles.getCategoria();
-                rolesCollectionRoles.setCategoria(categoria);
-                rolesCollectionRoles = em.merge(rolesCollectionRoles);
-                if (oldCategoriaOfRolesCollectionRoles != null) {
-                    oldCategoriaOfRolesCollectionRoles.getRolesCollection().remove(rolesCollectionRoles);
-                    oldCategoriaOfRolesCollectionRoles = em.merge(oldCategoriaOfRolesCollectionRoles);
+            for (Roles rolesListRoles : categoria.getRolesList()) {
+                Categoria oldCategoriaOfRolesListRoles = rolesListRoles.getCategoria();
+                rolesListRoles.setCategoria(categoria);
+                rolesListRoles = em.merge(rolesListRoles);
+                if (oldCategoriaOfRolesListRoles != null) {
+                    oldCategoriaOfRolesListRoles.getRolesList().remove(rolesListRoles);
+                    oldCategoriaOfRolesListRoles = em.merge(oldCategoriaOfRolesListRoles);
                 }
             }
-            for (Item itemCollectionItem : categoria.getItemCollection()) {
-                Categoria oldIdCategoriaOfItemCollectionItem = itemCollectionItem.getIdCategoria();
-                itemCollectionItem.setIdCategoria(categoria);
-                itemCollectionItem = em.merge(itemCollectionItem);
-                if (oldIdCategoriaOfItemCollectionItem != null) {
-                    oldIdCategoriaOfItemCollectionItem.getItemCollection().remove(itemCollectionItem);
-                    oldIdCategoriaOfItemCollectionItem = em.merge(oldIdCategoriaOfItemCollectionItem);
+            for (Item itemListItem : categoria.getItemList()) {
+                Categoria oldIdCategoriaOfItemListItem = itemListItem.getIdCategoria();
+                itemListItem.setIdCategoria(categoria);
+                itemListItem = em.merge(itemListItem);
+                if (oldIdCategoriaOfItemListItem != null) {
+                    oldIdCategoriaOfItemListItem.getItemList().remove(itemListItem);
+                    oldIdCategoriaOfItemListItem = em.merge(oldIdCategoriaOfItemListItem);
                 }
             }
             em.getTransaction().commit();
@@ -98,64 +97,64 @@ public class CategoriaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Categoria persistentCategoria = em.find(Categoria.class, categoria.getIdCategoria());
-            Collection<Roles> rolesCollectionOld = persistentCategoria.getRolesCollection();
-            Collection<Roles> rolesCollectionNew = categoria.getRolesCollection();
-            Collection<Item> itemCollectionOld = persistentCategoria.getItemCollection();
-            Collection<Item> itemCollectionNew = categoria.getItemCollection();
+            List<Roles> rolesListOld = persistentCategoria.getRolesList();
+            List<Roles> rolesListNew = categoria.getRolesList();
+            List<Item> itemListOld = persistentCategoria.getItemList();
+            List<Item> itemListNew = categoria.getItemList();
             List<String> illegalOrphanMessages = null;
-            for (Roles rolesCollectionOldRoles : rolesCollectionOld) {
-                if (!rolesCollectionNew.contains(rolesCollectionOldRoles)) {
+            for (Roles rolesListOldRoles : rolesListOld) {
+                if (!rolesListNew.contains(rolesListOldRoles)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Roles " + rolesCollectionOldRoles + " since its categoria field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Roles " + rolesListOldRoles + " since its categoria field is not nullable.");
                 }
             }
-            for (Item itemCollectionOldItem : itemCollectionOld) {
-                if (!itemCollectionNew.contains(itemCollectionOldItem)) {
+            for (Item itemListOldItem : itemListOld) {
+                if (!itemListNew.contains(itemListOldItem)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Item " + itemCollectionOldItem + " since its idCategoria field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Item " + itemListOldItem + " since its idCategoria field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<Roles> attachedRolesCollectionNew = new ArrayList<Roles>();
-            for (Roles rolesCollectionNewRolesToAttach : rolesCollectionNew) {
-                rolesCollectionNewRolesToAttach = em.getReference(rolesCollectionNewRolesToAttach.getClass(), rolesCollectionNewRolesToAttach.getRolesPK());
-                attachedRolesCollectionNew.add(rolesCollectionNewRolesToAttach);
+            List<Roles> attachedRolesListNew = new ArrayList<Roles>();
+            for (Roles rolesListNewRolesToAttach : rolesListNew) {
+                rolesListNewRolesToAttach = em.getReference(rolesListNewRolesToAttach.getClass(), rolesListNewRolesToAttach.getRolesPK());
+                attachedRolesListNew.add(rolesListNewRolesToAttach);
             }
-            rolesCollectionNew = attachedRolesCollectionNew;
-            categoria.setRolesCollection(rolesCollectionNew);
-            Collection<Item> attachedItemCollectionNew = new ArrayList<Item>();
-            for (Item itemCollectionNewItemToAttach : itemCollectionNew) {
-                itemCollectionNewItemToAttach = em.getReference(itemCollectionNewItemToAttach.getClass(), itemCollectionNewItemToAttach.getItem());
-                attachedItemCollectionNew.add(itemCollectionNewItemToAttach);
+            rolesListNew = attachedRolesListNew;
+            categoria.setRolesList(rolesListNew);
+            List<Item> attachedItemListNew = new ArrayList<Item>();
+            for (Item itemListNewItemToAttach : itemListNew) {
+                itemListNewItemToAttach = em.getReference(itemListNewItemToAttach.getClass(), itemListNewItemToAttach.getItem());
+                attachedItemListNew.add(itemListNewItemToAttach);
             }
-            itemCollectionNew = attachedItemCollectionNew;
-            categoria.setItemCollection(itemCollectionNew);
+            itemListNew = attachedItemListNew;
+            categoria.setItemList(itemListNew);
             categoria = em.merge(categoria);
-            for (Roles rolesCollectionNewRoles : rolesCollectionNew) {
-                if (!rolesCollectionOld.contains(rolesCollectionNewRoles)) {
-                    Categoria oldCategoriaOfRolesCollectionNewRoles = rolesCollectionNewRoles.getCategoria();
-                    rolesCollectionNewRoles.setCategoria(categoria);
-                    rolesCollectionNewRoles = em.merge(rolesCollectionNewRoles);
-                    if (oldCategoriaOfRolesCollectionNewRoles != null && !oldCategoriaOfRolesCollectionNewRoles.equals(categoria)) {
-                        oldCategoriaOfRolesCollectionNewRoles.getRolesCollection().remove(rolesCollectionNewRoles);
-                        oldCategoriaOfRolesCollectionNewRoles = em.merge(oldCategoriaOfRolesCollectionNewRoles);
+            for (Roles rolesListNewRoles : rolesListNew) {
+                if (!rolesListOld.contains(rolesListNewRoles)) {
+                    Categoria oldCategoriaOfRolesListNewRoles = rolesListNewRoles.getCategoria();
+                    rolesListNewRoles.setCategoria(categoria);
+                    rolesListNewRoles = em.merge(rolesListNewRoles);
+                    if (oldCategoriaOfRolesListNewRoles != null && !oldCategoriaOfRolesListNewRoles.equals(categoria)) {
+                        oldCategoriaOfRolesListNewRoles.getRolesList().remove(rolesListNewRoles);
+                        oldCategoriaOfRolesListNewRoles = em.merge(oldCategoriaOfRolesListNewRoles);
                     }
                 }
             }
-            for (Item itemCollectionNewItem : itemCollectionNew) {
-                if (!itemCollectionOld.contains(itemCollectionNewItem)) {
-                    Categoria oldIdCategoriaOfItemCollectionNewItem = itemCollectionNewItem.getIdCategoria();
-                    itemCollectionNewItem.setIdCategoria(categoria);
-                    itemCollectionNewItem = em.merge(itemCollectionNewItem);
-                    if (oldIdCategoriaOfItemCollectionNewItem != null && !oldIdCategoriaOfItemCollectionNewItem.equals(categoria)) {
-                        oldIdCategoriaOfItemCollectionNewItem.getItemCollection().remove(itemCollectionNewItem);
-                        oldIdCategoriaOfItemCollectionNewItem = em.merge(oldIdCategoriaOfItemCollectionNewItem);
+            for (Item itemListNewItem : itemListNew) {
+                if (!itemListOld.contains(itemListNewItem)) {
+                    Categoria oldIdCategoriaOfItemListNewItem = itemListNewItem.getIdCategoria();
+                    itemListNewItem.setIdCategoria(categoria);
+                    itemListNewItem = em.merge(itemListNewItem);
+                    if (oldIdCategoriaOfItemListNewItem != null && !oldIdCategoriaOfItemListNewItem.equals(categoria)) {
+                        oldIdCategoriaOfItemListNewItem.getItemList().remove(itemListNewItem);
+                        oldIdCategoriaOfItemListNewItem = em.merge(oldIdCategoriaOfItemListNewItem);
                     }
                 }
             }
@@ -189,19 +188,19 @@ public class CategoriaJpaController implements Serializable {
                 throw new NonexistentEntityException("The categoria with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<Roles> rolesCollectionOrphanCheck = categoria.getRolesCollection();
-            for (Roles rolesCollectionOrphanCheckRoles : rolesCollectionOrphanCheck) {
+            List<Roles> rolesListOrphanCheck = categoria.getRolesList();
+            for (Roles rolesListOrphanCheckRoles : rolesListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Categoria (" + categoria + ") cannot be destroyed since the Roles " + rolesCollectionOrphanCheckRoles + " in its rolesCollection field has a non-nullable categoria field.");
+                illegalOrphanMessages.add("This Categoria (" + categoria + ") cannot be destroyed since the Roles " + rolesListOrphanCheckRoles + " in its rolesList field has a non-nullable categoria field.");
             }
-            Collection<Item> itemCollectionOrphanCheck = categoria.getItemCollection();
-            for (Item itemCollectionOrphanCheckItem : itemCollectionOrphanCheck) {
+            List<Item> itemListOrphanCheck = categoria.getItemList();
+            for (Item itemListOrphanCheckItem : itemListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Categoria (" + categoria + ") cannot be destroyed since the Item " + itemCollectionOrphanCheckItem + " in its itemCollection field has a non-nullable idCategoria field.");
+                illegalOrphanMessages.add("This Categoria (" + categoria + ") cannot be destroyed since the Item " + itemListOrphanCheckItem + " in its itemList field has a non-nullable idCategoria field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

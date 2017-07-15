@@ -88,6 +88,7 @@ public class AutorController extends SelectorComposer<Component> {
             }
         }
         lista_autores.setModel(subAutores);
+        autor_search.setValue(null);
     }
 
     @Listen("onSelect = #lista_autores")
@@ -142,7 +143,7 @@ public class AutorController extends SelectorComposer<Component> {
                 }
             }
         }
-        
+        autor_search.setValue(null);
     }
     
     public boolean isAutor(String author){

@@ -6,7 +6,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -31,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "users", catalog = "fecn2", schema = "public")
+@Table(name = "users", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
@@ -47,33 +46,33 @@ public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "utilizador")
+    @Column(name = "utilizador", nullable = false, length = 45)
     private String utilizador;
-    @Column(name = "email")
+    @Column(name = "email", length = 45)
     private String email;
-    @Column(name = "pasword")
+    @Column(name = "pasword", length = 45)
     private String pasword;
     @Column(name = "last_access")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastAccess;
-    @Column(name = "nome")
+    @Column(name = "nome", length = 45)
     private String nome;
     @Column(name = "uestudante")
     private Boolean uestudante;
-    @Column(name = "estado")
+    @Column(name = "estado", length = 255)
     private String estado;
     @OneToMany(mappedBy = "agenteBibliot", fetch = FetchType.LAZY)
-    private Collection<SgEmprestimo> sgEmprestimoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
-    private Collection<Usergrupo> usergrupoCollection;
+    private List<SgEmprestimo> sgEmprestimoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "utilizador", fetch = FetchType.LAZY)
+    private List<Usergrupo> usergrupoList;
     @OneToMany(mappedBy = "bibliotecario", fetch = FetchType.LAZY)
-    private Collection<SgObra> sgObraCollection;
+    private List<SgObra> sgObraList;
     @OneToMany(mappedBy = "idagente", fetch = FetchType.LAZY)
-    private Collection<BLeitor> bLeitorCollection;
+    private List<BLeitor> bLeitorList;
     @OneToMany(mappedBy = "idutilizador", fetch = FetchType.LAZY)
-    private Collection<BLeitor> bLeitorCollection1;
+    private List<BLeitor> bLeitorList1;
     @OneToMany(mappedBy = "agenteRegisto", fetch = FetchType.LAZY)
-    private Collection<SgExemplar> sgExemplarCollection;
+    private List<SgExemplar> sgExemplarList;
     @JoinColumn(name = "id_estudante", referencedColumnName = "id_estudante")
     @ManyToOne(fetch = FetchType.LAZY)
     private Estudante idEstudante;
@@ -84,8 +83,7 @@ public class Users implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Funcionario idFuncionario;
     @OneToMany(mappedBy = "agenteBibliotecario", fetch = FetchType.LAZY)
-    private Collection<SgEmprestimoParametros> sgEmprestimoParametrosCollection;
-    private List<Usergrupo> usersgrupolist;
+    private List<SgEmprestimoParametros> sgEmprestimoParametrosList;
 
     public Users() {
     }
@@ -151,57 +149,57 @@ public class Users implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgEmprestimo> getSgEmprestimoCollection() {
-        return sgEmprestimoCollection;
+    public List<SgEmprestimo> getSgEmprestimoList() {
+        return sgEmprestimoList;
     }
 
-    public void setSgEmprestimoCollection(Collection<SgEmprestimo> sgEmprestimoCollection) {
-        this.sgEmprestimoCollection = sgEmprestimoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Usergrupo> getUsergrupoCollection() {
-        return usergrupoCollection;
-    }
-
-    public void setUsergrupoCollection(Collection<Usergrupo> usergrupoCollection) {
-        this.usergrupoCollection = usergrupoCollection;
+    public void setSgEmprestimoList(List<SgEmprestimo> sgEmprestimoList) {
+        this.sgEmprestimoList = sgEmprestimoList;
     }
 
     @XmlTransient
-    public Collection<SgObra> getSgObraCollection() {
-        return sgObraCollection;
+    public List<Usergrupo> getUsergrupoList() {
+        return usergrupoList;
     }
 
-    public void setSgObraCollection(Collection<SgObra> sgObraCollection) {
-        this.sgObraCollection = sgObraCollection;
-    }
-
-    @XmlTransient
-    public Collection<BLeitor> getBLeitorCollection() {
-        return bLeitorCollection;
-    }
-
-    public void setBLeitorCollection(Collection<BLeitor> bLeitorCollection) {
-        this.bLeitorCollection = bLeitorCollection;
+    public void setUsergrupoList(List<Usergrupo> usergrupoList) {
+        this.usergrupoList = usergrupoList;
     }
 
     @XmlTransient
-    public Collection<BLeitor> getBLeitorCollection1() {
-        return bLeitorCollection1;
+    public List<SgObra> getSgObraList() {
+        return sgObraList;
     }
 
-    public void setBLeitorCollection1(Collection<BLeitor> bLeitorCollection1) {
-        this.bLeitorCollection1 = bLeitorCollection1;
+    public void setSgObraList(List<SgObra> sgObraList) {
+        this.sgObraList = sgObraList;
     }
 
     @XmlTransient
-    public Collection<SgExemplar> getSgExemplarCollection() {
-        return sgExemplarCollection;
+    public List<BLeitor> getBLeitorList() {
+        return bLeitorList;
     }
 
-    public void setSgExemplarCollection(Collection<SgExemplar> sgExemplarCollection) {
-        this.sgExemplarCollection = sgExemplarCollection;
+    public void setBLeitorList(List<BLeitor> bLeitorList) {
+        this.bLeitorList = bLeitorList;
+    }
+
+    @XmlTransient
+    public List<BLeitor> getBLeitorList1() {
+        return bLeitorList1;
+    }
+
+    public void setBLeitorList1(List<BLeitor> bLeitorList1) {
+        this.bLeitorList1 = bLeitorList1;
+    }
+
+    @XmlTransient
+    public List<SgExemplar> getSgExemplarList() {
+        return sgExemplarList;
+    }
+
+    public void setSgExemplarList(List<SgExemplar> sgExemplarList) {
+        this.sgExemplarList = sgExemplarList;
     }
 
     public Estudante getIdEstudante() {
@@ -229,12 +227,12 @@ public class Users implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgEmprestimoParametros> getSgEmprestimoParametrosCollection() {
-        return sgEmprestimoParametrosCollection;
+    public List<SgEmprestimoParametros> getSgEmprestimoParametrosList() {
+        return sgEmprestimoParametrosList;
     }
 
-    public void setSgEmprestimoParametrosCollection(Collection<SgEmprestimoParametros> sgEmprestimoParametrosCollection) {
-        this.sgEmprestimoParametrosCollection = sgEmprestimoParametrosCollection;
+    public void setSgEmprestimoParametrosList(List<SgEmprestimoParametros> sgEmprestimoParametrosList) {
+        this.sgEmprestimoParametrosList = sgEmprestimoParametrosList;
     }
 
     @Override
@@ -260,10 +258,6 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "entidades.Users[ utilizador=" + utilizador + " ]";
-    }
-
-    public List<Usergrupo> getUsergrupoList() {
-        return usersgrupolist;
     }
     
 }

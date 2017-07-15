@@ -1,5 +1,7 @@
-<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/BVcss" href="/BV/css/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="servicos.AutenticacaoInit"?>
+<!-- authentication init have to locate before composition -->
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/BV/Paginas/login/layout/template.zul"?>
 <?page title="Biblioteca Virtual - Leituras" contentType="text/html;charset=UTF-8"?>
 
@@ -7,7 +9,7 @@
     
     
 
-    <window contentStyle="overflow:visible" self="@define(content)"   sclass="paginas" apply="" >
+    <window contentStyle="overflow:visible" self="@define(content)"   sclass="paginas" apply="controlador.paginas.Leituras" >
        <div  style="min-height:68vh; height:auto !important; height:100%; ;margin:-4px; background-image: url(${c:encodeURL('/imgs/perfil/ua.png')}); background-repeat:no-repeat; background-size:100% 100%;" >
 
            <div class="container" >

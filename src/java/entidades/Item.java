@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "item", catalog = "fecn2", schema = "public")
+@Table(name = "item", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
@@ -37,11 +37,11 @@ public class Item implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "item")
+    @Column(name = "item", nullable = false, length = 5)
     private String item;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item", fetch = FetchType.LAZY)
-    private Collection<Roles> rolesCollection;
-    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
+    private List<Roles> rolesList;
+    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Categoria idCategoria;
 
@@ -61,12 +61,12 @@ public class Item implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Roles> getRolesCollection() {
-        return rolesCollection;
+    public List<Roles> getRolesList() {
+        return rolesList;
     }
 
-    public void setRolesCollection(Collection<Roles> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRolesList(List<Roles> rolesList) {
+        this.rolesList = rolesList;
     }
 
     public Categoria getIdCategoria() {

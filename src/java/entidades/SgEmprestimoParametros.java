@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_emprestimo_parametros", catalog = "fecn2", schema = "public")
+@Table(name = "sg_emprestimo_parametros", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgEmprestimoParametros.findAll", query = "SELECT s FROM SgEmprestimoParametros s")
@@ -42,21 +42,21 @@ public class SgEmprestimoParametros implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idparametro")
+    @Column(name = "idparametro", nullable = false)
     private Long idparametro;
-    @Column(name = "data_definicao")
+    @Column(name = "data_definicao", length = 255)
     private String dataDefinicao;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "taxa")
+    @Column(name = "taxa", precision = 8, scale = 8)
     private Float taxa;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 2147483647)
     private String descricao;
     @OneToMany(mappedBy = "parametrosRef", fetch = FetchType.LAZY)
-    private Collection<SgEmprestimo> sgEmprestimoCollection;
+    private List<SgEmprestimo> sgEmprestimoList;
     @OneToMany(mappedBy = "idParametroActualizacao", fetch = FetchType.LAZY)
-    private Collection<BLeitor> bLeitorCollection;
+    private List<BLeitor> bLeitorList;
     @OneToMany(mappedBy = "idParametroRegisto", fetch = FetchType.LAZY)
-    private Collection<BLeitor> bLeitorCollection1;
+    private List<BLeitor> bLeitorList1;
     @JoinColumn(name = "agente_bibliotecario", referencedColumnName = "utilizador")
     @ManyToOne(fetch = FetchType.LAZY)
     private Users agenteBibliotecario;
@@ -101,30 +101,30 @@ public class SgEmprestimoParametros implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgEmprestimo> getSgEmprestimoCollection() {
-        return sgEmprestimoCollection;
+    public List<SgEmprestimo> getSgEmprestimoList() {
+        return sgEmprestimoList;
     }
 
-    public void setSgEmprestimoCollection(Collection<SgEmprestimo> sgEmprestimoCollection) {
-        this.sgEmprestimoCollection = sgEmprestimoCollection;
-    }
-
-    @XmlTransient
-    public Collection<BLeitor> getBLeitorCollection() {
-        return bLeitorCollection;
-    }
-
-    public void setBLeitorCollection(Collection<BLeitor> bLeitorCollection) {
-        this.bLeitorCollection = bLeitorCollection;
+    public void setSgEmprestimoList(List<SgEmprestimo> sgEmprestimoList) {
+        this.sgEmprestimoList = sgEmprestimoList;
     }
 
     @XmlTransient
-    public Collection<BLeitor> getBLeitorCollection1() {
-        return bLeitorCollection1;
+    public List<BLeitor> getBLeitorList() {
+        return bLeitorList;
     }
 
-    public void setBLeitorCollection1(Collection<BLeitor> bLeitorCollection1) {
-        this.bLeitorCollection1 = bLeitorCollection1;
+    public void setBLeitorList(List<BLeitor> bLeitorList) {
+        this.bLeitorList = bLeitorList;
+    }
+
+    @XmlTransient
+    public List<BLeitor> getBLeitorList1() {
+        return bLeitorList1;
+    }
+
+    public void setBLeitorList1(List<BLeitor> bLeitorList1) {
+        this.bLeitorList1 = bLeitorList1;
     }
 
     public Users getAgenteBibliotecario() {

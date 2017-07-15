@@ -15,7 +15,6 @@ import javax.persistence.criteria.Root;
 import entidades.SgObra;
 import entidades.SgObraCategoria;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,27 +35,27 @@ public class SgObraCategoriaJpaController implements Serializable {
     }
 
     public void create(SgObraCategoria sgObraCategoria) throws PreexistingEntityException, Exception {
-        if (sgObraCategoria.getSgObraCollection() == null) {
-            sgObraCategoria.setSgObraCollection(new ArrayList<SgObra>());
+        if (sgObraCategoria.getSgObraList() == null) {
+            sgObraCategoria.setSgObraList(new ArrayList<SgObra>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<SgObra> attachedSgObraCollection = new ArrayList<SgObra>();
-            for (SgObra sgObraCollectionSgObraToAttach : sgObraCategoria.getSgObraCollection()) {
-                sgObraCollectionSgObraToAttach = em.getReference(sgObraCollectionSgObraToAttach.getClass(), sgObraCollectionSgObraToAttach.getIdlivro());
-                attachedSgObraCollection.add(sgObraCollectionSgObraToAttach);
+            List<SgObra> attachedSgObraList = new ArrayList<SgObra>();
+            for (SgObra sgObraListSgObraToAttach : sgObraCategoria.getSgObraList()) {
+                sgObraListSgObraToAttach = em.getReference(sgObraListSgObraToAttach.getClass(), sgObraListSgObraToAttach.getIdlivro());
+                attachedSgObraList.add(sgObraListSgObraToAttach);
             }
-            sgObraCategoria.setSgObraCollection(attachedSgObraCollection);
+            sgObraCategoria.setSgObraList(attachedSgObraList);
             em.persist(sgObraCategoria);
-            for (SgObra sgObraCollectionSgObra : sgObraCategoria.getSgObraCollection()) {
-                SgObraCategoria oldDominioOfSgObraCollectionSgObra = sgObraCollectionSgObra.getDominio();
-                sgObraCollectionSgObra.setDominio(sgObraCategoria);
-                sgObraCollectionSgObra = em.merge(sgObraCollectionSgObra);
-                if (oldDominioOfSgObraCollectionSgObra != null) {
-                    oldDominioOfSgObraCollectionSgObra.getSgObraCollection().remove(sgObraCollectionSgObra);
-                    oldDominioOfSgObraCollectionSgObra = em.merge(oldDominioOfSgObraCollectionSgObra);
+            for (SgObra sgObraListSgObra : sgObraCategoria.getSgObraList()) {
+                SgObraCategoria oldDominioOfSgObraListSgObra = sgObraListSgObra.getDominio();
+                sgObraListSgObra.setDominio(sgObraCategoria);
+                sgObraListSgObra = em.merge(sgObraListSgObra);
+                if (oldDominioOfSgObraListSgObra != null) {
+                    oldDominioOfSgObraListSgObra.getSgObraList().remove(sgObraListSgObra);
+                    oldDominioOfSgObraListSgObra = em.merge(oldDominioOfSgObraListSgObra);
                 }
             }
             em.getTransaction().commit();
@@ -78,30 +77,30 @@ public class SgObraCategoriaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             SgObraCategoria persistentSgObraCategoria = em.find(SgObraCategoria.class, sgObraCategoria.getCategoria());
-            Collection<SgObra> sgObraCollectionOld = persistentSgObraCategoria.getSgObraCollection();
-            Collection<SgObra> sgObraCollectionNew = sgObraCategoria.getSgObraCollection();
-            Collection<SgObra> attachedSgObraCollectionNew = new ArrayList<SgObra>();
-            for (SgObra sgObraCollectionNewSgObraToAttach : sgObraCollectionNew) {
-                sgObraCollectionNewSgObraToAttach = em.getReference(sgObraCollectionNewSgObraToAttach.getClass(), sgObraCollectionNewSgObraToAttach.getIdlivro());
-                attachedSgObraCollectionNew.add(sgObraCollectionNewSgObraToAttach);
+            List<SgObra> sgObraListOld = persistentSgObraCategoria.getSgObraList();
+            List<SgObra> sgObraListNew = sgObraCategoria.getSgObraList();
+            List<SgObra> attachedSgObraListNew = new ArrayList<SgObra>();
+            for (SgObra sgObraListNewSgObraToAttach : sgObraListNew) {
+                sgObraListNewSgObraToAttach = em.getReference(sgObraListNewSgObraToAttach.getClass(), sgObraListNewSgObraToAttach.getIdlivro());
+                attachedSgObraListNew.add(sgObraListNewSgObraToAttach);
             }
-            sgObraCollectionNew = attachedSgObraCollectionNew;
-            sgObraCategoria.setSgObraCollection(sgObraCollectionNew);
+            sgObraListNew = attachedSgObraListNew;
+            sgObraCategoria.setSgObraList(sgObraListNew);
             sgObraCategoria = em.merge(sgObraCategoria);
-            for (SgObra sgObraCollectionOldSgObra : sgObraCollectionOld) {
-                if (!sgObraCollectionNew.contains(sgObraCollectionOldSgObra)) {
-                    sgObraCollectionOldSgObra.setDominio(null);
-                    sgObraCollectionOldSgObra = em.merge(sgObraCollectionOldSgObra);
+            for (SgObra sgObraListOldSgObra : sgObraListOld) {
+                if (!sgObraListNew.contains(sgObraListOldSgObra)) {
+                    sgObraListOldSgObra.setDominio(null);
+                    sgObraListOldSgObra = em.merge(sgObraListOldSgObra);
                 }
             }
-            for (SgObra sgObraCollectionNewSgObra : sgObraCollectionNew) {
-                if (!sgObraCollectionOld.contains(sgObraCollectionNewSgObra)) {
-                    SgObraCategoria oldDominioOfSgObraCollectionNewSgObra = sgObraCollectionNewSgObra.getDominio();
-                    sgObraCollectionNewSgObra.setDominio(sgObraCategoria);
-                    sgObraCollectionNewSgObra = em.merge(sgObraCollectionNewSgObra);
-                    if (oldDominioOfSgObraCollectionNewSgObra != null && !oldDominioOfSgObraCollectionNewSgObra.equals(sgObraCategoria)) {
-                        oldDominioOfSgObraCollectionNewSgObra.getSgObraCollection().remove(sgObraCollectionNewSgObra);
-                        oldDominioOfSgObraCollectionNewSgObra = em.merge(oldDominioOfSgObraCollectionNewSgObra);
+            for (SgObra sgObraListNewSgObra : sgObraListNew) {
+                if (!sgObraListOld.contains(sgObraListNewSgObra)) {
+                    SgObraCategoria oldDominioOfSgObraListNewSgObra = sgObraListNewSgObra.getDominio();
+                    sgObraListNewSgObra.setDominio(sgObraCategoria);
+                    sgObraListNewSgObra = em.merge(sgObraListNewSgObra);
+                    if (oldDominioOfSgObraListNewSgObra != null && !oldDominioOfSgObraListNewSgObra.equals(sgObraCategoria)) {
+                        oldDominioOfSgObraListNewSgObra.getSgObraList().remove(sgObraListNewSgObra);
+                        oldDominioOfSgObraListNewSgObra = em.merge(oldDominioOfSgObraListNewSgObra);
                     }
                 }
             }
@@ -134,10 +133,10 @@ public class SgObraCategoriaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The sgObraCategoria with id " + id + " no longer exists.", enfe);
             }
-            Collection<SgObra> sgObraCollection = sgObraCategoria.getSgObraCollection();
-            for (SgObra sgObraCollectionSgObra : sgObraCollection) {
-                sgObraCollectionSgObra.setDominio(null);
-                sgObraCollectionSgObra = em.merge(sgObraCollectionSgObra);
+            List<SgObra> sgObraList = sgObraCategoria.getSgObraList();
+            for (SgObra sgObraListSgObra : sgObraList) {
+                sgObraListSgObra.setDominio(null);
+                sgObraListSgObra = em.merge(sgObraListSgObra);
             }
             em.remove(sgObraCategoria);
             em.getTransaction().commit();

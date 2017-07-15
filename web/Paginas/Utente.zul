@@ -198,7 +198,7 @@
                                             <label style="margin-left: 103px" id="estado_leitor"/>
                                         </hlayout>
                                         <hlayout>
-                                            <label style="font-size: 11px;">Moradia : </label>
+                                            <label style="font-size: 11px;">Morada : </label>
                                             <label id="moradia_leitorV"/>
                                         </hlayout>
                                         <label value="Email:  " style="margin-left: 45px;" visible="false"/>
@@ -258,18 +258,14 @@
                                                         <label id="nr_estudante"/>
                                                     </hlayout>
                                                     <hlayout>
-                                                        <label style="font-size: 11px">Ano de ingresso : </label>
-                                                        <label id="ano_ingresso"/>   
+                                                        <label style="font-size: 11px">Curso : </label>
+                                                        <label id="curso_leitorE"/> 
+                                                         <label style="font-size: 11px">Estado : </label>
+                                       
+                                                        <label style="margin-left: 15px" id="estado_leitorE"/> 
                                                     </hlayout>
-                                                    <hlayout>                   
-                                                        <label style="font-size: 11px">Categoria : </label>
-                                                        <label id="categoria_leitorE"/>
-                                                        <label style="margin-left: 15px" id="estado_leitorE"/>
-                                                    </hlayout>
-                                                    <hlayout>
-                                                        <label style="font-size: 11px;">Curso : </label>
-                                                        <label id="curso_leitorE"/>
-                                                    </hlayout>
+                                                  
+                                                  
                                                 </vlayout>
                                             </div>
                                         </hlayout>
@@ -330,14 +326,12 @@
                                                         <label id="telefone_leitorF"/>
                                                     </hlayout>
                                                     <hlayout>                   
-                                                        <label style="font-size: 11px">Categoria : </label>
-                                                        <label id="categoria_leitorF"/>
+                                                        <label style="font-size: 11px">Faculdade : </label>
+                                                        <label id="faculdade_leitorF"/>
+                                                        <label style="font-size: 11px">Estado : </label>
                                                         <label style="margin-left: 15px" id="estado_leitorF"/>
                                                     </hlayout>
-                                                    <hlayout>
-                                                        <label style="font-size: 11px;">Faculdade : </label>
-                                                        <label id="faculdade_leitorF"/>
-                                                    </hlayout>
+                                                   
                                                 </vlayout>
                                             </div>
                                         </hlayout>
@@ -375,7 +369,7 @@
                                     </div>
                                     <div sclass="col-lg-6">
                                         <div sclass="input-group">
-                                            <span sclass="input-group-addon">Moradia</span>
+                                            <span sclass="input-group-addon">Morada</span>
                                             <textbox sclass="form-control" id="moradiaEV"/>
                                         </div>
                                     </div>

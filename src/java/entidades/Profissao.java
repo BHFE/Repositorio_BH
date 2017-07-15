@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "profissao", catalog = "fecn2", schema = "public")
+@Table(name = "profissao", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Profissao.findAll", query = "SELECT p FROM Profissao p")
@@ -38,17 +38,17 @@ public class Profissao implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_estudante")
+    @Column(name = "id_estudante", nullable = false)
     private Long idEstudante;
-    @Column(name = "descricaopr")
+    @Column(name = "descricaopr", length = 45)
     private String descricaopr;
-    @Column(name = "avenidapr")
+    @Column(name = "avenidapr", length = 45)
     private String avenidapr;
-    @Column(name = "contactopr")
+    @Column(name = "contactopr", length = 255)
     private String contactopr;
-    @Column(name = "bairropr")
+    @Column(name = "bairropr", length = 255)
     private String bairropr;
-    @JoinColumn(name = "id_estudante", referencedColumnName = "id_estudante", insertable = false, updatable = false)
+    @JoinColumn(name = "id_estudante", referencedColumnName = "id_estudante", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Estudante estudante;
     @JoinColumn(name = "provinciapr", referencedColumnName = "id_provincia")

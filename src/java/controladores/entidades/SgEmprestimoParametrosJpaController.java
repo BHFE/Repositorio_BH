@@ -14,10 +14,9 @@ import javax.persistence.criteria.Root;
 import entidades.Users;
 import entidades.SgEmprestimo;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import entidades.BLeitor;
 import entidades.SgEmprestimoParametros;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -37,14 +36,14 @@ public class SgEmprestimoParametrosJpaController implements Serializable {
     }
 
     public void create(SgEmprestimoParametros sgEmprestimoParametros) {
-        if (sgEmprestimoParametros.getSgEmprestimoCollection() == null) {
-            sgEmprestimoParametros.setSgEmprestimoCollection(new ArrayList<SgEmprestimo>());
+        if (sgEmprestimoParametros.getSgEmprestimoList() == null) {
+            sgEmprestimoParametros.setSgEmprestimoList(new ArrayList<SgEmprestimo>());
         }
-        if (sgEmprestimoParametros.getBLeitorCollection() == null) {
-            sgEmprestimoParametros.setBLeitorCollection(new ArrayList<BLeitor>());
+        if (sgEmprestimoParametros.getBLeitorList() == null) {
+            sgEmprestimoParametros.setBLeitorList(new ArrayList<BLeitor>());
         }
-        if (sgEmprestimoParametros.getBLeitorCollection1() == null) {
-            sgEmprestimoParametros.setBLeitorCollection1(new ArrayList<BLeitor>());
+        if (sgEmprestimoParametros.getBLeitorList1() == null) {
+            sgEmprestimoParametros.setBLeitorList1(new ArrayList<BLeitor>());
         }
         EntityManager em = null;
         try {
@@ -55,54 +54,54 @@ public class SgEmprestimoParametrosJpaController implements Serializable {
                 agenteBibliotecario = em.getReference(agenteBibliotecario.getClass(), agenteBibliotecario.getUtilizador());
                 sgEmprestimoParametros.setAgenteBibliotecario(agenteBibliotecario);
             }
-            Collection<SgEmprestimo> attachedSgEmprestimoCollection = new ArrayList<SgEmprestimo>();
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimoToAttach : sgEmprestimoParametros.getSgEmprestimoCollection()) {
-                sgEmprestimoCollectionSgEmprestimoToAttach = em.getReference(sgEmprestimoCollectionSgEmprestimoToAttach.getClass(), sgEmprestimoCollectionSgEmprestimoToAttach.getIdemprestimo());
-                attachedSgEmprestimoCollection.add(sgEmprestimoCollectionSgEmprestimoToAttach);
+            List<SgEmprestimo> attachedSgEmprestimoList = new ArrayList<SgEmprestimo>();
+            for (SgEmprestimo sgEmprestimoListSgEmprestimoToAttach : sgEmprestimoParametros.getSgEmprestimoList()) {
+                sgEmprestimoListSgEmprestimoToAttach = em.getReference(sgEmprestimoListSgEmprestimoToAttach.getClass(), sgEmprestimoListSgEmprestimoToAttach.getIdemprestimo());
+                attachedSgEmprestimoList.add(sgEmprestimoListSgEmprestimoToAttach);
             }
-            sgEmprestimoParametros.setSgEmprestimoCollection(attachedSgEmprestimoCollection);
-            Collection<BLeitor> attachedBLeitorCollection = new ArrayList<BLeitor>();
-            for (BLeitor BLeitorCollectionBLeitorToAttach : sgEmprestimoParametros.getBLeitorCollection()) {
-                BLeitorCollectionBLeitorToAttach = em.getReference(BLeitorCollectionBLeitorToAttach.getClass(), BLeitorCollectionBLeitorToAttach.getNrCartao());
-                attachedBLeitorCollection.add(BLeitorCollectionBLeitorToAttach);
+            sgEmprestimoParametros.setSgEmprestimoList(attachedSgEmprestimoList);
+            List<BLeitor> attachedBLeitorList = new ArrayList<BLeitor>();
+            for (BLeitor BLeitorListBLeitorToAttach : sgEmprestimoParametros.getBLeitorList()) {
+                BLeitorListBLeitorToAttach = em.getReference(BLeitorListBLeitorToAttach.getClass(), BLeitorListBLeitorToAttach.getNrCartao());
+                attachedBLeitorList.add(BLeitorListBLeitorToAttach);
             }
-            sgEmprestimoParametros.setBLeitorCollection(attachedBLeitorCollection);
-            Collection<BLeitor> attachedBLeitorCollection1 = new ArrayList<BLeitor>();
-            for (BLeitor BLeitorCollection1BLeitorToAttach : sgEmprestimoParametros.getBLeitorCollection1()) {
-                BLeitorCollection1BLeitorToAttach = em.getReference(BLeitorCollection1BLeitorToAttach.getClass(), BLeitorCollection1BLeitorToAttach.getNrCartao());
-                attachedBLeitorCollection1.add(BLeitorCollection1BLeitorToAttach);
+            sgEmprestimoParametros.setBLeitorList(attachedBLeitorList);
+            List<BLeitor> attachedBLeitorList1 = new ArrayList<BLeitor>();
+            for (BLeitor BLeitorList1BLeitorToAttach : sgEmprestimoParametros.getBLeitorList1()) {
+                BLeitorList1BLeitorToAttach = em.getReference(BLeitorList1BLeitorToAttach.getClass(), BLeitorList1BLeitorToAttach.getNrCartao());
+                attachedBLeitorList1.add(BLeitorList1BLeitorToAttach);
             }
-            sgEmprestimoParametros.setBLeitorCollection1(attachedBLeitorCollection1);
+            sgEmprestimoParametros.setBLeitorList1(attachedBLeitorList1);
             em.persist(sgEmprestimoParametros);
             if (agenteBibliotecario != null) {
-                agenteBibliotecario.getSgEmprestimoParametrosCollection().add(sgEmprestimoParametros);
+                agenteBibliotecario.getSgEmprestimoParametrosList().add(sgEmprestimoParametros);
                 agenteBibliotecario = em.merge(agenteBibliotecario);
             }
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimo : sgEmprestimoParametros.getSgEmprestimoCollection()) {
-                SgEmprestimoParametros oldParametrosRefOfSgEmprestimoCollectionSgEmprestimo = sgEmprestimoCollectionSgEmprestimo.getParametrosRef();
-                sgEmprestimoCollectionSgEmprestimo.setParametrosRef(sgEmprestimoParametros);
-                sgEmprestimoCollectionSgEmprestimo = em.merge(sgEmprestimoCollectionSgEmprestimo);
-                if (oldParametrosRefOfSgEmprestimoCollectionSgEmprestimo != null) {
-                    oldParametrosRefOfSgEmprestimoCollectionSgEmprestimo.getSgEmprestimoCollection().remove(sgEmprestimoCollectionSgEmprestimo);
-                    oldParametrosRefOfSgEmprestimoCollectionSgEmprestimo = em.merge(oldParametrosRefOfSgEmprestimoCollectionSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListSgEmprestimo : sgEmprestimoParametros.getSgEmprestimoList()) {
+                SgEmprestimoParametros oldParametrosRefOfSgEmprestimoListSgEmprestimo = sgEmprestimoListSgEmprestimo.getParametrosRef();
+                sgEmprestimoListSgEmprestimo.setParametrosRef(sgEmprestimoParametros);
+                sgEmprestimoListSgEmprestimo = em.merge(sgEmprestimoListSgEmprestimo);
+                if (oldParametrosRefOfSgEmprestimoListSgEmprestimo != null) {
+                    oldParametrosRefOfSgEmprestimoListSgEmprestimo.getSgEmprestimoList().remove(sgEmprestimoListSgEmprestimo);
+                    oldParametrosRefOfSgEmprestimoListSgEmprestimo = em.merge(oldParametrosRefOfSgEmprestimoListSgEmprestimo);
                 }
             }
-            for (BLeitor BLeitorCollectionBLeitor : sgEmprestimoParametros.getBLeitorCollection()) {
-                SgEmprestimoParametros oldIdParametroActualizacaoOfBLeitorCollectionBLeitor = BLeitorCollectionBLeitor.getIdParametroActualizacao();
-                BLeitorCollectionBLeitor.setIdParametroActualizacao(sgEmprestimoParametros);
-                BLeitorCollectionBLeitor = em.merge(BLeitorCollectionBLeitor);
-                if (oldIdParametroActualizacaoOfBLeitorCollectionBLeitor != null) {
-                    oldIdParametroActualizacaoOfBLeitorCollectionBLeitor.getBLeitorCollection().remove(BLeitorCollectionBLeitor);
-                    oldIdParametroActualizacaoOfBLeitorCollectionBLeitor = em.merge(oldIdParametroActualizacaoOfBLeitorCollectionBLeitor);
+            for (BLeitor BLeitorListBLeitor : sgEmprestimoParametros.getBLeitorList()) {
+                SgEmprestimoParametros oldIdParametroActualizacaoOfBLeitorListBLeitor = BLeitorListBLeitor.getIdParametroActualizacao();
+                BLeitorListBLeitor.setIdParametroActualizacao(sgEmprestimoParametros);
+                BLeitorListBLeitor = em.merge(BLeitorListBLeitor);
+                if (oldIdParametroActualizacaoOfBLeitorListBLeitor != null) {
+                    oldIdParametroActualizacaoOfBLeitorListBLeitor.getBLeitorList().remove(BLeitorListBLeitor);
+                    oldIdParametroActualizacaoOfBLeitorListBLeitor = em.merge(oldIdParametroActualizacaoOfBLeitorListBLeitor);
                 }
             }
-            for (BLeitor BLeitorCollection1BLeitor : sgEmprestimoParametros.getBLeitorCollection1()) {
-                SgEmprestimoParametros oldIdParametroRegistoOfBLeitorCollection1BLeitor = BLeitorCollection1BLeitor.getIdParametroRegisto();
-                BLeitorCollection1BLeitor.setIdParametroRegisto(sgEmprestimoParametros);
-                BLeitorCollection1BLeitor = em.merge(BLeitorCollection1BLeitor);
-                if (oldIdParametroRegistoOfBLeitorCollection1BLeitor != null) {
-                    oldIdParametroRegistoOfBLeitorCollection1BLeitor.getBLeitorCollection1().remove(BLeitorCollection1BLeitor);
-                    oldIdParametroRegistoOfBLeitorCollection1BLeitor = em.merge(oldIdParametroRegistoOfBLeitorCollection1BLeitor);
+            for (BLeitor BLeitorList1BLeitor : sgEmprestimoParametros.getBLeitorList1()) {
+                SgEmprestimoParametros oldIdParametroRegistoOfBLeitorList1BLeitor = BLeitorList1BLeitor.getIdParametroRegisto();
+                BLeitorList1BLeitor.setIdParametroRegisto(sgEmprestimoParametros);
+                BLeitorList1BLeitor = em.merge(BLeitorList1BLeitor);
+                if (oldIdParametroRegistoOfBLeitorList1BLeitor != null) {
+                    oldIdParametroRegistoOfBLeitorList1BLeitor.getBLeitorList1().remove(BLeitorList1BLeitor);
+                    oldIdParametroRegistoOfBLeitorList1BLeitor = em.merge(oldIdParametroRegistoOfBLeitorList1BLeitor);
                 }
             }
             em.getTransaction().commit();
@@ -121,94 +120,94 @@ public class SgEmprestimoParametrosJpaController implements Serializable {
             SgEmprestimoParametros persistentSgEmprestimoParametros = em.find(SgEmprestimoParametros.class, sgEmprestimoParametros.getIdparametro());
             Users agenteBibliotecarioOld = persistentSgEmprestimoParametros.getAgenteBibliotecario();
             Users agenteBibliotecarioNew = sgEmprestimoParametros.getAgenteBibliotecario();
-            Collection<SgEmprestimo> sgEmprestimoCollectionOld = persistentSgEmprestimoParametros.getSgEmprestimoCollection();
-            Collection<SgEmprestimo> sgEmprestimoCollectionNew = sgEmprestimoParametros.getSgEmprestimoCollection();
-            Collection<BLeitor> BLeitorCollectionOld = persistentSgEmprestimoParametros.getBLeitorCollection();
-            Collection<BLeitor> BLeitorCollectionNew = sgEmprestimoParametros.getBLeitorCollection();
-            Collection<BLeitor> BLeitorCollection1Old = persistentSgEmprestimoParametros.getBLeitorCollection1();
-            Collection<BLeitor> BLeitorCollection1New = sgEmprestimoParametros.getBLeitorCollection1();
+            List<SgEmprestimo> sgEmprestimoListOld = persistentSgEmprestimoParametros.getSgEmprestimoList();
+            List<SgEmprestimo> sgEmprestimoListNew = sgEmprestimoParametros.getSgEmprestimoList();
+            List<BLeitor> BLeitorListOld = persistentSgEmprestimoParametros.getBLeitorList();
+            List<BLeitor> BLeitorListNew = sgEmprestimoParametros.getBLeitorList();
+            List<BLeitor> BLeitorList1Old = persistentSgEmprestimoParametros.getBLeitorList1();
+            List<BLeitor> BLeitorList1New = sgEmprestimoParametros.getBLeitorList1();
             if (agenteBibliotecarioNew != null) {
                 agenteBibliotecarioNew = em.getReference(agenteBibliotecarioNew.getClass(), agenteBibliotecarioNew.getUtilizador());
                 sgEmprestimoParametros.setAgenteBibliotecario(agenteBibliotecarioNew);
             }
-            Collection<SgEmprestimo> attachedSgEmprestimoCollectionNew = new ArrayList<SgEmprestimo>();
-            for (SgEmprestimo sgEmprestimoCollectionNewSgEmprestimoToAttach : sgEmprestimoCollectionNew) {
-                sgEmprestimoCollectionNewSgEmprestimoToAttach = em.getReference(sgEmprestimoCollectionNewSgEmprestimoToAttach.getClass(), sgEmprestimoCollectionNewSgEmprestimoToAttach.getIdemprestimo());
-                attachedSgEmprestimoCollectionNew.add(sgEmprestimoCollectionNewSgEmprestimoToAttach);
+            List<SgEmprestimo> attachedSgEmprestimoListNew = new ArrayList<SgEmprestimo>();
+            for (SgEmprestimo sgEmprestimoListNewSgEmprestimoToAttach : sgEmprestimoListNew) {
+                sgEmprestimoListNewSgEmprestimoToAttach = em.getReference(sgEmprestimoListNewSgEmprestimoToAttach.getClass(), sgEmprestimoListNewSgEmprestimoToAttach.getIdemprestimo());
+                attachedSgEmprestimoListNew.add(sgEmprestimoListNewSgEmprestimoToAttach);
             }
-            sgEmprestimoCollectionNew = attachedSgEmprestimoCollectionNew;
-            sgEmprestimoParametros.setSgEmprestimoCollection(sgEmprestimoCollectionNew);
-            Collection<BLeitor> attachedBLeitorCollectionNew = new ArrayList<BLeitor>();
-            for (BLeitor BLeitorCollectionNewBLeitorToAttach : BLeitorCollectionNew) {
-                BLeitorCollectionNewBLeitorToAttach = em.getReference(BLeitorCollectionNewBLeitorToAttach.getClass(), BLeitorCollectionNewBLeitorToAttach.getNrCartao());
-                attachedBLeitorCollectionNew.add(BLeitorCollectionNewBLeitorToAttach);
+            sgEmprestimoListNew = attachedSgEmprestimoListNew;
+            sgEmprestimoParametros.setSgEmprestimoList(sgEmprestimoListNew);
+            List<BLeitor> attachedBLeitorListNew = new ArrayList<BLeitor>();
+            for (BLeitor BLeitorListNewBLeitorToAttach : BLeitorListNew) {
+                BLeitorListNewBLeitorToAttach = em.getReference(BLeitorListNewBLeitorToAttach.getClass(), BLeitorListNewBLeitorToAttach.getNrCartao());
+                attachedBLeitorListNew.add(BLeitorListNewBLeitorToAttach);
             }
-            BLeitorCollectionNew = attachedBLeitorCollectionNew;
-            sgEmprestimoParametros.setBLeitorCollection(BLeitorCollectionNew);
-            Collection<BLeitor> attachedBLeitorCollection1New = new ArrayList<BLeitor>();
-            for (BLeitor BLeitorCollection1NewBLeitorToAttach : BLeitorCollection1New) {
-                BLeitorCollection1NewBLeitorToAttach = em.getReference(BLeitorCollection1NewBLeitorToAttach.getClass(), BLeitorCollection1NewBLeitorToAttach.getNrCartao());
-                attachedBLeitorCollection1New.add(BLeitorCollection1NewBLeitorToAttach);
+            BLeitorListNew = attachedBLeitorListNew;
+            sgEmprestimoParametros.setBLeitorList(BLeitorListNew);
+            List<BLeitor> attachedBLeitorList1New = new ArrayList<BLeitor>();
+            for (BLeitor BLeitorList1NewBLeitorToAttach : BLeitorList1New) {
+                BLeitorList1NewBLeitorToAttach = em.getReference(BLeitorList1NewBLeitorToAttach.getClass(), BLeitorList1NewBLeitorToAttach.getNrCartao());
+                attachedBLeitorList1New.add(BLeitorList1NewBLeitorToAttach);
             }
-            BLeitorCollection1New = attachedBLeitorCollection1New;
-            sgEmprestimoParametros.setBLeitorCollection1(BLeitorCollection1New);
+            BLeitorList1New = attachedBLeitorList1New;
+            sgEmprestimoParametros.setBLeitorList1(BLeitorList1New);
             sgEmprestimoParametros = em.merge(sgEmprestimoParametros);
             if (agenteBibliotecarioOld != null && !agenteBibliotecarioOld.equals(agenteBibliotecarioNew)) {
-                agenteBibliotecarioOld.getSgEmprestimoParametrosCollection().remove(sgEmprestimoParametros);
+                agenteBibliotecarioOld.getSgEmprestimoParametrosList().remove(sgEmprestimoParametros);
                 agenteBibliotecarioOld = em.merge(agenteBibliotecarioOld);
             }
             if (agenteBibliotecarioNew != null && !agenteBibliotecarioNew.equals(agenteBibliotecarioOld)) {
-                agenteBibliotecarioNew.getSgEmprestimoParametrosCollection().add(sgEmprestimoParametros);
+                agenteBibliotecarioNew.getSgEmprestimoParametrosList().add(sgEmprestimoParametros);
                 agenteBibliotecarioNew = em.merge(agenteBibliotecarioNew);
             }
-            for (SgEmprestimo sgEmprestimoCollectionOldSgEmprestimo : sgEmprestimoCollectionOld) {
-                if (!sgEmprestimoCollectionNew.contains(sgEmprestimoCollectionOldSgEmprestimo)) {
-                    sgEmprestimoCollectionOldSgEmprestimo.setParametrosRef(null);
-                    sgEmprestimoCollectionOldSgEmprestimo = em.merge(sgEmprestimoCollectionOldSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListOldSgEmprestimo : sgEmprestimoListOld) {
+                if (!sgEmprestimoListNew.contains(sgEmprestimoListOldSgEmprestimo)) {
+                    sgEmprestimoListOldSgEmprestimo.setParametrosRef(null);
+                    sgEmprestimoListOldSgEmprestimo = em.merge(sgEmprestimoListOldSgEmprestimo);
                 }
             }
-            for (SgEmprestimo sgEmprestimoCollectionNewSgEmprestimo : sgEmprestimoCollectionNew) {
-                if (!sgEmprestimoCollectionOld.contains(sgEmprestimoCollectionNewSgEmprestimo)) {
-                    SgEmprestimoParametros oldParametrosRefOfSgEmprestimoCollectionNewSgEmprestimo = sgEmprestimoCollectionNewSgEmprestimo.getParametrosRef();
-                    sgEmprestimoCollectionNewSgEmprestimo.setParametrosRef(sgEmprestimoParametros);
-                    sgEmprestimoCollectionNewSgEmprestimo = em.merge(sgEmprestimoCollectionNewSgEmprestimo);
-                    if (oldParametrosRefOfSgEmprestimoCollectionNewSgEmprestimo != null && !oldParametrosRefOfSgEmprestimoCollectionNewSgEmprestimo.equals(sgEmprestimoParametros)) {
-                        oldParametrosRefOfSgEmprestimoCollectionNewSgEmprestimo.getSgEmprestimoCollection().remove(sgEmprestimoCollectionNewSgEmprestimo);
-                        oldParametrosRefOfSgEmprestimoCollectionNewSgEmprestimo = em.merge(oldParametrosRefOfSgEmprestimoCollectionNewSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListNewSgEmprestimo : sgEmprestimoListNew) {
+                if (!sgEmprestimoListOld.contains(sgEmprestimoListNewSgEmprestimo)) {
+                    SgEmprestimoParametros oldParametrosRefOfSgEmprestimoListNewSgEmprestimo = sgEmprestimoListNewSgEmprestimo.getParametrosRef();
+                    sgEmprestimoListNewSgEmprestimo.setParametrosRef(sgEmprestimoParametros);
+                    sgEmprestimoListNewSgEmprestimo = em.merge(sgEmprestimoListNewSgEmprestimo);
+                    if (oldParametrosRefOfSgEmprestimoListNewSgEmprestimo != null && !oldParametrosRefOfSgEmprestimoListNewSgEmprestimo.equals(sgEmprestimoParametros)) {
+                        oldParametrosRefOfSgEmprestimoListNewSgEmprestimo.getSgEmprestimoList().remove(sgEmprestimoListNewSgEmprestimo);
+                        oldParametrosRefOfSgEmprestimoListNewSgEmprestimo = em.merge(oldParametrosRefOfSgEmprestimoListNewSgEmprestimo);
                     }
                 }
             }
-            for (BLeitor BLeitorCollectionOldBLeitor : BLeitorCollectionOld) {
-                if (!BLeitorCollectionNew.contains(BLeitorCollectionOldBLeitor)) {
-                    BLeitorCollectionOldBLeitor.setIdParametroActualizacao(null);
-                    BLeitorCollectionOldBLeitor = em.merge(BLeitorCollectionOldBLeitor);
+            for (BLeitor BLeitorListOldBLeitor : BLeitorListOld) {
+                if (!BLeitorListNew.contains(BLeitorListOldBLeitor)) {
+                    BLeitorListOldBLeitor.setIdParametroActualizacao(null);
+                    BLeitorListOldBLeitor = em.merge(BLeitorListOldBLeitor);
                 }
             }
-            for (BLeitor BLeitorCollectionNewBLeitor : BLeitorCollectionNew) {
-                if (!BLeitorCollectionOld.contains(BLeitorCollectionNewBLeitor)) {
-                    SgEmprestimoParametros oldIdParametroActualizacaoOfBLeitorCollectionNewBLeitor = BLeitorCollectionNewBLeitor.getIdParametroActualizacao();
-                    BLeitorCollectionNewBLeitor.setIdParametroActualizacao(sgEmprestimoParametros);
-                    BLeitorCollectionNewBLeitor = em.merge(BLeitorCollectionNewBLeitor);
-                    if (oldIdParametroActualizacaoOfBLeitorCollectionNewBLeitor != null && !oldIdParametroActualizacaoOfBLeitorCollectionNewBLeitor.equals(sgEmprestimoParametros)) {
-                        oldIdParametroActualizacaoOfBLeitorCollectionNewBLeitor.getBLeitorCollection().remove(BLeitorCollectionNewBLeitor);
-                        oldIdParametroActualizacaoOfBLeitorCollectionNewBLeitor = em.merge(oldIdParametroActualizacaoOfBLeitorCollectionNewBLeitor);
+            for (BLeitor BLeitorListNewBLeitor : BLeitorListNew) {
+                if (!BLeitorListOld.contains(BLeitorListNewBLeitor)) {
+                    SgEmprestimoParametros oldIdParametroActualizacaoOfBLeitorListNewBLeitor = BLeitorListNewBLeitor.getIdParametroActualizacao();
+                    BLeitorListNewBLeitor.setIdParametroActualizacao(sgEmprestimoParametros);
+                    BLeitorListNewBLeitor = em.merge(BLeitorListNewBLeitor);
+                    if (oldIdParametroActualizacaoOfBLeitorListNewBLeitor != null && !oldIdParametroActualizacaoOfBLeitorListNewBLeitor.equals(sgEmprestimoParametros)) {
+                        oldIdParametroActualizacaoOfBLeitorListNewBLeitor.getBLeitorList().remove(BLeitorListNewBLeitor);
+                        oldIdParametroActualizacaoOfBLeitorListNewBLeitor = em.merge(oldIdParametroActualizacaoOfBLeitorListNewBLeitor);
                     }
                 }
             }
-            for (BLeitor BLeitorCollection1OldBLeitor : BLeitorCollection1Old) {
-                if (!BLeitorCollection1New.contains(BLeitorCollection1OldBLeitor)) {
-                    BLeitorCollection1OldBLeitor.setIdParametroRegisto(null);
-                    BLeitorCollection1OldBLeitor = em.merge(BLeitorCollection1OldBLeitor);
+            for (BLeitor BLeitorList1OldBLeitor : BLeitorList1Old) {
+                if (!BLeitorList1New.contains(BLeitorList1OldBLeitor)) {
+                    BLeitorList1OldBLeitor.setIdParametroRegisto(null);
+                    BLeitorList1OldBLeitor = em.merge(BLeitorList1OldBLeitor);
                 }
             }
-            for (BLeitor BLeitorCollection1NewBLeitor : BLeitorCollection1New) {
-                if (!BLeitorCollection1Old.contains(BLeitorCollection1NewBLeitor)) {
-                    SgEmprestimoParametros oldIdParametroRegistoOfBLeitorCollection1NewBLeitor = BLeitorCollection1NewBLeitor.getIdParametroRegisto();
-                    BLeitorCollection1NewBLeitor.setIdParametroRegisto(sgEmprestimoParametros);
-                    BLeitorCollection1NewBLeitor = em.merge(BLeitorCollection1NewBLeitor);
-                    if (oldIdParametroRegistoOfBLeitorCollection1NewBLeitor != null && !oldIdParametroRegistoOfBLeitorCollection1NewBLeitor.equals(sgEmprestimoParametros)) {
-                        oldIdParametroRegistoOfBLeitorCollection1NewBLeitor.getBLeitorCollection1().remove(BLeitorCollection1NewBLeitor);
-                        oldIdParametroRegistoOfBLeitorCollection1NewBLeitor = em.merge(oldIdParametroRegistoOfBLeitorCollection1NewBLeitor);
+            for (BLeitor BLeitorList1NewBLeitor : BLeitorList1New) {
+                if (!BLeitorList1Old.contains(BLeitorList1NewBLeitor)) {
+                    SgEmprestimoParametros oldIdParametroRegistoOfBLeitorList1NewBLeitor = BLeitorList1NewBLeitor.getIdParametroRegisto();
+                    BLeitorList1NewBLeitor.setIdParametroRegisto(sgEmprestimoParametros);
+                    BLeitorList1NewBLeitor = em.merge(BLeitorList1NewBLeitor);
+                    if (oldIdParametroRegistoOfBLeitorList1NewBLeitor != null && !oldIdParametroRegistoOfBLeitorList1NewBLeitor.equals(sgEmprestimoParametros)) {
+                        oldIdParametroRegistoOfBLeitorList1NewBLeitor.getBLeitorList1().remove(BLeitorList1NewBLeitor);
+                        oldIdParametroRegistoOfBLeitorList1NewBLeitor = em.merge(oldIdParametroRegistoOfBLeitorList1NewBLeitor);
                     }
                 }
             }
@@ -243,23 +242,23 @@ public class SgEmprestimoParametrosJpaController implements Serializable {
             }
             Users agenteBibliotecario = sgEmprestimoParametros.getAgenteBibliotecario();
             if (agenteBibliotecario != null) {
-                agenteBibliotecario.getSgEmprestimoParametrosCollection().remove(sgEmprestimoParametros);
+                agenteBibliotecario.getSgEmprestimoParametrosList().remove(sgEmprestimoParametros);
                 agenteBibliotecario = em.merge(agenteBibliotecario);
             }
-            Collection<SgEmprestimo> sgEmprestimoCollection = sgEmprestimoParametros.getSgEmprestimoCollection();
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimo : sgEmprestimoCollection) {
-                sgEmprestimoCollectionSgEmprestimo.setParametrosRef(null);
-                sgEmprestimoCollectionSgEmprestimo = em.merge(sgEmprestimoCollectionSgEmprestimo);
+            List<SgEmprestimo> sgEmprestimoList = sgEmprestimoParametros.getSgEmprestimoList();
+            for (SgEmprestimo sgEmprestimoListSgEmprestimo : sgEmprestimoList) {
+                sgEmprestimoListSgEmprestimo.setParametrosRef(null);
+                sgEmprestimoListSgEmprestimo = em.merge(sgEmprestimoListSgEmprestimo);
             }
-            Collection<BLeitor> BLeitorCollection = sgEmprestimoParametros.getBLeitorCollection();
-            for (BLeitor BLeitorCollectionBLeitor : BLeitorCollection) {
-                BLeitorCollectionBLeitor.setIdParametroActualizacao(null);
-                BLeitorCollectionBLeitor = em.merge(BLeitorCollectionBLeitor);
+            List<BLeitor> BLeitorList = sgEmprestimoParametros.getBLeitorList();
+            for (BLeitor BLeitorListBLeitor : BLeitorList) {
+                BLeitorListBLeitor.setIdParametroActualizacao(null);
+                BLeitorListBLeitor = em.merge(BLeitorListBLeitor);
             }
-            Collection<BLeitor> BLeitorCollection1 = sgEmprestimoParametros.getBLeitorCollection1();
-            for (BLeitor BLeitorCollection1BLeitor : BLeitorCollection1) {
-                BLeitorCollection1BLeitor.setIdParametroRegisto(null);
-                BLeitorCollection1BLeitor = em.merge(BLeitorCollection1BLeitor);
+            List<BLeitor> BLeitorList1 = sgEmprestimoParametros.getBLeitorList1();
+            for (BLeitor BLeitorList1BLeitor : BLeitorList1) {
+                BLeitorList1BLeitor.setIdParametroRegisto(null);
+                BLeitorList1BLeitor = em.merge(BLeitorList1BLeitor);
             }
             em.remove(sgEmprestimoParametros);
             em.getTransaction().commit();

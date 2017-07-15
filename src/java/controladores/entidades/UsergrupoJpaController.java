@@ -5,6 +5,7 @@
  */
 package controladores.entidades;
 
+import controladores.entidades.exceptions.IllegalOrphanException;
 import controladores.entidades.exceptions.NonexistentEntityException;
 import controladores.entidades.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -14,8 +15,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.Grupo;
 import entidades.Usergrupo;
-import entidades.UsergrupoPK;
 import entidades.Users;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,12 +36,21 @@ public class UsergrupoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usergrupo usergrupo) throws PreexistingEntityException, Exception {
-        if (usergrupo.getUsergrupoPK() == null) {
-            usergrupo.setUsergrupoPK(new UsergrupoPK());
+    public void create(Usergrupo usergrupo) throws IllegalOrphanException, PreexistingEntityException, Exception {
+        List<String> illegalOrphanMessages = null;
+        Grupo grupoOrphanCheck = usergrupo.getGrupo();
+        if (grupoOrphanCheck != null) {
+            Usergrupo oldUsergrupoOfGrupo = grupoOrphanCheck.getUsergrupo();
+            if (oldUsergrupoOfGrupo != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("The Grupo " + grupoOrphanCheck + " already has an item of type Usergrupo whose grupo column cannot be null. Please make another selection for the grupo field.");
+            }
         }
-        usergrupo.getUsergrupoPK().setIdGrupo(usergrupo.getGrupo().getIdGrupo());
-        usergrupo.getUsergrupoPK().setUtilizador(usergrupo.getUsers().getUtilizador());
+        if (illegalOrphanMessages != null) {
+            throw new IllegalOrphanException(illegalOrphanMessages);
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,23 +60,23 @@ public class UsergrupoJpaController implements Serializable {
                 grupo = em.getReference(grupo.getClass(), grupo.getIdGrupo());
                 usergrupo.setGrupo(grupo);
             }
-            Users users = usergrupo.getUsers();
-            if (users != null) {
-                users = em.getReference(users.getClass(), users.getUtilizador());
-                usergrupo.setUsers(users);
+            Users utilizador = usergrupo.getUtilizador();
+            if (utilizador != null) {
+                utilizador = em.getReference(utilizador.getClass(), utilizador.getUtilizador());
+                usergrupo.setUtilizador(utilizador);
             }
             em.persist(usergrupo);
             if (grupo != null) {
-                grupo.getUsergrupoCollection().add(usergrupo);
+                grupo.setUsergrupo(usergrupo);
                 grupo = em.merge(grupo);
             }
-            if (users != null) {
-                users.getUsergrupoCollection().add(usergrupo);
-                users = em.merge(users);
+            if (utilizador != null) {
+                utilizador.getUsergrupoList().add(usergrupo);
+                utilizador = em.merge(utilizador);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findUsergrupo(usergrupo.getUsergrupoPK()) != null) {
+            if (findUsergrupo(usergrupo.getIdGrupo()) != null) {
                 throw new PreexistingEntityException("Usergrupo " + usergrupo + " already exists.", ex);
             }
             throw ex;
@@ -77,48 +87,59 @@ public class UsergrupoJpaController implements Serializable {
         }
     }
 
-    public void edit(Usergrupo usergrupo) throws NonexistentEntityException, Exception {
-        usergrupo.getUsergrupoPK().setIdGrupo(usergrupo.getGrupo().getIdGrupo());
-        usergrupo.getUsergrupoPK().setUtilizador(usergrupo.getUsers().getUtilizador());
+    public void edit(Usergrupo usergrupo) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usergrupo persistentUsergrupo = em.find(Usergrupo.class, usergrupo.getUsergrupoPK());
+            Usergrupo persistentUsergrupo = em.find(Usergrupo.class, usergrupo.getIdGrupo());
             Grupo grupoOld = persistentUsergrupo.getGrupo();
             Grupo grupoNew = usergrupo.getGrupo();
-            Users usersOld = persistentUsergrupo.getUsers();
-            Users usersNew = usergrupo.getUsers();
+            Users utilizadorOld = persistentUsergrupo.getUtilizador();
+            Users utilizadorNew = usergrupo.getUtilizador();
+            List<String> illegalOrphanMessages = null;
+            if (grupoNew != null && !grupoNew.equals(grupoOld)) {
+                Usergrupo oldUsergrupoOfGrupo = grupoNew.getUsergrupo();
+                if (oldUsergrupoOfGrupo != null) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("The Grupo " + grupoNew + " already has an item of type Usergrupo whose grupo column cannot be null. Please make another selection for the grupo field.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (grupoNew != null) {
                 grupoNew = em.getReference(grupoNew.getClass(), grupoNew.getIdGrupo());
                 usergrupo.setGrupo(grupoNew);
             }
-            if (usersNew != null) {
-                usersNew = em.getReference(usersNew.getClass(), usersNew.getUtilizador());
-                usergrupo.setUsers(usersNew);
+            if (utilizadorNew != null) {
+                utilizadorNew = em.getReference(utilizadorNew.getClass(), utilizadorNew.getUtilizador());
+                usergrupo.setUtilizador(utilizadorNew);
             }
             usergrupo = em.merge(usergrupo);
             if (grupoOld != null && !grupoOld.equals(grupoNew)) {
-                grupoOld.getUsergrupoCollection().remove(usergrupo);
+                grupoOld.setUsergrupo(null);
                 grupoOld = em.merge(grupoOld);
             }
             if (grupoNew != null && !grupoNew.equals(grupoOld)) {
-                grupoNew.getUsergrupoCollection().add(usergrupo);
+                grupoNew.setUsergrupo(usergrupo);
                 grupoNew = em.merge(grupoNew);
             }
-            if (usersOld != null && !usersOld.equals(usersNew)) {
-                usersOld.getUsergrupoCollection().remove(usergrupo);
-                usersOld = em.merge(usersOld);
+            if (utilizadorOld != null && !utilizadorOld.equals(utilizadorNew)) {
+                utilizadorOld.getUsergrupoList().remove(usergrupo);
+                utilizadorOld = em.merge(utilizadorOld);
             }
-            if (usersNew != null && !usersNew.equals(usersOld)) {
-                usersNew.getUsergrupoCollection().add(usergrupo);
-                usersNew = em.merge(usersNew);
+            if (utilizadorNew != null && !utilizadorNew.equals(utilizadorOld)) {
+                utilizadorNew.getUsergrupoList().add(usergrupo);
+                utilizadorNew = em.merge(utilizadorNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                UsergrupoPK id = usergrupo.getUsergrupoPK();
+                String id = usergrupo.getIdGrupo();
                 if (findUsergrupo(id) == null) {
                     throw new NonexistentEntityException("The usergrupo with id " + id + " no longer exists.");
                 }
@@ -131,7 +152,7 @@ public class UsergrupoJpaController implements Serializable {
         }
     }
 
-    public void destroy(UsergrupoPK id) throws NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -139,19 +160,19 @@ public class UsergrupoJpaController implements Serializable {
             Usergrupo usergrupo;
             try {
                 usergrupo = em.getReference(Usergrupo.class, id);
-                usergrupo.getUsergrupoPK();
+                usergrupo.getIdGrupo();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The usergrupo with id " + id + " no longer exists.", enfe);
             }
             Grupo grupo = usergrupo.getGrupo();
             if (grupo != null) {
-                grupo.getUsergrupoCollection().remove(usergrupo);
+                grupo.setUsergrupo(null);
                 grupo = em.merge(grupo);
             }
-            Users users = usergrupo.getUsers();
-            if (users != null) {
-                users.getUsergrupoCollection().remove(usergrupo);
-                users = em.merge(users);
+            Users utilizador = usergrupo.getUtilizador();
+            if (utilizador != null) {
+                utilizador.getUsergrupoList().remove(usergrupo);
+                utilizador = em.merge(utilizador);
             }
             em.remove(usergrupo);
             em.getTransaction().commit();
@@ -186,7 +207,7 @@ public class UsergrupoJpaController implements Serializable {
         }
     }
 
-    public Usergrupo findUsergrupo(UsergrupoPK id) {
+    public Usergrupo findUsergrupo(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Usergrupo.class, id);

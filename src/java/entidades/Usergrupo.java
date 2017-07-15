@@ -7,14 +7,19 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -22,42 +27,56 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "usergrupo", catalog = "fecn2", schema = "public")
+@Table(name = "usergrupo", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usergrupo.findAll", query = "SELECT u FROM Usergrupo u")
-    , @NamedQuery(name = "Usergrupo.findByIdGrupo", query = "SELECT u FROM Usergrupo u WHERE u.usergrupoPK.idGrupo = :idGrupo")
-    , @NamedQuery(name = "Usergrupo.findByUtilizador", query = "SELECT u FROM Usergrupo u WHERE u.usergrupoPK.utilizador = :utilizador")
-    , @NamedQuery(name = "Usergrupo.findByDataAlocacao", query = "SELECT u FROM Usergrupo u WHERE u.usergrupoPK.dataAlocacao = :dataAlocacao")})
+    , @NamedQuery(name = "Usergrupo.findByIdGrupo", query = "SELECT u FROM Usergrupo u WHERE u.idGrupo = :idGrupo")
+    , @NamedQuery(name = "Usergrupo.findByDataAlocacao", query = "SELECT u FROM Usergrupo u WHERE u.dataAlocacao = :dataAlocacao")})
 public class Usergrupo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected UsergrupoPK usergrupoPK;
-    @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id_grupo", nullable = false, length = 2147483647)
+    private String idGrupo;
+    @Basic(optional = false)
+    @Column(name = "data_alocacao", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date dataAlocacao;
+    @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo", nullable = false, insertable = false, updatable = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Grupo grupo;
-    @JoinColumn(name = "utilizador", referencedColumnName = "utilizador", insertable = false, updatable = false)
+    @JoinColumn(name = "utilizador", referencedColumnName = "utilizador", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Users users;
+    private Users utilizador;
 
     public Usergrupo() {
     }
 
-    public Usergrupo(UsergrupoPK usergrupoPK) {
-        this.usergrupoPK = usergrupoPK;
+    public Usergrupo(String idGrupo) {
+        this.idGrupo = idGrupo;
     }
 
-    public Usergrupo(String idGrupo, String utilizador, Date dataAlocacao) {
-        this.usergrupoPK = new UsergrupoPK(idGrupo, utilizador, dataAlocacao);
+    public Usergrupo(String idGrupo, Date dataAlocacao) {
+        this.idGrupo = idGrupo;
+        this.dataAlocacao = dataAlocacao;
     }
 
-    public UsergrupoPK getUsergrupoPK() {
-        return usergrupoPK;
+    public String getIdGrupo() {
+        return idGrupo;
     }
 
-    public void setUsergrupoPK(UsergrupoPK usergrupoPK) {
-        this.usergrupoPK = usergrupoPK;
+    public void setIdGrupo(String idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+    public Date getDataAlocacao() {
+        return dataAlocacao;
+    }
+
+    public void setDataAlocacao(Date dataAlocacao) {
+        this.dataAlocacao = dataAlocacao;
     }
 
     public Grupo getGrupo() {
@@ -68,18 +87,18 @@ public class Usergrupo implements Serializable {
         this.grupo = grupo;
     }
 
-    public Users getUsers() {
-        return users;
+    public Users getUtilizador() {
+        return utilizador;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUtilizador(Users utilizador) {
+        this.utilizador = utilizador;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usergrupoPK != null ? usergrupoPK.hashCode() : 0);
+        hash += (idGrupo != null ? idGrupo.hashCode() : 0);
         return hash;
     }
 
@@ -90,7 +109,7 @@ public class Usergrupo implements Serializable {
             return false;
         }
         Usergrupo other = (Usergrupo) object;
-        if ((this.usergrupoPK == null && other.usergrupoPK != null) || (this.usergrupoPK != null && !this.usergrupoPK.equals(other.usergrupoPK))) {
+        if ((this.idGrupo == null && other.idGrupo != null) || (this.idGrupo != null && !this.idGrupo.equals(other.idGrupo))) {
             return false;
         }
         return true;
@@ -98,7 +117,7 @@ public class Usergrupo implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Usergrupo[ usergrupoPK=" + usergrupoPK + " ]";
+        return "entidades.Usergrupo[ idGrupo=" + idGrupo + " ]";
     }
     
 }

@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "funcionario", catalog = "fecn2", schema = "public")
+@Table(name = "funcionario", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f")
@@ -47,17 +47,17 @@ public class Funcionario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_funcionario")
+    @Column(name = "id_funcionario", nullable = false)
     private Long idFuncionario;
-    @Column(name = "nome")
+    @Column(name = "nome", length = 45)
     private String nome;
-    @Column(name = "apelido")
+    @Column(name = "apelido", length = 45)
     private String apelido;
-    @Column(name = "contacto")
+    @Column(name = "contacto", length = 2147483647)
     private String contacto;
-    @Column(name = "email")
+    @Column(name = "email", length = 2147483647)
     private String email;
-    @Column(name = "nrfuncionario")
+    @Column(name = "nrfuncionario", length = 2147483647)
     private String nrfuncionario;
     @Column(name = "masculino")
     private Boolean masculino;
@@ -69,7 +69,7 @@ public class Funcionario implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario", fetch = FetchType.LAZY)
     private Docente docente;
     @OneToMany(mappedBy = "idFuncionario", fetch = FetchType.LAZY)
-    private Collection<Users> usersCollection;
+    private List<Users> usersList;
 
     public Funcionario() {
     }
@@ -159,12 +159,12 @@ public class Funcionario implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Users> getUsersCollection() {
-        return usersCollection;
+    public List<Users> getUsersList() {
+        return usersList;
     }
 
-    public void setUsersCollection(Collection<Users> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 
     @Override

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioObras" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90aa1fac-859a-424b-81a0-054ed48854c6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[
+   select count(sg_obra.idlivro),curso.abreviatura,sg_obra.tipo_obra
+from sg_obra,curso
+WHERE sg_obra.curso=curso.id_curso
+GROUP BY curso.abreviatura,sg_obra.tipo_obra]]>
+	</queryString>
+	<field name="count" class="java.lang.Long"/>
+	<field name="abreviatura" class="java.lang.String"/>
+	<field name="tipo_obra" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="75" y="13" width="96" height="66" uuid="b72b9ef4-27ea-471b-b5b3-189f89461023"/>
+				<imageExpression><![CDATA["C:\\Users\\Migueljr\\Documents\\NetBeansProjects\\BH\\web\\Icons\\logo2.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="266" y="30" width="253" height="39" uuid="bd92e9e7-99e3-4141-99a8-70c0a9cf7515"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Auditoria obras]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="236" height="20" uuid="dec4ef99-45d3-43d7-921f-b39eef9137b8"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numero de Obras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="0" width="238" height="20" uuid="dd1f7866-48d6-49c3-9ef6-863861dd70be"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="250" height="20" uuid="b53fc96b-4ecd-49e6-be7f-f60ace5e6f3d"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Obra]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="250" height="20" uuid="836ce404-2e55-4f8d-8105-aef9f02793b2"/>
+				<textFieldExpression><![CDATA[$F{count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="0" width="250" height="20" uuid="d781a333-4a8a-4ff6-8712-fed6daa72d3e"/>
+				<textFieldExpression><![CDATA[$F{abreviatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="0" width="250" height="20" uuid="2eeb5f92-8190-4ddb-ae14-e86e222b0108"/>
+				<textFieldExpression><![CDATA[$F{tipo_obra}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

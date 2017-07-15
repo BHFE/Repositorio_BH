@@ -18,10 +18,9 @@ import entidades.SgObraCategoria;
 import entidades.Users;
 import entidades.SgObraAutor;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import entidades.SgExemplar;
 import entidades.SgObra;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -41,11 +40,11 @@ public class SgObraJpaController implements Serializable {
     }
 
     public void create(SgObra sgObra) {
-        if (sgObra.getSgObraAutorCollection() == null) {
-            sgObra.setSgObraAutorCollection(new ArrayList<SgObraAutor>());
+        if (sgObra.getSgObraAutorList() == null) {
+            sgObra.setSgObraAutorList(new ArrayList<SgObraAutor>());
         }
-        if (sgObra.getSgExemplarCollection() == null) {
-            sgObra.setSgExemplarCollection(new ArrayList<SgExemplar>());
+        if (sgObra.getSgExemplarList() == null) {
+            sgObra.setSgExemplarList(new ArrayList<SgExemplar>());
         }
         EntityManager em = null;
         try {
@@ -71,51 +70,51 @@ public class SgObraJpaController implements Serializable {
                 bibliotecario = em.getReference(bibliotecario.getClass(), bibliotecario.getUtilizador());
                 sgObra.setBibliotecario(bibliotecario);
             }
-            Collection<SgObraAutor> attachedSgObraAutorCollection = new ArrayList<SgObraAutor>();
-            for (SgObraAutor sgObraAutorCollectionSgObraAutorToAttach : sgObra.getSgObraAutorCollection()) {
-                sgObraAutorCollectionSgObraAutorToAttach = em.getReference(sgObraAutorCollectionSgObraAutorToAttach.getClass(), sgObraAutorCollectionSgObraAutorToAttach.getSgObraAutorPK());
-                attachedSgObraAutorCollection.add(sgObraAutorCollectionSgObraAutorToAttach);
+            List<SgObraAutor> attachedSgObraAutorList = new ArrayList<SgObraAutor>();
+            for (SgObraAutor sgObraAutorListSgObraAutorToAttach : sgObra.getSgObraAutorList()) {
+                sgObraAutorListSgObraAutorToAttach = em.getReference(sgObraAutorListSgObraAutorToAttach.getClass(), sgObraAutorListSgObraAutorToAttach.getIdautor());
+                attachedSgObraAutorList.add(sgObraAutorListSgObraAutorToAttach);
             }
-            sgObra.setSgObraAutorCollection(attachedSgObraAutorCollection);
-            Collection<SgExemplar> attachedSgExemplarCollection = new ArrayList<SgExemplar>();
-            for (SgExemplar sgExemplarCollectionSgExemplarToAttach : sgObra.getSgExemplarCollection()) {
-                sgExemplarCollectionSgExemplarToAttach = em.getReference(sgExemplarCollectionSgExemplarToAttach.getClass(), sgExemplarCollectionSgExemplarToAttach.getNrRegisto());
-                attachedSgExemplarCollection.add(sgExemplarCollectionSgExemplarToAttach);
+            sgObra.setSgObraAutorList(attachedSgObraAutorList);
+            List<SgExemplar> attachedSgExemplarList = new ArrayList<SgExemplar>();
+            for (SgExemplar sgExemplarListSgExemplarToAttach : sgObra.getSgExemplarList()) {
+                sgExemplarListSgExemplarToAttach = em.getReference(sgExemplarListSgExemplarToAttach.getClass(), sgExemplarListSgExemplarToAttach.getNrRegisto());
+                attachedSgExemplarList.add(sgExemplarListSgExemplarToAttach);
             }
-            sgObra.setSgExemplarCollection(attachedSgExemplarCollection);
+            sgObra.setSgExemplarList(attachedSgExemplarList);
             em.persist(sgObra);
             if (curso != null) {
-                curso.getSgObraCollection().add(sgObra);
+                curso.getSgObraList().add(sgObra);
                 curso = em.merge(curso);
             }
             if (area != null) {
-                area.getSgObraCollection().add(sgObra);
+                area.getSgObraList().add(sgObra);
                 area = em.merge(area);
             }
             if (dominio != null) {
-                dominio.getSgObraCollection().add(sgObra);
+                dominio.getSgObraList().add(sgObra);
                 dominio = em.merge(dominio);
             }
             if (bibliotecario != null) {
-                bibliotecario.getSgObraCollection().add(sgObra);
+                bibliotecario.getSgObraList().add(sgObra);
                 bibliotecario = em.merge(bibliotecario);
             }
-            for (SgObraAutor sgObraAutorCollectionSgObraAutor : sgObra.getSgObraAutorCollection()) {
-                SgObra oldSgObraOfSgObraAutorCollectionSgObraAutor = sgObraAutorCollectionSgObraAutor.getSgObra();
-                sgObraAutorCollectionSgObraAutor.setSgObra(sgObra);
-                sgObraAutorCollectionSgObraAutor = em.merge(sgObraAutorCollectionSgObraAutor);
-                if (oldSgObraOfSgObraAutorCollectionSgObraAutor != null) {
-                    oldSgObraOfSgObraAutorCollectionSgObraAutor.getSgObraAutorCollection().remove(sgObraAutorCollectionSgObraAutor);
-                    oldSgObraOfSgObraAutorCollectionSgObraAutor = em.merge(oldSgObraOfSgObraAutorCollectionSgObraAutor);
+            for (SgObraAutor sgObraAutorListSgObraAutor : sgObra.getSgObraAutorList()) {
+                SgObra oldIdlivroOfSgObraAutorListSgObraAutor = sgObraAutorListSgObraAutor.getIdlivro();
+                sgObraAutorListSgObraAutor.setIdlivro(sgObra);
+                sgObraAutorListSgObraAutor = em.merge(sgObraAutorListSgObraAutor);
+                if (oldIdlivroOfSgObraAutorListSgObraAutor != null) {
+                    oldIdlivroOfSgObraAutorListSgObraAutor.getSgObraAutorList().remove(sgObraAutorListSgObraAutor);
+                    oldIdlivroOfSgObraAutorListSgObraAutor = em.merge(oldIdlivroOfSgObraAutorListSgObraAutor);
                 }
             }
-            for (SgExemplar sgExemplarCollectionSgExemplar : sgObra.getSgExemplarCollection()) {
-                SgObra oldObraRefOfSgExemplarCollectionSgExemplar = sgExemplarCollectionSgExemplar.getObraRef();
-                sgExemplarCollectionSgExemplar.setObraRef(sgObra);
-                sgExemplarCollectionSgExemplar = em.merge(sgExemplarCollectionSgExemplar);
-                if (oldObraRefOfSgExemplarCollectionSgExemplar != null) {
-                    oldObraRefOfSgExemplarCollectionSgExemplar.getSgExemplarCollection().remove(sgExemplarCollectionSgExemplar);
-                    oldObraRefOfSgExemplarCollectionSgExemplar = em.merge(oldObraRefOfSgExemplarCollectionSgExemplar);
+            for (SgExemplar sgExemplarListSgExemplar : sgObra.getSgExemplarList()) {
+                SgObra oldObraRefOfSgExemplarListSgExemplar = sgExemplarListSgExemplar.getObraRef();
+                sgExemplarListSgExemplar.setObraRef(sgObra);
+                sgExemplarListSgExemplar = em.merge(sgExemplarListSgExemplar);
+                if (oldObraRefOfSgExemplarListSgExemplar != null) {
+                    oldObraRefOfSgExemplarListSgExemplar.getSgExemplarList().remove(sgExemplarListSgExemplar);
+                    oldObraRefOfSgExemplarListSgExemplar = em.merge(oldObraRefOfSgExemplarListSgExemplar);
                 }
             }
             em.getTransaction().commit();
@@ -140,17 +139,17 @@ public class SgObraJpaController implements Serializable {
             SgObraCategoria dominioNew = sgObra.getDominio();
             Users bibliotecarioOld = persistentSgObra.getBibliotecario();
             Users bibliotecarioNew = sgObra.getBibliotecario();
-            Collection<SgObraAutor> sgObraAutorCollectionOld = persistentSgObra.getSgObraAutorCollection();
-            Collection<SgObraAutor> sgObraAutorCollectionNew = sgObra.getSgObraAutorCollection();
-            Collection<SgExemplar> sgExemplarCollectionOld = persistentSgObra.getSgExemplarCollection();
-            Collection<SgExemplar> sgExemplarCollectionNew = sgObra.getSgExemplarCollection();
+            List<SgObraAutor> sgObraAutorListOld = persistentSgObra.getSgObraAutorList();
+            List<SgObraAutor> sgObraAutorListNew = sgObra.getSgObraAutorList();
+            List<SgExemplar> sgExemplarListOld = persistentSgObra.getSgExemplarList();
+            List<SgExemplar> sgExemplarListNew = sgObra.getSgExemplarList();
             List<String> illegalOrphanMessages = null;
-            for (SgObraAutor sgObraAutorCollectionOldSgObraAutor : sgObraAutorCollectionOld) {
-                if (!sgObraAutorCollectionNew.contains(sgObraAutorCollectionOldSgObraAutor)) {
+            for (SgObraAutor sgObraAutorListOldSgObraAutor : sgObraAutorListOld) {
+                if (!sgObraAutorListNew.contains(sgObraAutorListOldSgObraAutor)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain SgObraAutor " + sgObraAutorCollectionOldSgObraAutor + " since its sgObra field is not nullable.");
+                    illegalOrphanMessages.add("You must retain SgObraAutor " + sgObraAutorListOldSgObraAutor + " since its idlivro field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -172,78 +171,78 @@ public class SgObraJpaController implements Serializable {
                 bibliotecarioNew = em.getReference(bibliotecarioNew.getClass(), bibliotecarioNew.getUtilizador());
                 sgObra.setBibliotecario(bibliotecarioNew);
             }
-            Collection<SgObraAutor> attachedSgObraAutorCollectionNew = new ArrayList<SgObraAutor>();
-            for (SgObraAutor sgObraAutorCollectionNewSgObraAutorToAttach : sgObraAutorCollectionNew) {
-                sgObraAutorCollectionNewSgObraAutorToAttach = em.getReference(sgObraAutorCollectionNewSgObraAutorToAttach.getClass(), sgObraAutorCollectionNewSgObraAutorToAttach.getSgObraAutorPK());
-                attachedSgObraAutorCollectionNew.add(sgObraAutorCollectionNewSgObraAutorToAttach);
+            List<SgObraAutor> attachedSgObraAutorListNew = new ArrayList<SgObraAutor>();
+            for (SgObraAutor sgObraAutorListNewSgObraAutorToAttach : sgObraAutorListNew) {
+                sgObraAutorListNewSgObraAutorToAttach = em.getReference(sgObraAutorListNewSgObraAutorToAttach.getClass(), sgObraAutorListNewSgObraAutorToAttach.getIdautor());
+                attachedSgObraAutorListNew.add(sgObraAutorListNewSgObraAutorToAttach);
             }
-            sgObraAutorCollectionNew = attachedSgObraAutorCollectionNew;
-            sgObra.setSgObraAutorCollection(sgObraAutorCollectionNew);
-            Collection<SgExemplar> attachedSgExemplarCollectionNew = new ArrayList<SgExemplar>();
-            for (SgExemplar sgExemplarCollectionNewSgExemplarToAttach : sgExemplarCollectionNew) {
-                sgExemplarCollectionNewSgExemplarToAttach = em.getReference(sgExemplarCollectionNewSgExemplarToAttach.getClass(), sgExemplarCollectionNewSgExemplarToAttach.getNrRegisto());
-                attachedSgExemplarCollectionNew.add(sgExemplarCollectionNewSgExemplarToAttach);
+            sgObraAutorListNew = attachedSgObraAutorListNew;
+            sgObra.setSgObraAutorList(sgObraAutorListNew);
+            List<SgExemplar> attachedSgExemplarListNew = new ArrayList<SgExemplar>();
+            for (SgExemplar sgExemplarListNewSgExemplarToAttach : sgExemplarListNew) {
+                sgExemplarListNewSgExemplarToAttach = em.getReference(sgExemplarListNewSgExemplarToAttach.getClass(), sgExemplarListNewSgExemplarToAttach.getNrRegisto());
+                attachedSgExemplarListNew.add(sgExemplarListNewSgExemplarToAttach);
             }
-            sgExemplarCollectionNew = attachedSgExemplarCollectionNew;
-            sgObra.setSgExemplarCollection(sgExemplarCollectionNew);
+            sgExemplarListNew = attachedSgExemplarListNew;
+            sgObra.setSgExemplarList(sgExemplarListNew);
             sgObra = em.merge(sgObra);
             if (cursoOld != null && !cursoOld.equals(cursoNew)) {
-                cursoOld.getSgObraCollection().remove(sgObra);
+                cursoOld.getSgObraList().remove(sgObra);
                 cursoOld = em.merge(cursoOld);
             }
             if (cursoNew != null && !cursoNew.equals(cursoOld)) {
-                cursoNew.getSgObraCollection().add(sgObra);
+                cursoNew.getSgObraList().add(sgObra);
                 cursoNew = em.merge(cursoNew);
             }
             if (areaOld != null && !areaOld.equals(areaNew)) {
-                areaOld.getSgObraCollection().remove(sgObra);
+                areaOld.getSgObraList().remove(sgObra);
                 areaOld = em.merge(areaOld);
             }
             if (areaNew != null && !areaNew.equals(areaOld)) {
-                areaNew.getSgObraCollection().add(sgObra);
+                areaNew.getSgObraList().add(sgObra);
                 areaNew = em.merge(areaNew);
             }
             if (dominioOld != null && !dominioOld.equals(dominioNew)) {
-                dominioOld.getSgObraCollection().remove(sgObra);
+                dominioOld.getSgObraList().remove(sgObra);
                 dominioOld = em.merge(dominioOld);
             }
             if (dominioNew != null && !dominioNew.equals(dominioOld)) {
-                dominioNew.getSgObraCollection().add(sgObra);
+                dominioNew.getSgObraList().add(sgObra);
                 dominioNew = em.merge(dominioNew);
             }
             if (bibliotecarioOld != null && !bibliotecarioOld.equals(bibliotecarioNew)) {
-                bibliotecarioOld.getSgObraCollection().remove(sgObra);
+                bibliotecarioOld.getSgObraList().remove(sgObra);
                 bibliotecarioOld = em.merge(bibliotecarioOld);
             }
             if (bibliotecarioNew != null && !bibliotecarioNew.equals(bibliotecarioOld)) {
-                bibliotecarioNew.getSgObraCollection().add(sgObra);
+                bibliotecarioNew.getSgObraList().add(sgObra);
                 bibliotecarioNew = em.merge(bibliotecarioNew);
             }
-            for (SgObraAutor sgObraAutorCollectionNewSgObraAutor : sgObraAutorCollectionNew) {
-                if (!sgObraAutorCollectionOld.contains(sgObraAutorCollectionNewSgObraAutor)) {
-                    SgObra oldSgObraOfSgObraAutorCollectionNewSgObraAutor = sgObraAutorCollectionNewSgObraAutor.getSgObra();
-                    sgObraAutorCollectionNewSgObraAutor.setSgObra(sgObra);
-                    sgObraAutorCollectionNewSgObraAutor = em.merge(sgObraAutorCollectionNewSgObraAutor);
-                    if (oldSgObraOfSgObraAutorCollectionNewSgObraAutor != null && !oldSgObraOfSgObraAutorCollectionNewSgObraAutor.equals(sgObra)) {
-                        oldSgObraOfSgObraAutorCollectionNewSgObraAutor.getSgObraAutorCollection().remove(sgObraAutorCollectionNewSgObraAutor);
-                        oldSgObraOfSgObraAutorCollectionNewSgObraAutor = em.merge(oldSgObraOfSgObraAutorCollectionNewSgObraAutor);
+            for (SgObraAutor sgObraAutorListNewSgObraAutor : sgObraAutorListNew) {
+                if (!sgObraAutorListOld.contains(sgObraAutorListNewSgObraAutor)) {
+                    SgObra oldIdlivroOfSgObraAutorListNewSgObraAutor = sgObraAutorListNewSgObraAutor.getIdlivro();
+                    sgObraAutorListNewSgObraAutor.setIdlivro(sgObra);
+                    sgObraAutorListNewSgObraAutor = em.merge(sgObraAutorListNewSgObraAutor);
+                    if (oldIdlivroOfSgObraAutorListNewSgObraAutor != null && !oldIdlivroOfSgObraAutorListNewSgObraAutor.equals(sgObra)) {
+                        oldIdlivroOfSgObraAutorListNewSgObraAutor.getSgObraAutorList().remove(sgObraAutorListNewSgObraAutor);
+                        oldIdlivroOfSgObraAutorListNewSgObraAutor = em.merge(oldIdlivroOfSgObraAutorListNewSgObraAutor);
                     }
                 }
             }
-            for (SgExemplar sgExemplarCollectionOldSgExemplar : sgExemplarCollectionOld) {
-                if (!sgExemplarCollectionNew.contains(sgExemplarCollectionOldSgExemplar)) {
-                    sgExemplarCollectionOldSgExemplar.setObraRef(null);
-                    sgExemplarCollectionOldSgExemplar = em.merge(sgExemplarCollectionOldSgExemplar);
+            for (SgExemplar sgExemplarListOldSgExemplar : sgExemplarListOld) {
+                if (!sgExemplarListNew.contains(sgExemplarListOldSgExemplar)) {
+                    sgExemplarListOldSgExemplar.setObraRef(null);
+                    sgExemplarListOldSgExemplar = em.merge(sgExemplarListOldSgExemplar);
                 }
             }
-            for (SgExemplar sgExemplarCollectionNewSgExemplar : sgExemplarCollectionNew) {
-                if (!sgExemplarCollectionOld.contains(sgExemplarCollectionNewSgExemplar)) {
-                    SgObra oldObraRefOfSgExemplarCollectionNewSgExemplar = sgExemplarCollectionNewSgExemplar.getObraRef();
-                    sgExemplarCollectionNewSgExemplar.setObraRef(sgObra);
-                    sgExemplarCollectionNewSgExemplar = em.merge(sgExemplarCollectionNewSgExemplar);
-                    if (oldObraRefOfSgExemplarCollectionNewSgExemplar != null && !oldObraRefOfSgExemplarCollectionNewSgExemplar.equals(sgObra)) {
-                        oldObraRefOfSgExemplarCollectionNewSgExemplar.getSgExemplarCollection().remove(sgExemplarCollectionNewSgExemplar);
-                        oldObraRefOfSgExemplarCollectionNewSgExemplar = em.merge(oldObraRefOfSgExemplarCollectionNewSgExemplar);
+            for (SgExemplar sgExemplarListNewSgExemplar : sgExemplarListNew) {
+                if (!sgExemplarListOld.contains(sgExemplarListNewSgExemplar)) {
+                    SgObra oldObraRefOfSgExemplarListNewSgExemplar = sgExemplarListNewSgExemplar.getObraRef();
+                    sgExemplarListNewSgExemplar.setObraRef(sgObra);
+                    sgExemplarListNewSgExemplar = em.merge(sgExemplarListNewSgExemplar);
+                    if (oldObraRefOfSgExemplarListNewSgExemplar != null && !oldObraRefOfSgExemplarListNewSgExemplar.equals(sgObra)) {
+                        oldObraRefOfSgExemplarListNewSgExemplar.getSgExemplarList().remove(sgExemplarListNewSgExemplar);
+                        oldObraRefOfSgExemplarListNewSgExemplar = em.merge(oldObraRefOfSgExemplarListNewSgExemplar);
                     }
                 }
             }
@@ -277,40 +276,40 @@ public class SgObraJpaController implements Serializable {
                 throw new NonexistentEntityException("The sgObra with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<SgObraAutor> sgObraAutorCollectionOrphanCheck = sgObra.getSgObraAutorCollection();
-            for (SgObraAutor sgObraAutorCollectionOrphanCheckSgObraAutor : sgObraAutorCollectionOrphanCheck) {
+            List<SgObraAutor> sgObraAutorListOrphanCheck = sgObra.getSgObraAutorList();
+            for (SgObraAutor sgObraAutorListOrphanCheckSgObraAutor : sgObraAutorListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This SgObra (" + sgObra + ") cannot be destroyed since the SgObraAutor " + sgObraAutorCollectionOrphanCheckSgObraAutor + " in its sgObraAutorCollection field has a non-nullable sgObra field.");
+                illegalOrphanMessages.add("This SgObra (" + sgObra + ") cannot be destroyed since the SgObraAutor " + sgObraAutorListOrphanCheckSgObraAutor + " in its sgObraAutorList field has a non-nullable idlivro field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Curso curso = sgObra.getCurso();
             if (curso != null) {
-                curso.getSgObraCollection().remove(sgObra);
+                curso.getSgObraList().remove(sgObra);
                 curso = em.merge(curso);
             }
             SgObraArea area = sgObra.getArea();
             if (area != null) {
-                area.getSgObraCollection().remove(sgObra);
+                area.getSgObraList().remove(sgObra);
                 area = em.merge(area);
             }
             SgObraCategoria dominio = sgObra.getDominio();
             if (dominio != null) {
-                dominio.getSgObraCollection().remove(sgObra);
+                dominio.getSgObraList().remove(sgObra);
                 dominio = em.merge(dominio);
             }
             Users bibliotecario = sgObra.getBibliotecario();
             if (bibliotecario != null) {
-                bibliotecario.getSgObraCollection().remove(sgObra);
+                bibliotecario.getSgObraList().remove(sgObra);
                 bibliotecario = em.merge(bibliotecario);
             }
-            Collection<SgExemplar> sgExemplarCollection = sgObra.getSgExemplarCollection();
-            for (SgExemplar sgExemplarCollectionSgExemplar : sgExemplarCollection) {
-                sgExemplarCollectionSgExemplar.setObraRef(null);
-                sgExemplarCollectionSgExemplar = em.merge(sgExemplarCollectionSgExemplar);
+            List<SgExemplar> sgExemplarList = sgObra.getSgExemplarList();
+            for (SgExemplar sgExemplarListSgExemplar : sgExemplarList) {
+                sgExemplarListSgExemplar.setObraRef(null);
+                sgExemplarListSgExemplar = em.merge(sgExemplarListSgExemplar);
             }
             em.remove(sgObra);
             em.getTransaction().commit();

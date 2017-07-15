@@ -6,7 +6,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,6 +25,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "b_leitor", catalog = "fecn2", schema = "public")
+@Table(name = "b_leitor", catalog = "bh", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"nr_cartao"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BLeitor.findAll", query = "SELECT b FROM BLeitor b")
@@ -56,11 +57,11 @@ public class BLeitor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "nr_cartao")
+    @Column(name = "nr_cartao", nullable = false)
     private Long nrCartao;
-    @Column(name = "tipo_leitor")
+    @Column(name = "tipo_leitor", length = 255)
     private String tipoLeitor;
-    @Column(name = "foto_url")
+    @Column(name = "foto_url", length = 1000)
     private String fotoUrl;
     @Column(name = "data_registo")
     @Temporal(TemporalType.DATE)
@@ -68,30 +69,28 @@ public class BLeitor implements Serializable {
     @Column(name = "data_actualizacao")
     @Temporal(TemporalType.DATE)
     private Date dataActualizacao;
-    @Column(name = "bi")
+    @Column(name = "bi", length = 255)
     private String bi;
-    @Column(name = "email")
+    @Column(name = "email", length = 255)
     private String email;
-    @Column(name = "moradia")
+    @Column(name = "moradia", length = 255)
     private String moradia;
-    @Column(name = "nome")
+    @Column(name = "nome", length = 255)
     private String nome;
-    @Column(name = "telefone")
+    @Column(name = "telefone", length = 255)
     private String telefone;
-    @Column(name = "estado")
+    @Column(name = "estado", length = 255)
     private String estado;
-    @Column(name = "tipo_conta")
+    @Column(name = "tipo_conta", length = 255)
     private String tipoConta;
     @OneToMany(mappedBy = "idLeitor", fetch = FetchType.LAZY)
-    private Collection<SgEmprestimo> sgEmprestimoCollection;
+    private List<SgEmprestimo> sgEmprestimoList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "bLeitor", fetch = FetchType.LAZY)
     private BvAvaliador bvAvaliador;
-    @OneToMany(mappedBy = "idLeitor", fetch = FetchType.LAZY)
-    private Collection<BNotificacao> bNotificacaoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bLeitor", fetch = FetchType.LAZY)
-    private Collection<BvLeitura> bvLeituraCollection;
+    private List<BvLeitura> bvLeituraList;
     @OneToMany(mappedBy = "publicador", fetch = FetchType.LAZY)
-    private Collection<BvArtigo> bvArtigoCollection;
+    private List<BvArtigo> bvArtigoList;
     @JoinColumn(name = "id_parametro_actualizacao", referencedColumnName = "idparametro")
     @ManyToOne(fetch = FetchType.LAZY)
     private SgEmprestimoParametros idParametroActualizacao;
@@ -105,8 +104,7 @@ public class BLeitor implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Users idutilizador;
     @OneToMany(mappedBy = "leitor", fetch = FetchType.LAZY)
-    private Collection<BReserva> bReservaCollection;
-    private List<SgEmprestimo> SgEmprestimolist;
+    private List<BReserva> bReservaList;
 
     public BLeitor() {
     }
@@ -212,12 +210,12 @@ public class BLeitor implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgEmprestimo> getSgEmprestimoCollection() {
-        return sgEmprestimoCollection;
+    public List<SgEmprestimo> getSgEmprestimoList() {
+        return sgEmprestimoList;
     }
 
-    public void setSgEmprestimoCollection(Collection<SgEmprestimo> sgEmprestimoCollection) {
-        this.sgEmprestimoCollection = sgEmprestimoCollection;
+    public void setSgEmprestimoList(List<SgEmprestimo> sgEmprestimoList) {
+        this.sgEmprestimoList = sgEmprestimoList;
     }
 
     public BvAvaliador getBvAvaliador() {
@@ -229,30 +227,21 @@ public class BLeitor implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BNotificacao> getBNotificacaoCollection() {
-        return bNotificacaoCollection;
+    public List<BvLeitura> getBvLeituraList() {
+        return bvLeituraList;
     }
 
-    public void setBNotificacaoCollection(Collection<BNotificacao> bNotificacaoCollection) {
-        this.bNotificacaoCollection = bNotificacaoCollection;
-    }
-
-    @XmlTransient
-    public Collection<BvLeitura> getBvLeituraCollection() {
-        return bvLeituraCollection;
-    }
-
-    public void setBvLeituraCollection(Collection<BvLeitura> bvLeituraCollection) {
-        this.bvLeituraCollection = bvLeituraCollection;
+    public void setBvLeituraList(List<BvLeitura> bvLeituraList) {
+        this.bvLeituraList = bvLeituraList;
     }
 
     @XmlTransient
-    public Collection<BvArtigo> getBvArtigoCollection() {
-        return bvArtigoCollection;
+    public List<BvArtigo> getBvArtigoList() {
+        return bvArtigoList;
     }
 
-    public void setBvArtigoCollection(Collection<BvArtigo> bvArtigoCollection) {
-        this.bvArtigoCollection = bvArtigoCollection;
+    public void setBvArtigoList(List<BvArtigo> bvArtigoList) {
+        this.bvArtigoList = bvArtigoList;
     }
 
     public SgEmprestimoParametros getIdParametroActualizacao() {
@@ -288,12 +277,12 @@ public class BLeitor implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BReserva> getBReservaCollection() {
-        return bReservaCollection;
+    public List<BReserva> getBReservaList() {
+        return bReservaList;
     }
 
-    public void setBReservaCollection(Collection<BReserva> bReservaCollection) {
-        this.bReservaCollection = bReservaCollection;
+    public void setBReservaList(List<BReserva> bReservaList) {
+        this.bReservaList = bReservaList;
     }
 
     @Override
@@ -319,10 +308,6 @@ public class BLeitor implements Serializable {
     @Override
     public String toString() {
         return "entidades.BLeitor[ nrCartao=" + nrCartao + " ]";
-    }
-
-    public List<SgEmprestimo> getSgEmprestimoList() {
-      return SgEmprestimolist;
     }
     
 }

@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_obra_categoria", catalog = "fecn2", schema = "public")
+@Table(name = "sg_obra_categoria", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgObraCategoria.findAll", query = "SELECT s FROM SgObraCategoria s")
@@ -35,12 +35,12 @@ public class SgObraCategoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "categoria")
+    @Column(name = "categoria", nullable = false, length = 255)
     private String categoria;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 255)
     private String descricao;
     @OneToMany(mappedBy = "dominio", fetch = FetchType.LAZY)
-    private Collection<SgObra> sgObraCollection;
+    private List<SgObra> sgObraList;
 
     public SgObraCategoria() {
     }
@@ -66,12 +66,12 @@ public class SgObraCategoria implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgObra> getSgObraCollection() {
-        return sgObraCollection;
+    public List<SgObra> getSgObraList() {
+        return sgObraList;
     }
 
-    public void setSgObraCollection(Collection<SgObra> sgObraCollection) {
-        this.sgObraCollection = sgObraCollection;
+    public void setSgObraList(List<SgObra> sgObraList) {
+        this.sgObraList = sgObraList;
     }
 
     @Override

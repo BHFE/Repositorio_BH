@@ -6,8 +6,8 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "bv_artigo", catalog = "fecn2", schema = "public")
+@Table(name = "bv_artigo", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BvArtigo.findAll", query = "SELECT b FROM BvArtigo b")
@@ -56,41 +56,39 @@ public class BvArtigo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idartigo")
+    @Column(name = "idartigo", nullable = false)
     private Long idartigo;
-    @Column(name = "autor")
+    @Column(name = "autor", length = 255)
     private String autor;
     @Column(name = "data_publicacao")
     @Temporal(TemporalType.DATE)
     private Date dataPublicacao;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 8000)
     private String descricao;
-    @Column(name = "directorio_capa")
+    @Column(name = "directorio_capa", length = 255)
     private String directorioCapa;
-    @Column(name = "directorio_pdf")
+    @Column(name = "directorio_pdf", length = 255)
     private String directorioPdf;
-    @Column(name = "direitos")
+    @Column(name = "direitos", length = 8000)
     private String direitos;
-    @Column(name = "estado")
+    @Column(name = "estado", length = 255)
     private String estado;
-    @Column(name = "formato")
+    @Column(name = "formato", length = 255)
     private String formato;
-    @Column(name = "idioma")
+    @Column(name = "idioma", length = 255)
     private String idioma;
-    @Column(name = "titulo")
+    @Column(name = "titulo", length = 255)
     private String titulo;
-    @Column(name = "avaliacao_obs")
+    @Column(name = "avaliacao_obs", length = 8000)
     private String avaliacaoObs;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "avaliacao_nota")
+    @Column(name = "avaliacao_nota", precision = 17, scale = 17)
     private Double avaliacaoNota;
     @Column(name = "data_submissao")
     @Temporal(TemporalType.DATE)
     private Date dataSubmissao;
-    @OneToMany(mappedBy = "idPublicacao", fetch = FetchType.LAZY)
-    private Collection<BNotificacao> bNotificacaoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bvArtigo", fetch = FetchType.LAZY)
-    private Collection<BvLeitura> bvLeituraCollection;
+    private List<BvLeitura> bvLeituraList;
     @JoinColumn(name = "publicador", referencedColumnName = "nr_cartao")
     @ManyToOne(fetch = FetchType.LAZY)
     private BLeitor publicador;
@@ -227,21 +225,12 @@ public class BvArtigo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BNotificacao> getBNotificacaoCollection() {
-        return bNotificacaoCollection;
+    public List<BvLeitura> getBvLeituraList() {
+        return bvLeituraList;
     }
 
-    public void setBNotificacaoCollection(Collection<BNotificacao> bNotificacaoCollection) {
-        this.bNotificacaoCollection = bNotificacaoCollection;
-    }
-
-    @XmlTransient
-    public Collection<BvLeitura> getBvLeituraCollection() {
-        return bvLeituraCollection;
-    }
-
-    public void setBvLeituraCollection(Collection<BvLeitura> bvLeituraCollection) {
-        this.bvLeituraCollection = bvLeituraCollection;
+    public void setBvLeituraList(List<BvLeitura> bvLeituraList) {
+        this.bvLeituraList = bvLeituraList;
     }
 
     public BLeitor getPublicador() {

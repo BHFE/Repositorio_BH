@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "categoria", catalog = "fecn2", schema = "public")
+@Table(name = "categoria", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c")
@@ -35,12 +35,12 @@ public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_categoria")
+    @Column(name = "id_categoria", nullable = false, length = 5)
     private String idCategoria;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria", fetch = FetchType.LAZY)
-    private Collection<Roles> rolesCollection;
+    private List<Roles> rolesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoria", fetch = FetchType.LAZY)
-    private Collection<Item> itemCollection;
+    private List<Item> itemList;
 
     public Categoria() {
     }
@@ -58,21 +58,21 @@ public class Categoria implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Roles> getRolesCollection() {
-        return rolesCollection;
+    public List<Roles> getRolesList() {
+        return rolesList;
     }
 
-    public void setRolesCollection(Collection<Roles> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRolesList(List<Roles> rolesList) {
+        this.rolesList = rolesList;
     }
 
     @XmlTransient
-    public Collection<Item> getItemCollection() {
-        return itemCollection;
+    public List<Item> getItemList() {
+        return itemList;
     }
 
-    public void setItemCollection(Collection<Item> itemCollection) {
-        this.itemCollection = itemCollection;
+    public void setItemList(List<Item> itemList) {
+        this.itemList = itemList;
     }
 
     @Override

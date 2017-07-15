@@ -15,10 +15,9 @@ import entidades.SgObra;
 import entidades.Users;
 import entidades.SgEmprestimo;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import entidades.BReserva;
 import entidades.SgExemplar;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -38,11 +37,11 @@ public class SgExemplarJpaController implements Serializable {
     }
 
     public void create(SgExemplar sgExemplar) {
-        if (sgExemplar.getSgEmprestimoCollection() == null) {
-            sgExemplar.setSgEmprestimoCollection(new ArrayList<SgEmprestimo>());
+        if (sgExemplar.getSgEmprestimoList() == null) {
+            sgExemplar.setSgEmprestimoList(new ArrayList<SgEmprestimo>());
         }
-        if (sgExemplar.getBReservaCollection() == null) {
-            sgExemplar.setBReservaCollection(new ArrayList<BReserva>());
+        if (sgExemplar.getBReservaList() == null) {
+            sgExemplar.setBReservaList(new ArrayList<BReserva>());
         }
         EntityManager em = null;
         try {
@@ -58,43 +57,43 @@ public class SgExemplarJpaController implements Serializable {
                 agenteRegisto = em.getReference(agenteRegisto.getClass(), agenteRegisto.getUtilizador());
                 sgExemplar.setAgenteRegisto(agenteRegisto);
             }
-            Collection<SgEmprestimo> attachedSgEmprestimoCollection = new ArrayList<SgEmprestimo>();
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimoToAttach : sgExemplar.getSgEmprestimoCollection()) {
-                sgEmprestimoCollectionSgEmprestimoToAttach = em.getReference(sgEmprestimoCollectionSgEmprestimoToAttach.getClass(), sgEmprestimoCollectionSgEmprestimoToAttach.getIdemprestimo());
-                attachedSgEmprestimoCollection.add(sgEmprestimoCollectionSgEmprestimoToAttach);
+            List<SgEmprestimo> attachedSgEmprestimoList = new ArrayList<SgEmprestimo>();
+            for (SgEmprestimo sgEmprestimoListSgEmprestimoToAttach : sgExemplar.getSgEmprestimoList()) {
+                sgEmprestimoListSgEmprestimoToAttach = em.getReference(sgEmprestimoListSgEmprestimoToAttach.getClass(), sgEmprestimoListSgEmprestimoToAttach.getIdemprestimo());
+                attachedSgEmprestimoList.add(sgEmprestimoListSgEmprestimoToAttach);
             }
-            sgExemplar.setSgEmprestimoCollection(attachedSgEmprestimoCollection);
-            Collection<BReserva> attachedBReservaCollection = new ArrayList<BReserva>();
-            for (BReserva BReservaCollectionBReservaToAttach : sgExemplar.getBReservaCollection()) {
-                BReservaCollectionBReservaToAttach = em.getReference(BReservaCollectionBReservaToAttach.getClass(), BReservaCollectionBReservaToAttach.getIdagenda());
-                attachedBReservaCollection.add(BReservaCollectionBReservaToAttach);
+            sgExemplar.setSgEmprestimoList(attachedSgEmprestimoList);
+            List<BReserva> attachedBReservaList = new ArrayList<BReserva>();
+            for (BReserva BReservaListBReservaToAttach : sgExemplar.getBReservaList()) {
+                BReservaListBReservaToAttach = em.getReference(BReservaListBReservaToAttach.getClass(), BReservaListBReservaToAttach.getIdagenda());
+                attachedBReservaList.add(BReservaListBReservaToAttach);
             }
-            sgExemplar.setBReservaCollection(attachedBReservaCollection);
+            sgExemplar.setBReservaList(attachedBReservaList);
             em.persist(sgExemplar);
             if (obraRef != null) {
-                obraRef.getSgExemplarCollection().add(sgExemplar);
+                obraRef.getSgExemplarList().add(sgExemplar);
                 obraRef = em.merge(obraRef);
             }
             if (agenteRegisto != null) {
-                agenteRegisto.getSgExemplarCollection().add(sgExemplar);
+                agenteRegisto.getSgExemplarList().add(sgExemplar);
                 agenteRegisto = em.merge(agenteRegisto);
             }
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimo : sgExemplar.getSgEmprestimoCollection()) {
-                SgExemplar oldExemplarRefOfSgEmprestimoCollectionSgEmprestimo = sgEmprestimoCollectionSgEmprestimo.getExemplarRef();
-                sgEmprestimoCollectionSgEmprestimo.setExemplarRef(sgExemplar);
-                sgEmprestimoCollectionSgEmprestimo = em.merge(sgEmprestimoCollectionSgEmprestimo);
-                if (oldExemplarRefOfSgEmprestimoCollectionSgEmprestimo != null) {
-                    oldExemplarRefOfSgEmprestimoCollectionSgEmprestimo.getSgEmprestimoCollection().remove(sgEmprestimoCollectionSgEmprestimo);
-                    oldExemplarRefOfSgEmprestimoCollectionSgEmprestimo = em.merge(oldExemplarRefOfSgEmprestimoCollectionSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListSgEmprestimo : sgExemplar.getSgEmprestimoList()) {
+                SgExemplar oldExemplarRefOfSgEmprestimoListSgEmprestimo = sgEmprestimoListSgEmprestimo.getExemplarRef();
+                sgEmprestimoListSgEmprestimo.setExemplarRef(sgExemplar);
+                sgEmprestimoListSgEmprestimo = em.merge(sgEmprestimoListSgEmprestimo);
+                if (oldExemplarRefOfSgEmprestimoListSgEmprestimo != null) {
+                    oldExemplarRefOfSgEmprestimoListSgEmprestimo.getSgEmprestimoList().remove(sgEmprestimoListSgEmprestimo);
+                    oldExemplarRefOfSgEmprestimoListSgEmprestimo = em.merge(oldExemplarRefOfSgEmprestimoListSgEmprestimo);
                 }
             }
-            for (BReserva BReservaCollectionBReserva : sgExemplar.getBReservaCollection()) {
-                SgExemplar oldLivroOfBReservaCollectionBReserva = BReservaCollectionBReserva.getLivro();
-                BReservaCollectionBReserva.setLivro(sgExemplar);
-                BReservaCollectionBReserva = em.merge(BReservaCollectionBReserva);
-                if (oldLivroOfBReservaCollectionBReserva != null) {
-                    oldLivroOfBReservaCollectionBReserva.getBReservaCollection().remove(BReservaCollectionBReserva);
-                    oldLivroOfBReservaCollectionBReserva = em.merge(oldLivroOfBReservaCollectionBReserva);
+            for (BReserva BReservaListBReserva : sgExemplar.getBReservaList()) {
+                SgExemplar oldLivroOfBReservaListBReserva = BReservaListBReserva.getLivro();
+                BReservaListBReserva.setLivro(sgExemplar);
+                BReservaListBReserva = em.merge(BReservaListBReserva);
+                if (oldLivroOfBReservaListBReserva != null) {
+                    oldLivroOfBReservaListBReserva.getBReservaList().remove(BReservaListBReserva);
+                    oldLivroOfBReservaListBReserva = em.merge(oldLivroOfBReservaListBReserva);
                 }
             }
             em.getTransaction().commit();
@@ -115,10 +114,10 @@ public class SgExemplarJpaController implements Serializable {
             SgObra obraRefNew = sgExemplar.getObraRef();
             Users agenteRegistoOld = persistentSgExemplar.getAgenteRegisto();
             Users agenteRegistoNew = sgExemplar.getAgenteRegisto();
-            Collection<SgEmprestimo> sgEmprestimoCollectionOld = persistentSgExemplar.getSgEmprestimoCollection();
-            Collection<SgEmprestimo> sgEmprestimoCollectionNew = sgExemplar.getSgEmprestimoCollection();
-            Collection<BReserva> BReservaCollectionOld = persistentSgExemplar.getBReservaCollection();
-            Collection<BReserva> BReservaCollectionNew = sgExemplar.getBReservaCollection();
+            List<SgEmprestimo> sgEmprestimoListOld = persistentSgExemplar.getSgEmprestimoList();
+            List<SgEmprestimo> sgEmprestimoListNew = sgExemplar.getSgEmprestimoList();
+            List<BReserva> BReservaListOld = persistentSgExemplar.getBReservaList();
+            List<BReserva> BReservaListNew = sgExemplar.getBReservaList();
             if (obraRefNew != null) {
                 obraRefNew = em.getReference(obraRefNew.getClass(), obraRefNew.getIdlivro());
                 sgExemplar.setObraRef(obraRefNew);
@@ -127,68 +126,68 @@ public class SgExemplarJpaController implements Serializable {
                 agenteRegistoNew = em.getReference(agenteRegistoNew.getClass(), agenteRegistoNew.getUtilizador());
                 sgExemplar.setAgenteRegisto(agenteRegistoNew);
             }
-            Collection<SgEmprestimo> attachedSgEmprestimoCollectionNew = new ArrayList<SgEmprestimo>();
-            for (SgEmprestimo sgEmprestimoCollectionNewSgEmprestimoToAttach : sgEmprestimoCollectionNew) {
-                sgEmprestimoCollectionNewSgEmprestimoToAttach = em.getReference(sgEmprestimoCollectionNewSgEmprestimoToAttach.getClass(), sgEmprestimoCollectionNewSgEmprestimoToAttach.getIdemprestimo());
-                attachedSgEmprestimoCollectionNew.add(sgEmprestimoCollectionNewSgEmprestimoToAttach);
+            List<SgEmprestimo> attachedSgEmprestimoListNew = new ArrayList<SgEmprestimo>();
+            for (SgEmprestimo sgEmprestimoListNewSgEmprestimoToAttach : sgEmprestimoListNew) {
+                sgEmprestimoListNewSgEmprestimoToAttach = em.getReference(sgEmprestimoListNewSgEmprestimoToAttach.getClass(), sgEmprestimoListNewSgEmprestimoToAttach.getIdemprestimo());
+                attachedSgEmprestimoListNew.add(sgEmprestimoListNewSgEmprestimoToAttach);
             }
-            sgEmprestimoCollectionNew = attachedSgEmprestimoCollectionNew;
-            sgExemplar.setSgEmprestimoCollection(sgEmprestimoCollectionNew);
-            Collection<BReserva> attachedBReservaCollectionNew = new ArrayList<BReserva>();
-            for (BReserva BReservaCollectionNewBReservaToAttach : BReservaCollectionNew) {
-                BReservaCollectionNewBReservaToAttach = em.getReference(BReservaCollectionNewBReservaToAttach.getClass(), BReservaCollectionNewBReservaToAttach.getIdagenda());
-                attachedBReservaCollectionNew.add(BReservaCollectionNewBReservaToAttach);
+            sgEmprestimoListNew = attachedSgEmprestimoListNew;
+            sgExemplar.setSgEmprestimoList(sgEmprestimoListNew);
+            List<BReserva> attachedBReservaListNew = new ArrayList<BReserva>();
+            for (BReserva BReservaListNewBReservaToAttach : BReservaListNew) {
+                BReservaListNewBReservaToAttach = em.getReference(BReservaListNewBReservaToAttach.getClass(), BReservaListNewBReservaToAttach.getIdagenda());
+                attachedBReservaListNew.add(BReservaListNewBReservaToAttach);
             }
-            BReservaCollectionNew = attachedBReservaCollectionNew;
-            sgExemplar.setBReservaCollection(BReservaCollectionNew);
+            BReservaListNew = attachedBReservaListNew;
+            sgExemplar.setBReservaList(BReservaListNew);
             sgExemplar = em.merge(sgExemplar);
             if (obraRefOld != null && !obraRefOld.equals(obraRefNew)) {
-                obraRefOld.getSgExemplarCollection().remove(sgExemplar);
+                obraRefOld.getSgExemplarList().remove(sgExemplar);
                 obraRefOld = em.merge(obraRefOld);
             }
             if (obraRefNew != null && !obraRefNew.equals(obraRefOld)) {
-                obraRefNew.getSgExemplarCollection().add(sgExemplar);
+                obraRefNew.getSgExemplarList().add(sgExemplar);
                 obraRefNew = em.merge(obraRefNew);
             }
             if (agenteRegistoOld != null && !agenteRegistoOld.equals(agenteRegistoNew)) {
-                agenteRegistoOld.getSgExemplarCollection().remove(sgExemplar);
+                agenteRegistoOld.getSgExemplarList().remove(sgExemplar);
                 agenteRegistoOld = em.merge(agenteRegistoOld);
             }
             if (agenteRegistoNew != null && !agenteRegistoNew.equals(agenteRegistoOld)) {
-                agenteRegistoNew.getSgExemplarCollection().add(sgExemplar);
+                agenteRegistoNew.getSgExemplarList().add(sgExemplar);
                 agenteRegistoNew = em.merge(agenteRegistoNew);
             }
-            for (SgEmprestimo sgEmprestimoCollectionOldSgEmprestimo : sgEmprestimoCollectionOld) {
-                if (!sgEmprestimoCollectionNew.contains(sgEmprestimoCollectionOldSgEmprestimo)) {
-                    sgEmprestimoCollectionOldSgEmprestimo.setExemplarRef(null);
-                    sgEmprestimoCollectionOldSgEmprestimo = em.merge(sgEmprestimoCollectionOldSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListOldSgEmprestimo : sgEmprestimoListOld) {
+                if (!sgEmprestimoListNew.contains(sgEmprestimoListOldSgEmprestimo)) {
+                    sgEmprestimoListOldSgEmprestimo.setExemplarRef(null);
+                    sgEmprestimoListOldSgEmprestimo = em.merge(sgEmprestimoListOldSgEmprestimo);
                 }
             }
-            for (SgEmprestimo sgEmprestimoCollectionNewSgEmprestimo : sgEmprestimoCollectionNew) {
-                if (!sgEmprestimoCollectionOld.contains(sgEmprestimoCollectionNewSgEmprestimo)) {
-                    SgExemplar oldExemplarRefOfSgEmprestimoCollectionNewSgEmprestimo = sgEmprestimoCollectionNewSgEmprestimo.getExemplarRef();
-                    sgEmprestimoCollectionNewSgEmprestimo.setExemplarRef(sgExemplar);
-                    sgEmprestimoCollectionNewSgEmprestimo = em.merge(sgEmprestimoCollectionNewSgEmprestimo);
-                    if (oldExemplarRefOfSgEmprestimoCollectionNewSgEmprestimo != null && !oldExemplarRefOfSgEmprestimoCollectionNewSgEmprestimo.equals(sgExemplar)) {
-                        oldExemplarRefOfSgEmprestimoCollectionNewSgEmprestimo.getSgEmprestimoCollection().remove(sgEmprestimoCollectionNewSgEmprestimo);
-                        oldExemplarRefOfSgEmprestimoCollectionNewSgEmprestimo = em.merge(oldExemplarRefOfSgEmprestimoCollectionNewSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListNewSgEmprestimo : sgEmprestimoListNew) {
+                if (!sgEmprestimoListOld.contains(sgEmprestimoListNewSgEmprestimo)) {
+                    SgExemplar oldExemplarRefOfSgEmprestimoListNewSgEmprestimo = sgEmprestimoListNewSgEmprestimo.getExemplarRef();
+                    sgEmprestimoListNewSgEmprestimo.setExemplarRef(sgExemplar);
+                    sgEmprestimoListNewSgEmprestimo = em.merge(sgEmprestimoListNewSgEmprestimo);
+                    if (oldExemplarRefOfSgEmprestimoListNewSgEmprestimo != null && !oldExemplarRefOfSgEmprestimoListNewSgEmprestimo.equals(sgExemplar)) {
+                        oldExemplarRefOfSgEmprestimoListNewSgEmprestimo.getSgEmprestimoList().remove(sgEmprestimoListNewSgEmprestimo);
+                        oldExemplarRefOfSgEmprestimoListNewSgEmprestimo = em.merge(oldExemplarRefOfSgEmprestimoListNewSgEmprestimo);
                     }
                 }
             }
-            for (BReserva BReservaCollectionOldBReserva : BReservaCollectionOld) {
-                if (!BReservaCollectionNew.contains(BReservaCollectionOldBReserva)) {
-                    BReservaCollectionOldBReserva.setLivro(null);
-                    BReservaCollectionOldBReserva = em.merge(BReservaCollectionOldBReserva);
+            for (BReserva BReservaListOldBReserva : BReservaListOld) {
+                if (!BReservaListNew.contains(BReservaListOldBReserva)) {
+                    BReservaListOldBReserva.setLivro(null);
+                    BReservaListOldBReserva = em.merge(BReservaListOldBReserva);
                 }
             }
-            for (BReserva BReservaCollectionNewBReserva : BReservaCollectionNew) {
-                if (!BReservaCollectionOld.contains(BReservaCollectionNewBReserva)) {
-                    SgExemplar oldLivroOfBReservaCollectionNewBReserva = BReservaCollectionNewBReserva.getLivro();
-                    BReservaCollectionNewBReserva.setLivro(sgExemplar);
-                    BReservaCollectionNewBReserva = em.merge(BReservaCollectionNewBReserva);
-                    if (oldLivroOfBReservaCollectionNewBReserva != null && !oldLivroOfBReservaCollectionNewBReserva.equals(sgExemplar)) {
-                        oldLivroOfBReservaCollectionNewBReserva.getBReservaCollection().remove(BReservaCollectionNewBReserva);
-                        oldLivroOfBReservaCollectionNewBReserva = em.merge(oldLivroOfBReservaCollectionNewBReserva);
+            for (BReserva BReservaListNewBReserva : BReservaListNew) {
+                if (!BReservaListOld.contains(BReservaListNewBReserva)) {
+                    SgExemplar oldLivroOfBReservaListNewBReserva = BReservaListNewBReserva.getLivro();
+                    BReservaListNewBReserva.setLivro(sgExemplar);
+                    BReservaListNewBReserva = em.merge(BReservaListNewBReserva);
+                    if (oldLivroOfBReservaListNewBReserva != null && !oldLivroOfBReservaListNewBReserva.equals(sgExemplar)) {
+                        oldLivroOfBReservaListNewBReserva.getBReservaList().remove(BReservaListNewBReserva);
+                        oldLivroOfBReservaListNewBReserva = em.merge(oldLivroOfBReservaListNewBReserva);
                     }
                 }
             }
@@ -223,23 +222,23 @@ public class SgExemplarJpaController implements Serializable {
             }
             SgObra obraRef = sgExemplar.getObraRef();
             if (obraRef != null) {
-                obraRef.getSgExemplarCollection().remove(sgExemplar);
+                obraRef.getSgExemplarList().remove(sgExemplar);
                 obraRef = em.merge(obraRef);
             }
             Users agenteRegisto = sgExemplar.getAgenteRegisto();
             if (agenteRegisto != null) {
-                agenteRegisto.getSgExemplarCollection().remove(sgExemplar);
+                agenteRegisto.getSgExemplarList().remove(sgExemplar);
                 agenteRegisto = em.merge(agenteRegisto);
             }
-            Collection<SgEmprestimo> sgEmprestimoCollection = sgExemplar.getSgEmprestimoCollection();
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimo : sgEmprestimoCollection) {
-                sgEmprestimoCollectionSgEmprestimo.setExemplarRef(null);
-                sgEmprestimoCollectionSgEmprestimo = em.merge(sgEmprestimoCollectionSgEmprestimo);
+            List<SgEmprestimo> sgEmprestimoList = sgExemplar.getSgEmprestimoList();
+            for (SgEmprestimo sgEmprestimoListSgEmprestimo : sgEmprestimoList) {
+                sgEmprestimoListSgEmprestimo.setExemplarRef(null);
+                sgEmprestimoListSgEmprestimo = em.merge(sgEmprestimoListSgEmprestimo);
             }
-            Collection<BReserva> BReservaCollection = sgExemplar.getBReservaCollection();
-            for (BReserva BReservaCollectionBReserva : BReservaCollection) {
-                BReservaCollectionBReserva.setLivro(null);
-                BReservaCollectionBReserva = em.merge(BReservaCollectionBReserva);
+            List<BReserva> BReservaList = sgExemplar.getBReservaList();
+            for (BReserva BReservaListBReserva : BReservaList) {
+                BReservaListBReserva.setLivro(null);
+                BReservaListBReserva = em.merge(BReservaListBReserva);
             }
             em.remove(sgExemplar);
             em.getTransaction().commit();

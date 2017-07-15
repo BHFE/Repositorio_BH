@@ -21,18 +21,18 @@ import javax.persistence.TemporalType;
 public class BvLeituraPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "data_leitura")
+    @Column(name = "data_leitura", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataLeitura;
     @Basic(optional = false)
-    @Column(name = "obra")
+    @Column(name = "obra", nullable = false)
     private long obra;
     @Basic(optional = false)
-    @Column(name = "horas_leitura")
+    @Column(name = "horas_leitura", nullable = false)
     @Temporal(TemporalType.TIME)
     private Date horasLeitura;
     @Basic(optional = false)
-    @Column(name = "leitor")
+    @Column(name = "leitor", nullable = false)
     private long leitor;
 
     public BvLeituraPK() {

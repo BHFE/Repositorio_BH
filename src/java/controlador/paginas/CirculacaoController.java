@@ -11,8 +11,14 @@ import controladores.entidades.SgEmprestimoJpaController;
 import controladores.entidades.SgExemplarJpaController;
 import controladores.entidades.SgObraJpaController;
 import controladores.entidades.UsersJpaController;
+import controlador.paginas.UtenteController;
+import controladores.entidades.EstudanteJpaController;
+import controladores.entidades.FuncionarioJpaController;
 import controladores.entidades.exceptions.NonexistentEntityException;
 import entidades.BLeitor;
+import entidades.Estudante;
+import entidades.Funcionario;
+import static entidades.Profissao_.estudante;
 import entidades.SgEmprestimo;
 import entidades.SgExemplar;
 import entidades.SgObra;
@@ -23,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -30,12 +37,16 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 import servicos.Autenticacao;
 import servicos.AutenticacaoImpl;
 import servicos.UserCredential;
@@ -52,6 +63,13 @@ public class CirculacaoController extends SelectorComposer<Component> {
     SgObra Obra;
     SgEmprestimo emprestimo;
     SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyy", Locale.ENGLISH);
+     @Wire
+    Radio estudante, funcionario;
+     @Wire
+    Menuitem search_funcionario, search_estudante, search_utente;
+     @Wire
+    Listbox utente_ident, funcionarioListBox, estudanteListBox, listEstudantes, listFuncionarios,
+            listVisitante, listEstudante, listFuncionario;
 
     @Wire
     Panel painelF, painelV, painelE, painelLivro;
@@ -64,6 +82,12 @@ public class CirculacaoController extends SelectorComposer<Component> {
 
     @Wire
     Radio interna, domiciliar;
+    
+     @Wire
+    Menupopup m2;
+       
+    @Wire
+    Div  editVisitante, painel_edicao,cce, ccf, listagem, div_pesquisar;
 
     @Wire
     Label id_leitorV, nome_leitorV, bi_leitorV, moradia_leitorV, tel_leitorV, tipo_leitor, estado_leitor,
@@ -81,6 +105,19 @@ public class CirculacaoController extends SelectorComposer<Component> {
 
     @Wire
     Button editNrExemplar;
+        @Wire
+    Textbox nome_visitante, moradia_visitante, email_visitante, telefone_visitante,
+            bi_visitante, text_pesquisa, nomeEV, moradiaEV, emailEV,
+            telefoneEV, motivoB;
+
+        ListModelList<Users> utilizadores;
+    ListModelList<Users> us = new ListModelList<Users>();
+    ListModelList<BLeitor> leitores = new ListModelList<BLeitor>();
+
+    Estudante e;
+    Funcionario f;
+    String selectedSearch;
+   
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -115,6 +152,8 @@ public class CirculacaoController extends SelectorComposer<Component> {
         }
 
     }
+
+
 
     public void preencherV(BLeitor leitorV) {
         id_leitorV.setValue(leitorV.getNrCartao().toString());
@@ -154,8 +193,8 @@ public class CirculacaoController extends SelectorComposer<Component> {
         nr_funcionario.setSclass("label-nome");
         telefone_leitorF.setValue(leitorF.getIdutilizador().getIdFuncionario().getContacto());
         telefone_leitorF.setSclass("label-nome");
-        categoria_leitorF.setValue(leitorF.getTipoLeitor().toUpperCase());
-        categoria_leitorF.setSclass("label-nome");
+//        categoria_leitorF.setValue(leitorF.getTipoLeitor().toUpperCase());
+//        categoria_leitorF.setSclass("label-nome");
         faculdade_leitorF.setValue(leitorF.getIdutilizador().getIdFuncionario().getFaculdade().getAbreviatura());
         faculdade_leitorF.setSclass("label-nome");
         alterarEstadoV(leitorF, estado_leitorF);
@@ -171,10 +210,10 @@ public class CirculacaoController extends SelectorComposer<Component> {
         nome_leitorE.setSclass("label-nome");
         nr_estudante.setValue(leitorE.getIdutilizador().getIdEstudante().getNrEstudante());
         nr_estudante.setSclass("label-nome");
-        ano_ingresso.setValue(leitorE.getIdutilizador().getIdEstudante().getAnoIngresso().toString());
-        ano_ingresso.setSclass("label-nome");
-        categoria_leitorE.setValue(leitorE.getTipoLeitor().toUpperCase());
-        categoria_leitorE.setSclass("label-nome");
+//        ano_ingresso.setValue(leitorE.getIdutilizador().getIdEstudante().getAnoIngresso().toString());
+//        ano_ingresso.setSclass("label-nome");
+//        categoria_leitorE.setValue(leitorE.getTipoLeitor().toUpperCase());
+//        categoria_leitorE.setSclass("label-nome");
         curso_leitorE.setValue(leitorE.getIdutilizador().getIdEstudante().getCursocurrente().getAbreviatura());
         curso_leitorE.setSclass("label-nome");
         alterarEstadoV(leitorE, estado_leitorE);
@@ -225,7 +264,7 @@ public class CirculacaoController extends SelectorComposer<Component> {
     public void mostrarLivro(SgObra O) {
         tituloLivro.setValue(O.getTitulo());
         cotaLivro.setValue(O.getCota());
-        anoLivro.setValue(O.getPublicacaoAno().toString());
+        anoLivro.setValue(O.getPublicacaoAno());
         tipoLivro.setValue(O.getTipoObra());
         areaLivro.setValue(O.getArea().getDescricao());
         idiomaLivro.setValue(O.getIdioma());
@@ -246,8 +285,8 @@ public class CirculacaoController extends SelectorComposer<Component> {
             edicaoLabel.setVisible(true);
             editoraLabel.setVisible(true);
             nomeJornal.setVisible(false);
-            volumeLivro.setValue(O.getVolume().toString());
-            edicaoLivro.setValue(O.getEdicao().toString());
+            volumeLivro.setValue(O.getVolume());
+            edicaoLivro.setValue(O.getEdicao());
             isbnLivro.setValue(O.getIsbn());
             editoraLivro.setValue(O.getEditora());
             localEdicaoLivro.setValue(O.getEdicaoCidade());
@@ -263,8 +302,8 @@ public class CirculacaoController extends SelectorComposer<Component> {
             editoraLivro.setVisible(true);
             editoraLabel.setVisible(true);
             nomeJornal.setValue(O.getNome());
-            volumeLivro.setValue(O.getVolume().toString());
-            edicaoLivro.setValue(O.getEdicao().toString());
+            volumeLivro.setValue(O.getVolume());
+            edicaoLivro.setValue(O.getEdicao());
             isbnLivro.setValue(O.getIsbn());
             editoraLivro.setValue(O.getEditora());
             localEdicaoLivro.setValue(O.getEdicaoCidade());
@@ -309,6 +348,7 @@ public class CirculacaoController extends SelectorComposer<Component> {
     }
 
     @Listen("onClick = #emprestar")
+    @SuppressWarnings("empty-statement")
     public void emprestarObra() {
         SgExemplar exempl = exemplarDispo(Obra);
         if (!painelE.isVisible() && !painelF.isVisible() && !painelV.isVisible() && !painelLivro.isVisible()) {
@@ -389,14 +429,25 @@ public class CirculacaoController extends SelectorComposer<Component> {
             } catch (Exception ex) {
                 Clients.showNotification("Não foi possivel registar o emprestimo", "warning", null, null, 3000);
             }
+         
+               painelE.setVisible(false);
+            painelV.setVisible(false);
+            painelF.setVisible(false);          
+           painelLivro.setVisible(false);
+          
+       
+
+           
+           
         }
+        
     }
 
     public SgExemplar exemplarDispo(SgObra o) {
         SgExemplar exemp = null;
         SgObra book = new SgObraJpaController(new JPA().getEmf()).findSgObra(o.getIdlivro());
-     //   List<SgExemplar> listaExemp = book.getSgExemplarList();
-          List<SgExemplar> listaExemp = (List<SgExemplar>) book.getSgExemplarCollection();
+        List<SgExemplar> listaExemp = book.getSgExemplarList();
+     
         for (SgExemplar sgExemplar : listaExemp) {
             if (sgExemplar.getEstado().equals("Disponivel")) {
                 return sgExemplar;
@@ -407,7 +458,8 @@ public class CirculacaoController extends SelectorComposer<Component> {
 
     public int qtdEmpAbertos(BLeitor leit) {
         BLeitor reader = new BLeitorJpaController(new JPA().getEmf()).findBLeitor(leit.getNrCartao());
-        List<SgEmprestimo> listEmp = reader.getSgEmprestimoList();
+     List<SgEmprestimo> listEmp = reader.getSgEmprestimoList();
+
         int qtdEmp = 0;
         for (SgEmprestimo sgEmprestimo : listEmp) {
             if (sgEmprestimo.getEstado() != null && sgEmprestimo.getEstado().equals("Activo")) {
@@ -420,7 +472,8 @@ public class CirculacaoController extends SelectorComposer<Component> {
     //funcao para verificar se o leitor tem em sua posse um exemplar da obra que deseja emprestar
     public Boolean mesmaObra(BLeitor leit, SgObra book) {
         BLeitor reader = new BLeitorJpaController(new JPA().getEmf()).findBLeitor(leit.getNrCartao());
-        List<SgEmprestimo> listEmp = reader.getSgEmprestimoList();
+       List<SgEmprestimo> listEmp = reader.getSgEmprestimoList();
+
         for (SgEmprestimo sgEmprestimo : listEmp) {
             if (sgEmprestimo.getEstado() != null && sgEmprestimo.getEstado().equals("Activo")
                     && sgEmprestimo.getExemplarRef().getObraRef().equals(book)) {
@@ -453,4 +506,138 @@ public class CirculacaoController extends SelectorComposer<Component> {
         }
         return false;
     }
-}
+
+  
+    
+    @Listen("onChanging = #membersearch")
+    public void mostrarListaSelectUtente(InputEvent event) {
+        String frase = event.getValue().toUpperCase();
+        div_pesquisar.setVisible(true);
+        editVisitante.setVisible(false);
+        listagem.setVisible(false);
+
+        if (Strings.isBlank(frase)) {
+            listVisitante.setVisible(false);
+            listEstudante.setVisible(false);
+            listFuncionario.setVisible(false);
+        } else {
+            if (selectedSearch == null || selectedSearch.equals("utente")) {
+                listVisitante.setVisible(true);
+                listEstudante.setVisible(false);
+                listFuncionario.setVisible(false);
+                pesquisarUtenteVisitante(frase);
+            }
+            if (selectedSearch != null && selectedSearch.equals("estudante")) {
+                listVisitante.setVisible(false);
+                listEstudante.setVisible(true);
+                listFuncionario.setVisible(false);
+                pesquisarUtenteEstudante(frase);
+            }
+            if (selectedSearch != null && selectedSearch.equals("funcionario")) {
+                listVisitante.setVisible(false);
+                listEstudante.setVisible(false);
+                listFuncionario.setVisible(true);
+                pesquisarUtenteFuncionario(frase);
+            }
+        }
+    }
+
+    @Listen("onClick = #search_utente")
+    public void setSelectedSearchU() {
+        selectedSearch = "utente";
+    }
+
+    @Listen("onClick = #search_estudante")
+    public void setSelectedSearchE() {
+        selectedSearch = "estudante";
+    }
+
+    @Listen("onClick = #search_funcionario")
+    public void setSelectedSearchF() {
+        selectedSearch = "funcionario";
+    }
+
+    public void pesquisarUtenteVisitante(String nome) {
+        ListModelList<BLeitor> listaVisitantes = new ListModelList<BLeitor>(new BLeitorJpaController(new JPA().getEmf()).findBLeitorEntities());
+        ListModelList<BLeitor> sublista = new ListModelList<BLeitor>();
+        for (BLeitor member : listaVisitantes) {
+            if (member.getNome() != null) {
+                if (member.getNome().toUpperCase().contains(nome)) {
+                    sublista.add(member);
+                }
+            }
+        }
+        listVisitante.setModel(sublista);
+    }
+
+    public void pesquisarUtenteEstudante(String frase) {
+        leitores = new ListModelList<BLeitor>(new BLeitorJpaController(new JPA().getEmf()).findBLeitorEntities());
+        ListModelList<BLeitor> subLeitores = new ListModelList<BLeitor>();
+        for (BLeitor lei : leitores) {
+            if (lei.getIdutilizador() != null) {
+                if (lei.getIdutilizador().getIdEstudante() != null) {
+                    if (lei.getIdutilizador().getIdEstudante().getNomeCompleto().toUpperCase().contains(frase)) {
+                        subLeitores.add(lei);
+                    }
+                }
+            }
+        }
+        listEstudante.setModel(subLeitores);
+    }
+
+    public void pesquisarUtenteFuncionario(String frase) {
+        leitores = new ListModelList<BLeitor>(new BLeitorJpaController(new JPA().getEmf()).findBLeitorEntities());
+        ListModelList<BLeitor> subLeitores = new ListModelList<BLeitor>();
+        for (BLeitor lei : leitores) {
+            if (lei.getIdutilizador() != null) {
+                if (lei.getIdutilizador().getIdFuncionario() != null) {
+                    if (lei.getIdutilizador().getIdFuncionario().getNome().toUpperCase().contains(frase)) {
+                        subLeitores.add(lei);
+                    }
+                }
+            }
+        }
+        listFuncionario.setModel(subLeitores);
+    }
+
+    @Listen("onSelect = #listVisitante; onSelect = #listEstudante; onSelect = #listFuncionario;")
+    public void mostrarCartaoLista() {
+        div_pesquisar.setVisible(false);
+        if (listVisitante.isVisible()) {
+            leitor = listVisitante.getSelectedItem().getValue();
+        }
+        if (listEstudante.isVisible()) {
+            leitor = listEstudante.getSelectedItem().getValue();
+        }
+        if (listFuncionario.isVisible()) {
+            leitor = listFuncionario.getSelectedItem().getValue();
+        }
+
+        if (leitor.getTipoLeitor().equals("Visitante")) {
+            editVisitante.setVisible(true);
+            painelV.setVisible(true);
+            preencherV(leitor);
+        } else if (leitor.getTipoLeitor().equals("Funcionario")) {
+            editVisitante.setVisible(true);
+            painelF.setVisible(true);
+            preencherF(leitor);
+        } else {
+            editVisitante.setVisible(true);
+            painelE.setVisible(true);
+            preencherE(leitor);
+        }
+    }
+    
+    @Listen("onCheck = #funcionario; onCheck = #estudante")
+    public void place(){
+        if(estudante.isSelected())
+            text_pesquisa.setPlaceholder("Pesquisa por nome do estudante");
+        else
+            text_pesquisa.setPlaceholder("Pesquisa por nome do funcionario");
+    }
+
+  
+        
+  
+
+            }

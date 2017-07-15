@@ -71,7 +71,7 @@ public class ProfissaoJpaController implements Serializable {
                 estudante = em.merge(estudante);
             }
             if (provinciapr != null) {
-                provinciapr.getProfissaoCollection().add(profissao);
+                provinciapr.getProfissaoList().add(profissao);
                 provinciapr = em.merge(provinciapr);
             }
             em.getTransaction().commit();
@@ -128,11 +128,11 @@ public class ProfissaoJpaController implements Serializable {
                 estudanteNew = em.merge(estudanteNew);
             }
             if (provinciaprOld != null && !provinciaprOld.equals(provinciaprNew)) {
-                provinciaprOld.getProfissaoCollection().remove(profissao);
+                provinciaprOld.getProfissaoList().remove(profissao);
                 provinciaprOld = em.merge(provinciaprOld);
             }
             if (provinciaprNew != null && !provinciaprNew.equals(provinciaprOld)) {
-                provinciaprNew.getProfissaoCollection().add(profissao);
+                provinciaprNew.getProfissaoList().add(profissao);
                 provinciaprNew = em.merge(provinciaprNew);
             }
             em.getTransaction().commit();
@@ -171,7 +171,7 @@ public class ProfissaoJpaController implements Serializable {
             }
             Provincia provinciapr = profissao.getProvinciapr();
             if (provinciapr != null) {
-                provinciapr.getProfissaoCollection().remove(profissao);
+                provinciapr.getProfissaoList().remove(profissao);
                 provinciapr = em.merge(provinciapr);
             }
             em.remove(profissao);

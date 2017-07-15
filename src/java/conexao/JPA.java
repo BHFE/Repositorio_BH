@@ -16,11 +16,11 @@ import javax.persistence.PersistenceUnit;
 public class JPA {
     
     
-    @PersistenceUnit(unitName = "SGB-FECNPU")
+    @PersistenceUnit(unitName = "BHPU")
     private EntityManagerFactory emf = null;
     
     
     public EntityManagerFactory getEmf(){
-        return emf = Persistence.createEntityManagerFactory("SGB-FECNPU");
+        return emf = Persistence.createEntityManagerFactory("BHPU");
     }
 }

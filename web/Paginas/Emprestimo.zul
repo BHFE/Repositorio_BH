@@ -23,7 +23,7 @@
                             win.doModal();
                             }</attribute>
                     </button>
-                    <button label="Reserva" sclass="btn-primary" height="38px"/>
+                
                     <button class="btn-default dropdown-toggle btn-primary"
                             popup="m1, after_start" image="/Icons/ic_list.png" label="Listar"/>
                 </div>
@@ -33,9 +33,9 @@
         <div sclass="filtro row">
             <div sclass="col-lg-4">
                 <div class="input-group">
-                    <textbox class="form-control" placeholder="Pesquisa por N◦ de utente" style="height: 38px"/>
+                    <textbox class="form-control" placeholder="Pesquisa por N◦ de utente" style="height: 38px" id="utente"/>
                     <span class="input-group-btn">
-                        <button image="/Icons/ic_search.png" sclass="btn-primary"/>
+                        <button image="/Icons/ic_search.png" sclass="btn-primary" id="idutente"/>
                     </span>
                 </div>
             </div>
@@ -47,8 +47,7 @@
                     </span>
                 </div>
             </div>
-            <button image="/Icons/reload.png" sclass="btn-primary" style="margin-left: 310px"
-                    tooltiptext="Actualizar lista" id="reloadEmprestimo"/>
+        
         </div>
         <separator/>
         <div>

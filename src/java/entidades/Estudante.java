@@ -6,8 +6,8 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "estudante", catalog = "fecn2", schema = "public")
+@Table(name = "estudante", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estudante.findAll", query = "SELECT e FROM Estudante e")
@@ -77,54 +77,54 @@ public class Estudante implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_estudante")
+    @Column(name = "id_estudante", nullable = false)
     private Long idEstudante;
-    @Column(name = "nr_estudante")
+    @Column(name = "nr_estudante", length = 45)
     private String nrEstudante;
-    @Column(name = "nome_completo")
+    @Column(name = "nome_completo", length = 45)
     private String nomeCompleto;
-    @Column(name = "apelido")
+    @Column(name = "apelido", length = 45)
     private String apelido;
     @Column(name = "data_nascimento")
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
-    @Column(name = "nome_pai")
+    @Column(name = "nome_pai", length = 45)
     private String nomePai;
-    @Column(name = "nome_mae")
+    @Column(name = "nome_mae", length = 45)
     private String nomeMae;
-    @Column(name = "naturalidade")
+    @Column(name = "naturalidade", length = 45)
     private String naturalidade;
-    @Column(name = "localidade")
+    @Column(name = "localidade", length = 45)
     private String localidade;
-    @Column(name = "distrito")
+    @Column(name = "distrito", length = 45)
     private String distrito;
     @Column(name = "ano_ter_medio")
     private Integer anoTerMedio;
-    @Column(name = "escola")
+    @Column(name = "escola", length = 45)
     private String escola;
     @Column(name = "ano_ingresso")
     private Integer anoIngresso;
     @Column(name = "nivel_frequencia")
     private Integer nivelFrequencia;
-    @Column(name = "pasta_documento")
+    @Column(name = "pasta_documento", length = 255)
     private String pastaDocumento;
-    @Column(name = "nome_encarregado")
+    @Column(name = "nome_encarregado", length = 45)
     private String nomeEncarregado;
-    @Column(name = "contacto_encarregado")
+    @Column(name = "contacto_encarregado", length = 45)
     private String contactoEncarregado;
-    @Column(name = "grau_parentesco")
+    @Column(name = "grau_parentesco", length = 45)
     private String grauParentesco;
     @Column(name = "tam_agregado_familiar")
     private Integer tamAgregadoFamiliar;
-    @Column(name = "primeira_universidade")
+    @Column(name = "primeira_universidade", length = 45)
     private String primeiraUniversidade;
-    @Column(name = "idioma")
+    @Column(name = "idioma", length = 45)
     private String idioma;
-    @Column(name = "email")
+    @Column(name = "email", length = 45)
     private String email;
     @Column(name = "nota_admissao")
     private Integer notaAdmissao;
-    @Column(name = "outra_via_ingresso")
+    @Column(name = "outra_via_ingresso", length = 45)
     private String outraViaIngresso;
     @Column(name = "istrabalhador")
     private Boolean istrabalhador;
@@ -150,14 +150,14 @@ public class Estudante implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "estudante", fetch = FetchType.LAZY)
     private Profissao profissao;
     @OneToMany(mappedBy = "idEstudante", fetch = FetchType.LAZY)
-    private Collection<Users> usersCollection;
+    private List<Users> usersList;
     @JoinColumn(name = "bolsa", referencedColumnName = "id_bolsa")
     @ManyToOne(fetch = FetchType.LAZY)
     private Bolsa bolsa;
-    @JoinColumn(name = "cursocurrente", referencedColumnName = "id_curso")
+    @JoinColumn(name = "cursocurrente", referencedColumnName = "id_curso", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Curso cursocurrente;
-    @JoinColumn(name = "cursoingresso", referencedColumnName = "id_curso")
+    @JoinColumn(name = "cursoingresso", referencedColumnName = "id_curso", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Curso cursoingresso;
     @JoinColumn(name = "estado_civil", referencedColumnName = "id_estado")
@@ -166,7 +166,7 @@ public class Estudante implements Serializable {
     @JoinColumn(name = "escola_pais", referencedColumnName = "id_pais")
     @ManyToOne(fetch = FetchType.LAZY)
     private Pais escolaPais;
-    @JoinColumn(name = "nacionalidade", referencedColumnName = "id_pais")
+    @JoinColumn(name = "nacionalidade", referencedColumnName = "id_pais", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Pais nacionalidade;
     @JoinColumn(name = "via_ingresso", referencedColumnName = "id_via_ingresso")
@@ -461,12 +461,12 @@ public class Estudante implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Users> getUsersCollection() {
-        return usersCollection;
+    public List<Users> getUsersList() {
+        return usersList;
     }
 
-    public void setUsersCollection(Collection<Users> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 
     public Bolsa getBolsa() {

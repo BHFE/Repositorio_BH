@@ -51,28 +51,28 @@ public class AutenticacaoImpl implements Autenticacao, Serializable {
             }
         }
 
-        //List<Usergrupo> listaGrupo = user.getUsergrupoList();
-        List<Usergrupo> listaGrupo = (List<Usergrupo>) user.getUsergrupoCollection();
+        List<Usergrupo> listaGrupo = user.getUsergrupoList();
+      
         for (Usergrupo usergrupo : listaGrupo) {
 //            if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Bibliotecario") && usergrupo.getUsergrupoPK().getIdGrupo().equals("Gestor Bibliotecario")) {
-if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Gestor Bibliotecario")) {
+if (usergrupo.getIdGrupo().equals("Gestor Bibliotecario")) {
                 Session sess = Sessions.getCurrent();
                 UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
                 sess.setAttribute("userCredential", cre);
                 return 3;
                 //o utilizador tem previlegios de administrador
-            } else if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Administrador")) {
+            } else if (usergrupo.getIdGrupo().equals("Administrador")) {
                 Session sess = Sessions.getCurrent();
                 UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
                 sess.setAttribute("userCredential", cre);
                 return 4;
             } //o utilizador tem previlegios de bibliotecario
-            else if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Bibliotecario")) {
+            else if (usergrupo.getIdGrupo().equals("Bibliotecario")) {
                 Session sess = Sessions.getCurrent();
                 UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
                 sess.setAttribute("userCredential", cre);
                 return 3;
-            } else if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Leitor")) {
+            } else if (usergrupo.getIdGrupo().equals("Leitor")) {
                 Session sess = Sessions.getCurrent();
                 UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
                 sess.setAttribute("userCredential", cre);

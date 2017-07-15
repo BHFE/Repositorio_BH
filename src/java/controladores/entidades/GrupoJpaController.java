@@ -14,10 +14,9 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import entidades.Usergrupo;
 import entidades.Roles;
 import java.util.ArrayList;
-import java.util.Collection;
-import entidades.Usergrupo;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,45 +37,41 @@ public class GrupoJpaController implements Serializable {
     }
 
     public void create(Grupo grupo) throws PreexistingEntityException, Exception {
-        if (grupo.getRolesCollection() == null) {
-            grupo.setRolesCollection(new ArrayList<Roles>());
-        }
-        if (grupo.getUsergrupoCollection() == null) {
-            grupo.setUsergrupoCollection(new ArrayList<Usergrupo>());
+        if (grupo.getRolesList() == null) {
+            grupo.setRolesList(new ArrayList<Roles>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Roles> attachedRolesCollection = new ArrayList<Roles>();
-            for (Roles rolesCollectionRolesToAttach : grupo.getRolesCollection()) {
-                rolesCollectionRolesToAttach = em.getReference(rolesCollectionRolesToAttach.getClass(), rolesCollectionRolesToAttach.getRolesPK());
-                attachedRolesCollection.add(rolesCollectionRolesToAttach);
+            Usergrupo usergrupo = grupo.getUsergrupo();
+            if (usergrupo != null) {
+                usergrupo = em.getReference(usergrupo.getClass(), usergrupo.getIdGrupo());
+                grupo.setUsergrupo(usergrupo);
             }
-            grupo.setRolesCollection(attachedRolesCollection);
-            Collection<Usergrupo> attachedUsergrupoCollection = new ArrayList<Usergrupo>();
-            for (Usergrupo usergrupoCollectionUsergrupoToAttach : grupo.getUsergrupoCollection()) {
-                usergrupoCollectionUsergrupoToAttach = em.getReference(usergrupoCollectionUsergrupoToAttach.getClass(), usergrupoCollectionUsergrupoToAttach.getUsergrupoPK());
-                attachedUsergrupoCollection.add(usergrupoCollectionUsergrupoToAttach);
+            List<Roles> attachedRolesList = new ArrayList<Roles>();
+            for (Roles rolesListRolesToAttach : grupo.getRolesList()) {
+                rolesListRolesToAttach = em.getReference(rolesListRolesToAttach.getClass(), rolesListRolesToAttach.getRolesPK());
+                attachedRolesList.add(rolesListRolesToAttach);
             }
-            grupo.setUsergrupoCollection(attachedUsergrupoCollection);
+            grupo.setRolesList(attachedRolesList);
             em.persist(grupo);
-            for (Roles rolesCollectionRoles : grupo.getRolesCollection()) {
-                Grupo oldGrupoOfRolesCollectionRoles = rolesCollectionRoles.getGrupo();
-                rolesCollectionRoles.setGrupo(grupo);
-                rolesCollectionRoles = em.merge(rolesCollectionRoles);
-                if (oldGrupoOfRolesCollectionRoles != null) {
-                    oldGrupoOfRolesCollectionRoles.getRolesCollection().remove(rolesCollectionRoles);
-                    oldGrupoOfRolesCollectionRoles = em.merge(oldGrupoOfRolesCollectionRoles);
+            if (usergrupo != null) {
+                Grupo oldGrupoOfUsergrupo = usergrupo.getGrupo();
+                if (oldGrupoOfUsergrupo != null) {
+                    oldGrupoOfUsergrupo.setUsergrupo(null);
+                    oldGrupoOfUsergrupo = em.merge(oldGrupoOfUsergrupo);
                 }
+                usergrupo.setGrupo(grupo);
+                usergrupo = em.merge(usergrupo);
             }
-            for (Usergrupo usergrupoCollectionUsergrupo : grupo.getUsergrupoCollection()) {
-                Grupo oldGrupoOfUsergrupoCollectionUsergrupo = usergrupoCollectionUsergrupo.getGrupo();
-                usergrupoCollectionUsergrupo.setGrupo(grupo);
-                usergrupoCollectionUsergrupo = em.merge(usergrupoCollectionUsergrupo);
-                if (oldGrupoOfUsergrupoCollectionUsergrupo != null) {
-                    oldGrupoOfUsergrupoCollectionUsergrupo.getUsergrupoCollection().remove(usergrupoCollectionUsergrupo);
-                    oldGrupoOfUsergrupoCollectionUsergrupo = em.merge(oldGrupoOfUsergrupoCollectionUsergrupo);
+            for (Roles rolesListRoles : grupo.getRolesList()) {
+                Grupo oldGrupoOfRolesListRoles = rolesListRoles.getGrupo();
+                rolesListRoles.setGrupo(grupo);
+                rolesListRoles = em.merge(rolesListRoles);
+                if (oldGrupoOfRolesListRoles != null) {
+                    oldGrupoOfRolesListRoles.getRolesList().remove(rolesListRoles);
+                    oldGrupoOfRolesListRoles = em.merge(oldGrupoOfRolesListRoles);
                 }
             }
             em.getTransaction().commit();
@@ -98,64 +93,57 @@ public class GrupoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Grupo persistentGrupo = em.find(Grupo.class, grupo.getIdGrupo());
-            Collection<Roles> rolesCollectionOld = persistentGrupo.getRolesCollection();
-            Collection<Roles> rolesCollectionNew = grupo.getRolesCollection();
-            Collection<Usergrupo> usergrupoCollectionOld = persistentGrupo.getUsergrupoCollection();
-            Collection<Usergrupo> usergrupoCollectionNew = grupo.getUsergrupoCollection();
+            Usergrupo usergrupoOld = persistentGrupo.getUsergrupo();
+            Usergrupo usergrupoNew = grupo.getUsergrupo();
+            List<Roles> rolesListOld = persistentGrupo.getRolesList();
+            List<Roles> rolesListNew = grupo.getRolesList();
             List<String> illegalOrphanMessages = null;
-            for (Roles rolesCollectionOldRoles : rolesCollectionOld) {
-                if (!rolesCollectionNew.contains(rolesCollectionOldRoles)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Roles " + rolesCollectionOldRoles + " since its grupo field is not nullable.");
+            if (usergrupoOld != null && !usergrupoOld.equals(usergrupoNew)) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
                 }
+                illegalOrphanMessages.add("You must retain Usergrupo " + usergrupoOld + " since its grupo field is not nullable.");
             }
-            for (Usergrupo usergrupoCollectionOldUsergrupo : usergrupoCollectionOld) {
-                if (!usergrupoCollectionNew.contains(usergrupoCollectionOldUsergrupo)) {
+            for (Roles rolesListOldRoles : rolesListOld) {
+                if (!rolesListNew.contains(rolesListOldRoles)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Usergrupo " + usergrupoCollectionOldUsergrupo + " since its grupo field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Roles " + rolesListOldRoles + " since its grupo field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<Roles> attachedRolesCollectionNew = new ArrayList<Roles>();
-            for (Roles rolesCollectionNewRolesToAttach : rolesCollectionNew) {
-                rolesCollectionNewRolesToAttach = em.getReference(rolesCollectionNewRolesToAttach.getClass(), rolesCollectionNewRolesToAttach.getRolesPK());
-                attachedRolesCollectionNew.add(rolesCollectionNewRolesToAttach);
+            if (usergrupoNew != null) {
+                usergrupoNew = em.getReference(usergrupoNew.getClass(), usergrupoNew.getIdGrupo());
+                grupo.setUsergrupo(usergrupoNew);
             }
-            rolesCollectionNew = attachedRolesCollectionNew;
-            grupo.setRolesCollection(rolesCollectionNew);
-            Collection<Usergrupo> attachedUsergrupoCollectionNew = new ArrayList<Usergrupo>();
-            for (Usergrupo usergrupoCollectionNewUsergrupoToAttach : usergrupoCollectionNew) {
-                usergrupoCollectionNewUsergrupoToAttach = em.getReference(usergrupoCollectionNewUsergrupoToAttach.getClass(), usergrupoCollectionNewUsergrupoToAttach.getUsergrupoPK());
-                attachedUsergrupoCollectionNew.add(usergrupoCollectionNewUsergrupoToAttach);
+            List<Roles> attachedRolesListNew = new ArrayList<Roles>();
+            for (Roles rolesListNewRolesToAttach : rolesListNew) {
+                rolesListNewRolesToAttach = em.getReference(rolesListNewRolesToAttach.getClass(), rolesListNewRolesToAttach.getRolesPK());
+                attachedRolesListNew.add(rolesListNewRolesToAttach);
             }
-            usergrupoCollectionNew = attachedUsergrupoCollectionNew;
-            grupo.setUsergrupoCollection(usergrupoCollectionNew);
+            rolesListNew = attachedRolesListNew;
+            grupo.setRolesList(rolesListNew);
             grupo = em.merge(grupo);
-            for (Roles rolesCollectionNewRoles : rolesCollectionNew) {
-                if (!rolesCollectionOld.contains(rolesCollectionNewRoles)) {
-                    Grupo oldGrupoOfRolesCollectionNewRoles = rolesCollectionNewRoles.getGrupo();
-                    rolesCollectionNewRoles.setGrupo(grupo);
-                    rolesCollectionNewRoles = em.merge(rolesCollectionNewRoles);
-                    if (oldGrupoOfRolesCollectionNewRoles != null && !oldGrupoOfRolesCollectionNewRoles.equals(grupo)) {
-                        oldGrupoOfRolesCollectionNewRoles.getRolesCollection().remove(rolesCollectionNewRoles);
-                        oldGrupoOfRolesCollectionNewRoles = em.merge(oldGrupoOfRolesCollectionNewRoles);
-                    }
+            if (usergrupoNew != null && !usergrupoNew.equals(usergrupoOld)) {
+                Grupo oldGrupoOfUsergrupo = usergrupoNew.getGrupo();
+                if (oldGrupoOfUsergrupo != null) {
+                    oldGrupoOfUsergrupo.setUsergrupo(null);
+                    oldGrupoOfUsergrupo = em.merge(oldGrupoOfUsergrupo);
                 }
+                usergrupoNew.setGrupo(grupo);
+                usergrupoNew = em.merge(usergrupoNew);
             }
-            for (Usergrupo usergrupoCollectionNewUsergrupo : usergrupoCollectionNew) {
-                if (!usergrupoCollectionOld.contains(usergrupoCollectionNewUsergrupo)) {
-                    Grupo oldGrupoOfUsergrupoCollectionNewUsergrupo = usergrupoCollectionNewUsergrupo.getGrupo();
-                    usergrupoCollectionNewUsergrupo.setGrupo(grupo);
-                    usergrupoCollectionNewUsergrupo = em.merge(usergrupoCollectionNewUsergrupo);
-                    if (oldGrupoOfUsergrupoCollectionNewUsergrupo != null && !oldGrupoOfUsergrupoCollectionNewUsergrupo.equals(grupo)) {
-                        oldGrupoOfUsergrupoCollectionNewUsergrupo.getUsergrupoCollection().remove(usergrupoCollectionNewUsergrupo);
-                        oldGrupoOfUsergrupoCollectionNewUsergrupo = em.merge(oldGrupoOfUsergrupoCollectionNewUsergrupo);
+            for (Roles rolesListNewRoles : rolesListNew) {
+                if (!rolesListOld.contains(rolesListNewRoles)) {
+                    Grupo oldGrupoOfRolesListNewRoles = rolesListNewRoles.getGrupo();
+                    rolesListNewRoles.setGrupo(grupo);
+                    rolesListNewRoles = em.merge(rolesListNewRoles);
+                    if (oldGrupoOfRolesListNewRoles != null && !oldGrupoOfRolesListNewRoles.equals(grupo)) {
+                        oldGrupoOfRolesListNewRoles.getRolesList().remove(rolesListNewRoles);
+                        oldGrupoOfRolesListNewRoles = em.merge(oldGrupoOfRolesListNewRoles);
                     }
                 }
             }
@@ -189,19 +177,19 @@ public class GrupoJpaController implements Serializable {
                 throw new NonexistentEntityException("The grupo with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<Roles> rolesCollectionOrphanCheck = grupo.getRolesCollection();
-            for (Roles rolesCollectionOrphanCheckRoles : rolesCollectionOrphanCheck) {
+            Usergrupo usergrupoOrphanCheck = grupo.getUsergrupo();
+            if (usergrupoOrphanCheck != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Grupo (" + grupo + ") cannot be destroyed since the Roles " + rolesCollectionOrphanCheckRoles + " in its rolesCollection field has a non-nullable grupo field.");
+                illegalOrphanMessages.add("This Grupo (" + grupo + ") cannot be destroyed since the Usergrupo " + usergrupoOrphanCheck + " in its usergrupo field has a non-nullable grupo field.");
             }
-            Collection<Usergrupo> usergrupoCollectionOrphanCheck = grupo.getUsergrupoCollection();
-            for (Usergrupo usergrupoCollectionOrphanCheckUsergrupo : usergrupoCollectionOrphanCheck) {
+            List<Roles> rolesListOrphanCheck = grupo.getRolesList();
+            for (Roles rolesListOrphanCheckRoles : rolesListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Grupo (" + grupo + ") cannot be destroyed since the Usergrupo " + usergrupoCollectionOrphanCheckUsergrupo + " in its usergrupoCollection field has a non-nullable grupo field.");
+                illegalOrphanMessages.add("This Grupo (" + grupo + ") cannot be destroyed since the Roles " + rolesListOrphanCheckRoles + " in its rolesList field has a non-nullable grupo field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

@@ -18,13 +18,13 @@ import javax.persistence.Embeddable;
 public class RolesPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "id_grupo")
+    @Column(name = "id_grupo", nullable = false, length = 45)
     private String idGrupo;
     @Basic(optional = false)
-    @Column(name = "id_categoria")
+    @Column(name = "id_categoria", nullable = false, length = 5)
     private String idCategoria;
     @Basic(optional = false)
-    @Column(name = "id_item")
+    @Column(name = "id_item", nullable = false, length = 5)
     private String idItem;
 
     public RolesPK() {

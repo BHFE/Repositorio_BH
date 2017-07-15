@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "bv_avaliador", catalog = "fecn2", schema = "public")
+@Table(name = "bv_avaliador", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BvAvaliador.findAll", query = "SELECT b FROM BvAvaliador b")
@@ -37,16 +37,16 @@ public class BvAvaliador implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_leitor")
+    @Column(name = "id_leitor", nullable = false)
     private Long idLeitor;
-    @JoinColumn(name = "id_leitor", referencedColumnName = "nr_cartao", insertable = false, updatable = false)
+    @JoinColumn(name = "id_leitor", referencedColumnName = "nr_cartao", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private BLeitor bLeitor;
-    @JoinColumn(name = "id_area", referencedColumnName = "categoria")
+    @JoinColumn(name = "id_area", referencedColumnName = "categoria", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BvArtigoCategoria idArea;
     @OneToMany(mappedBy = "avaliador", fetch = FetchType.LAZY)
-    private Collection<BvArtigo> bvArtigoCollection;
+    private List<BvArtigo> bvArtigoList;
 
     public BvAvaliador() {
     }
@@ -80,12 +80,12 @@ public class BvAvaliador implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BvArtigo> getBvArtigoCollection() {
-        return bvArtigoCollection;
+    public List<BvArtigo> getBvArtigoList() {
+        return bvArtigoList;
     }
 
-    public void setBvArtigoCollection(Collection<BvArtigo> bvArtigoCollection) {
-        this.bvArtigoCollection = bvArtigoCollection;
+    public void setBvArtigoList(List<BvArtigo> bvArtigoList) {
+        this.bvArtigoList = bvArtigoList;
     }
 
     @Override

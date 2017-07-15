@@ -15,7 +15,6 @@ import javax.persistence.criteria.Root;
 import entidades.Estudante;
 import entidades.Viaingresso;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,27 +35,27 @@ public class ViaingressoJpaController implements Serializable {
     }
 
     public void create(Viaingresso viaingresso) throws PreexistingEntityException, Exception {
-        if (viaingresso.getEstudanteCollection() == null) {
-            viaingresso.setEstudanteCollection(new ArrayList<Estudante>());
+        if (viaingresso.getEstudanteList() == null) {
+            viaingresso.setEstudanteList(new ArrayList<Estudante>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Estudante> attachedEstudanteCollection = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionEstudanteToAttach : viaingresso.getEstudanteCollection()) {
-                estudanteCollectionEstudanteToAttach = em.getReference(estudanteCollectionEstudanteToAttach.getClass(), estudanteCollectionEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollection.add(estudanteCollectionEstudanteToAttach);
+            List<Estudante> attachedEstudanteList = new ArrayList<Estudante>();
+            for (Estudante estudanteListEstudanteToAttach : viaingresso.getEstudanteList()) {
+                estudanteListEstudanteToAttach = em.getReference(estudanteListEstudanteToAttach.getClass(), estudanteListEstudanteToAttach.getIdEstudante());
+                attachedEstudanteList.add(estudanteListEstudanteToAttach);
             }
-            viaingresso.setEstudanteCollection(attachedEstudanteCollection);
+            viaingresso.setEstudanteList(attachedEstudanteList);
             em.persist(viaingresso);
-            for (Estudante estudanteCollectionEstudante : viaingresso.getEstudanteCollection()) {
-                Viaingresso oldViaIngressoOfEstudanteCollectionEstudante = estudanteCollectionEstudante.getViaIngresso();
-                estudanteCollectionEstudante.setViaIngresso(viaingresso);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
-                if (oldViaIngressoOfEstudanteCollectionEstudante != null) {
-                    oldViaIngressoOfEstudanteCollectionEstudante.getEstudanteCollection().remove(estudanteCollectionEstudante);
-                    oldViaIngressoOfEstudanteCollectionEstudante = em.merge(oldViaIngressoOfEstudanteCollectionEstudante);
+            for (Estudante estudanteListEstudante : viaingresso.getEstudanteList()) {
+                Viaingresso oldViaIngressoOfEstudanteListEstudante = estudanteListEstudante.getViaIngresso();
+                estudanteListEstudante.setViaIngresso(viaingresso);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
+                if (oldViaIngressoOfEstudanteListEstudante != null) {
+                    oldViaIngressoOfEstudanteListEstudante.getEstudanteList().remove(estudanteListEstudante);
+                    oldViaIngressoOfEstudanteListEstudante = em.merge(oldViaIngressoOfEstudanteListEstudante);
                 }
             }
             em.getTransaction().commit();
@@ -78,30 +77,30 @@ public class ViaingressoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Viaingresso persistentViaingresso = em.find(Viaingresso.class, viaingresso.getIdViaIngresso());
-            Collection<Estudante> estudanteCollectionOld = persistentViaingresso.getEstudanteCollection();
-            Collection<Estudante> estudanteCollectionNew = viaingresso.getEstudanteCollection();
-            Collection<Estudante> attachedEstudanteCollectionNew = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionNewEstudanteToAttach : estudanteCollectionNew) {
-                estudanteCollectionNewEstudanteToAttach = em.getReference(estudanteCollectionNewEstudanteToAttach.getClass(), estudanteCollectionNewEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollectionNew.add(estudanteCollectionNewEstudanteToAttach);
+            List<Estudante> estudanteListOld = persistentViaingresso.getEstudanteList();
+            List<Estudante> estudanteListNew = viaingresso.getEstudanteList();
+            List<Estudante> attachedEstudanteListNew = new ArrayList<Estudante>();
+            for (Estudante estudanteListNewEstudanteToAttach : estudanteListNew) {
+                estudanteListNewEstudanteToAttach = em.getReference(estudanteListNewEstudanteToAttach.getClass(), estudanteListNewEstudanteToAttach.getIdEstudante());
+                attachedEstudanteListNew.add(estudanteListNewEstudanteToAttach);
             }
-            estudanteCollectionNew = attachedEstudanteCollectionNew;
-            viaingresso.setEstudanteCollection(estudanteCollectionNew);
+            estudanteListNew = attachedEstudanteListNew;
+            viaingresso.setEstudanteList(estudanteListNew);
             viaingresso = em.merge(viaingresso);
-            for (Estudante estudanteCollectionOldEstudante : estudanteCollectionOld) {
-                if (!estudanteCollectionNew.contains(estudanteCollectionOldEstudante)) {
-                    estudanteCollectionOldEstudante.setViaIngresso(null);
-                    estudanteCollectionOldEstudante = em.merge(estudanteCollectionOldEstudante);
+            for (Estudante estudanteListOldEstudante : estudanteListOld) {
+                if (!estudanteListNew.contains(estudanteListOldEstudante)) {
+                    estudanteListOldEstudante.setViaIngresso(null);
+                    estudanteListOldEstudante = em.merge(estudanteListOldEstudante);
                 }
             }
-            for (Estudante estudanteCollectionNewEstudante : estudanteCollectionNew) {
-                if (!estudanteCollectionOld.contains(estudanteCollectionNewEstudante)) {
-                    Viaingresso oldViaIngressoOfEstudanteCollectionNewEstudante = estudanteCollectionNewEstudante.getViaIngresso();
-                    estudanteCollectionNewEstudante.setViaIngresso(viaingresso);
-                    estudanteCollectionNewEstudante = em.merge(estudanteCollectionNewEstudante);
-                    if (oldViaIngressoOfEstudanteCollectionNewEstudante != null && !oldViaIngressoOfEstudanteCollectionNewEstudante.equals(viaingresso)) {
-                        oldViaIngressoOfEstudanteCollectionNewEstudante.getEstudanteCollection().remove(estudanteCollectionNewEstudante);
-                        oldViaIngressoOfEstudanteCollectionNewEstudante = em.merge(oldViaIngressoOfEstudanteCollectionNewEstudante);
+            for (Estudante estudanteListNewEstudante : estudanteListNew) {
+                if (!estudanteListOld.contains(estudanteListNewEstudante)) {
+                    Viaingresso oldViaIngressoOfEstudanteListNewEstudante = estudanteListNewEstudante.getViaIngresso();
+                    estudanteListNewEstudante.setViaIngresso(viaingresso);
+                    estudanteListNewEstudante = em.merge(estudanteListNewEstudante);
+                    if (oldViaIngressoOfEstudanteListNewEstudante != null && !oldViaIngressoOfEstudanteListNewEstudante.equals(viaingresso)) {
+                        oldViaIngressoOfEstudanteListNewEstudante.getEstudanteList().remove(estudanteListNewEstudante);
+                        oldViaIngressoOfEstudanteListNewEstudante = em.merge(oldViaIngressoOfEstudanteListNewEstudante);
                     }
                 }
             }
@@ -134,10 +133,10 @@ public class ViaingressoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The viaingresso with id " + id + " no longer exists.", enfe);
             }
-            Collection<Estudante> estudanteCollection = viaingresso.getEstudanteCollection();
-            for (Estudante estudanteCollectionEstudante : estudanteCollection) {
-                estudanteCollectionEstudante.setViaIngresso(null);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
+            List<Estudante> estudanteList = viaingresso.getEstudanteList();
+            for (Estudante estudanteListEstudante : estudanteList) {
+                estudanteListEstudante.setViaIngresso(null);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
             }
             em.remove(viaingresso);
             em.getTransaction().commit();

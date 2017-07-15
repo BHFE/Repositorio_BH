@@ -6,8 +6,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -34,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_obra", catalog = "fecn2", schema = "public")
+@Table(name = "sg_obra", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgObra.findAll", query = "SELECT s FROM SgObra s")
@@ -62,42 +60,42 @@ public class SgObra implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idlivro")
+    @Column(name = "idlivro", nullable = false)
     private Long idlivro;
     @Column(name = "cadastro_data")
     @Temporal(TemporalType.DATE)
     private Date cadastroData;
-    @Column(name = "codigo_barra")
+    @Column(name = "codigo_barra", length = 255)
     private String codigoBarra;
-    @Column(name = "cota")
+    @Column(name = "cota", length = 255)
     private String cota;
-    @Column(name = "directorio")
+    @Column(name = "directorio", length = 3000)
     private String directorio;
-    @Column(name = "edicao")
+    @Column(name = "edicao", length = 64)
     private String edicao;
-    @Column(name = "edicao_cidade")
+    @Column(name = "edicao_cidade", length = 255)
     private String edicaoCidade;
-    @Column(name = "editora")
+    @Column(name = "editora", length = 255)
     private String editora;
-    @Column(name = "formato")
+    @Column(name = "formato", length = 255)
     private String formato;
-    @Column(name = "idioma")
+    @Column(name = "idioma", length = 255)
     private String idioma;
-    @Column(name = "isbn")
+    @Column(name = "isbn", length = 255)
     private String isbn;
-    @Column(name = "publicacao_ano")
+    @Column(name = "publicacao_ano", length = 64)
     private String publicacaoAno;
-    @Column(name = "titulo")
+    @Column(name = "titulo", length = 255)
     private String titulo;
-    @Column(name = "volume")
+    @Column(name = "volume", length = 16)
     private String volume;
-    @Column(name = "capa_dir")
+    @Column(name = "capa_dir", length = 3000)
     private String capaDir;
-    @Column(name = "tipo_obra")
+    @Column(name = "tipo_obra", length = 255)
     private String tipoObra;
-    @Column(name = "nome")
+    @Column(name = "nome", length = 255)
     private String nome;
-    @Column(name = "motivo_remocao")
+    @Column(name = "motivo_remocao", length = 255)
     private String motivoRemocao;
     @JoinColumn(name = "curso", referencedColumnName = "id_curso")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -111,12 +109,10 @@ public class SgObra implements Serializable {
     @JoinColumn(name = "bibliotecario", referencedColumnName = "utilizador")
     @ManyToOne(fetch = FetchType.LAZY)
     private Users bibliotecario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sgObra", fetch = FetchType.LAZY)
-    private Collection<SgObraAutor> sgObraAutorCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idlivro", fetch = FetchType.LAZY)
+    private List<SgObraAutor> sgObraAutorList;
     @OneToMany(mappedBy = "obraRef", fetch = FetchType.LAZY)
-    private Collection<SgExemplar> sgExemplarCollection;
-    private List<SgExemplar> SgExemplarlist;
-    private Collection<? extends SgObraAutor> SgObraAutorlist;
+    private List<SgExemplar> sgExemplarList;
 
     public SgObra() {
     }
@@ -302,21 +298,21 @@ public class SgObra implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgObraAutor> getSgObraAutorCollection() {
-        return sgObraAutorCollection;
+    public List<SgObraAutor> getSgObraAutorList() {
+        return sgObraAutorList;
     }
 
-    public void setSgObraAutorCollection(Collection<SgObraAutor> sgObraAutorCollection) {
-        this.sgObraAutorCollection = sgObraAutorCollection;
+    public void setSgObraAutorList(List<SgObraAutor> sgObraAutorList) {
+        this.sgObraAutorList = sgObraAutorList;
     }
 
     @XmlTransient
-    public Collection<SgExemplar> getSgExemplarCollection() {
-        return sgExemplarCollection;
+    public List<SgExemplar> getSgExemplarList() {
+        return sgExemplarList;
     }
 
-    public void setSgExemplarCollection(Collection<SgExemplar> sgExemplarCollection) {
-        this.sgExemplarCollection = sgExemplarCollection;
+    public void setSgExemplarList(List<SgExemplar> sgExemplarList) {
+        this.sgExemplarList = sgExemplarList;
     }
 
     @Override
@@ -342,14 +338,6 @@ public class SgObra implements Serializable {
     @Override
     public String toString() {
         return "entidades.SgObra[ idlivro=" + idlivro + " ]";
-    }
-
-    public List<SgExemplar> getSgExemplarList() {
-        return SgExemplarlist;
-    }
-
-    public Collection<? extends SgObraAutor> getSgObraAutorList() {
-        return SgObraAutorlist;
     }
     
 }

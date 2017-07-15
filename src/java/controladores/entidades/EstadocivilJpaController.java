@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.Estudante;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,27 +35,27 @@ public class EstadocivilJpaController implements Serializable {
     }
 
     public void create(Estadocivil estadocivil) throws PreexistingEntityException, Exception {
-        if (estadocivil.getEstudanteCollection() == null) {
-            estadocivil.setEstudanteCollection(new ArrayList<Estudante>());
+        if (estadocivil.getEstudanteList() == null) {
+            estadocivil.setEstudanteList(new ArrayList<Estudante>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Estudante> attachedEstudanteCollection = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionEstudanteToAttach : estadocivil.getEstudanteCollection()) {
-                estudanteCollectionEstudanteToAttach = em.getReference(estudanteCollectionEstudanteToAttach.getClass(), estudanteCollectionEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollection.add(estudanteCollectionEstudanteToAttach);
+            List<Estudante> attachedEstudanteList = new ArrayList<Estudante>();
+            for (Estudante estudanteListEstudanteToAttach : estadocivil.getEstudanteList()) {
+                estudanteListEstudanteToAttach = em.getReference(estudanteListEstudanteToAttach.getClass(), estudanteListEstudanteToAttach.getIdEstudante());
+                attachedEstudanteList.add(estudanteListEstudanteToAttach);
             }
-            estadocivil.setEstudanteCollection(attachedEstudanteCollection);
+            estadocivil.setEstudanteList(attachedEstudanteList);
             em.persist(estadocivil);
-            for (Estudante estudanteCollectionEstudante : estadocivil.getEstudanteCollection()) {
-                Estadocivil oldEstadoCivilOfEstudanteCollectionEstudante = estudanteCollectionEstudante.getEstadoCivil();
-                estudanteCollectionEstudante.setEstadoCivil(estadocivil);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
-                if (oldEstadoCivilOfEstudanteCollectionEstudante != null) {
-                    oldEstadoCivilOfEstudanteCollectionEstudante.getEstudanteCollection().remove(estudanteCollectionEstudante);
-                    oldEstadoCivilOfEstudanteCollectionEstudante = em.merge(oldEstadoCivilOfEstudanteCollectionEstudante);
+            for (Estudante estudanteListEstudante : estadocivil.getEstudanteList()) {
+                Estadocivil oldEstadoCivilOfEstudanteListEstudante = estudanteListEstudante.getEstadoCivil();
+                estudanteListEstudante.setEstadoCivil(estadocivil);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
+                if (oldEstadoCivilOfEstudanteListEstudante != null) {
+                    oldEstadoCivilOfEstudanteListEstudante.getEstudanteList().remove(estudanteListEstudante);
+                    oldEstadoCivilOfEstudanteListEstudante = em.merge(oldEstadoCivilOfEstudanteListEstudante);
                 }
             }
             em.getTransaction().commit();
@@ -78,30 +77,30 @@ public class EstadocivilJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Estadocivil persistentEstadocivil = em.find(Estadocivil.class, estadocivil.getIdEstado());
-            Collection<Estudante> estudanteCollectionOld = persistentEstadocivil.getEstudanteCollection();
-            Collection<Estudante> estudanteCollectionNew = estadocivil.getEstudanteCollection();
-            Collection<Estudante> attachedEstudanteCollectionNew = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionNewEstudanteToAttach : estudanteCollectionNew) {
-                estudanteCollectionNewEstudanteToAttach = em.getReference(estudanteCollectionNewEstudanteToAttach.getClass(), estudanteCollectionNewEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollectionNew.add(estudanteCollectionNewEstudanteToAttach);
+            List<Estudante> estudanteListOld = persistentEstadocivil.getEstudanteList();
+            List<Estudante> estudanteListNew = estadocivil.getEstudanteList();
+            List<Estudante> attachedEstudanteListNew = new ArrayList<Estudante>();
+            for (Estudante estudanteListNewEstudanteToAttach : estudanteListNew) {
+                estudanteListNewEstudanteToAttach = em.getReference(estudanteListNewEstudanteToAttach.getClass(), estudanteListNewEstudanteToAttach.getIdEstudante());
+                attachedEstudanteListNew.add(estudanteListNewEstudanteToAttach);
             }
-            estudanteCollectionNew = attachedEstudanteCollectionNew;
-            estadocivil.setEstudanteCollection(estudanteCollectionNew);
+            estudanteListNew = attachedEstudanteListNew;
+            estadocivil.setEstudanteList(estudanteListNew);
             estadocivil = em.merge(estadocivil);
-            for (Estudante estudanteCollectionOldEstudante : estudanteCollectionOld) {
-                if (!estudanteCollectionNew.contains(estudanteCollectionOldEstudante)) {
-                    estudanteCollectionOldEstudante.setEstadoCivil(null);
-                    estudanteCollectionOldEstudante = em.merge(estudanteCollectionOldEstudante);
+            for (Estudante estudanteListOldEstudante : estudanteListOld) {
+                if (!estudanteListNew.contains(estudanteListOldEstudante)) {
+                    estudanteListOldEstudante.setEstadoCivil(null);
+                    estudanteListOldEstudante = em.merge(estudanteListOldEstudante);
                 }
             }
-            for (Estudante estudanteCollectionNewEstudante : estudanteCollectionNew) {
-                if (!estudanteCollectionOld.contains(estudanteCollectionNewEstudante)) {
-                    Estadocivil oldEstadoCivilOfEstudanteCollectionNewEstudante = estudanteCollectionNewEstudante.getEstadoCivil();
-                    estudanteCollectionNewEstudante.setEstadoCivil(estadocivil);
-                    estudanteCollectionNewEstudante = em.merge(estudanteCollectionNewEstudante);
-                    if (oldEstadoCivilOfEstudanteCollectionNewEstudante != null && !oldEstadoCivilOfEstudanteCollectionNewEstudante.equals(estadocivil)) {
-                        oldEstadoCivilOfEstudanteCollectionNewEstudante.getEstudanteCollection().remove(estudanteCollectionNewEstudante);
-                        oldEstadoCivilOfEstudanteCollectionNewEstudante = em.merge(oldEstadoCivilOfEstudanteCollectionNewEstudante);
+            for (Estudante estudanteListNewEstudante : estudanteListNew) {
+                if (!estudanteListOld.contains(estudanteListNewEstudante)) {
+                    Estadocivil oldEstadoCivilOfEstudanteListNewEstudante = estudanteListNewEstudante.getEstadoCivil();
+                    estudanteListNewEstudante.setEstadoCivil(estadocivil);
+                    estudanteListNewEstudante = em.merge(estudanteListNewEstudante);
+                    if (oldEstadoCivilOfEstudanteListNewEstudante != null && !oldEstadoCivilOfEstudanteListNewEstudante.equals(estadocivil)) {
+                        oldEstadoCivilOfEstudanteListNewEstudante.getEstudanteList().remove(estudanteListNewEstudante);
+                        oldEstadoCivilOfEstudanteListNewEstudante = em.merge(oldEstadoCivilOfEstudanteListNewEstudante);
                     }
                 }
             }
@@ -134,10 +133,10 @@ public class EstadocivilJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The estadocivil with id " + id + " no longer exists.", enfe);
             }
-            Collection<Estudante> estudanteCollection = estadocivil.getEstudanteCollection();
-            for (Estudante estudanteCollectionEstudante : estudanteCollection) {
-                estudanteCollectionEstudante.setEstadoCivil(null);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
+            List<Estudante> estudanteList = estadocivil.getEstudanteList();
+            for (Estudante estudanteListEstudante : estudanteList) {
+                estudanteListEstudante.setEstadoCivil(null);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
             }
             em.remove(estadocivil);
             em.getTransaction().commit();

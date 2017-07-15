@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "pais", catalog = "fecn2", schema = "public")
+@Table(name = "pais", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pais.findAll", query = "SELECT p FROM Pais p")
@@ -39,14 +39,14 @@ public class Pais implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_pais")
+    @Column(name = "id_pais", nullable = false)
     private Integer idPais;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 45)
     private String descricao;
     @OneToMany(mappedBy = "escolaPais", fetch = FetchType.LAZY)
-    private Collection<Estudante> estudanteCollection;
+    private List<Estudante> estudanteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nacionalidade", fetch = FetchType.LAZY)
-    private Collection<Estudante> estudanteCollection1;
+    private List<Estudante> estudanteList1;
 
     public Pais() {
     }
@@ -72,21 +72,21 @@ public class Pais implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Estudante> getEstudanteCollection() {
-        return estudanteCollection;
+    public List<Estudante> getEstudanteList() {
+        return estudanteList;
     }
 
-    public void setEstudanteCollection(Collection<Estudante> estudanteCollection) {
-        this.estudanteCollection = estudanteCollection;
+    public void setEstudanteList(List<Estudante> estudanteList) {
+        this.estudanteList = estudanteList;
     }
 
     @XmlTransient
-    public Collection<Estudante> getEstudanteCollection1() {
-        return estudanteCollection1;
+    public List<Estudante> getEstudanteList1() {
+        return estudanteList1;
     }
 
-    public void setEstudanteCollection1(Collection<Estudante> estudanteCollection1) {
-        this.estudanteCollection1 = estudanteCollection1;
+    public void setEstudanteList1(List<Estudante> estudanteList1) {
+        this.estudanteList1 = estudanteList1;
     }
 
     @Override

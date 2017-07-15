@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "provincia", catalog = "fecn2", schema = "public")
+@Table(name = "provincia", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p")
@@ -38,12 +38,12 @@ public class Provincia implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_provincia")
+    @Column(name = "id_provincia", nullable = false)
     private Long idProvincia;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 45)
     private String descricao;
     @OneToMany(mappedBy = "provinciapr", fetch = FetchType.LAZY)
-    private Collection<Profissao> profissaoCollection;
+    private List<Profissao> profissaoList;
 
     public Provincia() {
     }
@@ -69,12 +69,12 @@ public class Provincia implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Profissao> getProfissaoCollection() {
-        return profissaoCollection;
+    public List<Profissao> getProfissaoList() {
+        return profissaoList;
     }
 
-    public void setProfissaoCollection(Collection<Profissao> profissaoCollection) {
-        this.profissaoCollection = profissaoCollection;
+    public void setProfissaoList(List<Profissao> profissaoList) {
+        this.profissaoList = profissaoList;
     }
 
     @Override

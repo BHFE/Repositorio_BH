@@ -7,8 +7,8 @@ package entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "b_reserva", catalog = "fecn2", schema = "public")
+@Table(name = "b_reserva", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BReserva.findAll", query = "SELECT b FROM BReserva b")
@@ -49,7 +49,7 @@ public class BReserva implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idagenda")
+    @Column(name = "idagenda", nullable = false)
     private Integer idagenda;
     @Column(name = "data_devolucao")
     @Temporal(TemporalType.DATE)
@@ -57,9 +57,9 @@ public class BReserva implements Serializable {
     @Column(name = "data_reserva")
     @Temporal(TemporalType.DATE)
     private Date dataReserva;
-    @Column(name = "estado")
+    @Column(name = "estado", length = 255)
     private String estado;
-    @Column(name = "via")
+    @Column(name = "via", length = 255)
     private String via;
     @Column(name = "bibliotecario")
     private BigInteger bibliotecario;
@@ -67,9 +67,7 @@ public class BReserva implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataEmprestimo;
     @OneToMany(mappedBy = "reservaRef", fetch = FetchType.LAZY)
-    private Collection<SgEmprestimo> sgEmprestimoCollection;
-    @OneToMany(mappedBy = "idReserva", fetch = FetchType.LAZY)
-    private Collection<BNotificacao> bNotificacaoCollection;
+    private List<SgEmprestimo> sgEmprestimoList;
     @JoinColumn(name = "leitor", referencedColumnName = "nr_cartao")
     @ManyToOne(fetch = FetchType.LAZY)
     private BLeitor leitor;
@@ -141,21 +139,12 @@ public class BReserva implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgEmprestimo> getSgEmprestimoCollection() {
-        return sgEmprestimoCollection;
+    public List<SgEmprestimo> getSgEmprestimoList() {
+        return sgEmprestimoList;
     }
 
-    public void setSgEmprestimoCollection(Collection<SgEmprestimo> sgEmprestimoCollection) {
-        this.sgEmprestimoCollection = sgEmprestimoCollection;
-    }
-
-    @XmlTransient
-    public Collection<BNotificacao> getBNotificacaoCollection() {
-        return bNotificacaoCollection;
-    }
-
-    public void setBNotificacaoCollection(Collection<BNotificacao> bNotificacaoCollection) {
-        this.bNotificacaoCollection = bNotificacaoCollection;
+    public void setSgEmprestimoList(List<SgEmprestimo> sgEmprestimoList) {
+        this.sgEmprestimoList = sgEmprestimoList;
     }
 
     public BLeitor getLeitor() {

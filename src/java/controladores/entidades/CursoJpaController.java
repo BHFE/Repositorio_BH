@@ -14,11 +14,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.SgObra;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import entidades.BvArtigo;
 import entidades.Curso;
 import entidades.Estudante;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -38,81 +37,81 @@ public class CursoJpaController implements Serializable {
     }
 
     public void create(Curso curso) {
-        if (curso.getSgObraCollection() == null) {
-            curso.setSgObraCollection(new ArrayList<SgObra>());
+        if (curso.getSgObraList() == null) {
+            curso.setSgObraList(new ArrayList<SgObra>());
         }
-        if (curso.getBvArtigoCollection() == null) {
-            curso.setBvArtigoCollection(new ArrayList<BvArtigo>());
+        if (curso.getBvArtigoList() == null) {
+            curso.setBvArtigoList(new ArrayList<BvArtigo>());
         }
-        if (curso.getEstudanteCollection() == null) {
-            curso.setEstudanteCollection(new ArrayList<Estudante>());
+        if (curso.getEstudanteList() == null) {
+            curso.setEstudanteList(new ArrayList<Estudante>());
         }
-        if (curso.getEstudanteCollection1() == null) {
-            curso.setEstudanteCollection1(new ArrayList<Estudante>());
+        if (curso.getEstudanteList1() == null) {
+            curso.setEstudanteList1(new ArrayList<Estudante>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<SgObra> attachedSgObraCollection = new ArrayList<SgObra>();
-            for (SgObra sgObraCollectionSgObraToAttach : curso.getSgObraCollection()) {
-                sgObraCollectionSgObraToAttach = em.getReference(sgObraCollectionSgObraToAttach.getClass(), sgObraCollectionSgObraToAttach.getIdlivro());
-                attachedSgObraCollection.add(sgObraCollectionSgObraToAttach);
+            List<SgObra> attachedSgObraList = new ArrayList<SgObra>();
+            for (SgObra sgObraListSgObraToAttach : curso.getSgObraList()) {
+                sgObraListSgObraToAttach = em.getReference(sgObraListSgObraToAttach.getClass(), sgObraListSgObraToAttach.getIdlivro());
+                attachedSgObraList.add(sgObraListSgObraToAttach);
             }
-            curso.setSgObraCollection(attachedSgObraCollection);
-            Collection<BvArtigo> attachedBvArtigoCollection = new ArrayList<BvArtigo>();
-            for (BvArtigo bvArtigoCollectionBvArtigoToAttach : curso.getBvArtigoCollection()) {
-                bvArtigoCollectionBvArtigoToAttach = em.getReference(bvArtigoCollectionBvArtigoToAttach.getClass(), bvArtigoCollectionBvArtigoToAttach.getIdartigo());
-                attachedBvArtigoCollection.add(bvArtigoCollectionBvArtigoToAttach);
+            curso.setSgObraList(attachedSgObraList);
+            List<BvArtigo> attachedBvArtigoList = new ArrayList<BvArtigo>();
+            for (BvArtigo bvArtigoListBvArtigoToAttach : curso.getBvArtigoList()) {
+                bvArtigoListBvArtigoToAttach = em.getReference(bvArtigoListBvArtigoToAttach.getClass(), bvArtigoListBvArtigoToAttach.getIdartigo());
+                attachedBvArtigoList.add(bvArtigoListBvArtigoToAttach);
             }
-            curso.setBvArtigoCollection(attachedBvArtigoCollection);
-            Collection<Estudante> attachedEstudanteCollection = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionEstudanteToAttach : curso.getEstudanteCollection()) {
-                estudanteCollectionEstudanteToAttach = em.getReference(estudanteCollectionEstudanteToAttach.getClass(), estudanteCollectionEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollection.add(estudanteCollectionEstudanteToAttach);
+            curso.setBvArtigoList(attachedBvArtigoList);
+            List<Estudante> attachedEstudanteList = new ArrayList<Estudante>();
+            for (Estudante estudanteListEstudanteToAttach : curso.getEstudanteList()) {
+                estudanteListEstudanteToAttach = em.getReference(estudanteListEstudanteToAttach.getClass(), estudanteListEstudanteToAttach.getIdEstudante());
+                attachedEstudanteList.add(estudanteListEstudanteToAttach);
             }
-            curso.setEstudanteCollection(attachedEstudanteCollection);
-            Collection<Estudante> attachedEstudanteCollection1 = new ArrayList<Estudante>();
-            for (Estudante estudanteCollection1EstudanteToAttach : curso.getEstudanteCollection1()) {
-                estudanteCollection1EstudanteToAttach = em.getReference(estudanteCollection1EstudanteToAttach.getClass(), estudanteCollection1EstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollection1.add(estudanteCollection1EstudanteToAttach);
+            curso.setEstudanteList(attachedEstudanteList);
+            List<Estudante> attachedEstudanteList1 = new ArrayList<Estudante>();
+            for (Estudante estudanteList1EstudanteToAttach : curso.getEstudanteList1()) {
+                estudanteList1EstudanteToAttach = em.getReference(estudanteList1EstudanteToAttach.getClass(), estudanteList1EstudanteToAttach.getIdEstudante());
+                attachedEstudanteList1.add(estudanteList1EstudanteToAttach);
             }
-            curso.setEstudanteCollection1(attachedEstudanteCollection1);
+            curso.setEstudanteList1(attachedEstudanteList1);
             em.persist(curso);
-            for (SgObra sgObraCollectionSgObra : curso.getSgObraCollection()) {
-                Curso oldCursoOfSgObraCollectionSgObra = sgObraCollectionSgObra.getCurso();
-                sgObraCollectionSgObra.setCurso(curso);
-                sgObraCollectionSgObra = em.merge(sgObraCollectionSgObra);
-                if (oldCursoOfSgObraCollectionSgObra != null) {
-                    oldCursoOfSgObraCollectionSgObra.getSgObraCollection().remove(sgObraCollectionSgObra);
-                    oldCursoOfSgObraCollectionSgObra = em.merge(oldCursoOfSgObraCollectionSgObra);
+            for (SgObra sgObraListSgObra : curso.getSgObraList()) {
+                Curso oldCursoOfSgObraListSgObra = sgObraListSgObra.getCurso();
+                sgObraListSgObra.setCurso(curso);
+                sgObraListSgObra = em.merge(sgObraListSgObra);
+                if (oldCursoOfSgObraListSgObra != null) {
+                    oldCursoOfSgObraListSgObra.getSgObraList().remove(sgObraListSgObra);
+                    oldCursoOfSgObraListSgObra = em.merge(oldCursoOfSgObraListSgObra);
                 }
             }
-            for (BvArtigo bvArtigoCollectionBvArtigo : curso.getBvArtigoCollection()) {
-                Curso oldCursoAlvoOfBvArtigoCollectionBvArtigo = bvArtigoCollectionBvArtigo.getCursoAlvo();
-                bvArtigoCollectionBvArtigo.setCursoAlvo(curso);
-                bvArtigoCollectionBvArtigo = em.merge(bvArtigoCollectionBvArtigo);
-                if (oldCursoAlvoOfBvArtigoCollectionBvArtigo != null) {
-                    oldCursoAlvoOfBvArtigoCollectionBvArtigo.getBvArtigoCollection().remove(bvArtigoCollectionBvArtigo);
-                    oldCursoAlvoOfBvArtigoCollectionBvArtigo = em.merge(oldCursoAlvoOfBvArtigoCollectionBvArtigo);
+            for (BvArtigo bvArtigoListBvArtigo : curso.getBvArtigoList()) {
+                Curso oldCursoAlvoOfBvArtigoListBvArtigo = bvArtigoListBvArtigo.getCursoAlvo();
+                bvArtigoListBvArtigo.setCursoAlvo(curso);
+                bvArtigoListBvArtigo = em.merge(bvArtigoListBvArtigo);
+                if (oldCursoAlvoOfBvArtigoListBvArtigo != null) {
+                    oldCursoAlvoOfBvArtigoListBvArtigo.getBvArtigoList().remove(bvArtigoListBvArtigo);
+                    oldCursoAlvoOfBvArtigoListBvArtigo = em.merge(oldCursoAlvoOfBvArtigoListBvArtigo);
                 }
             }
-            for (Estudante estudanteCollectionEstudante : curso.getEstudanteCollection()) {
-                Curso oldCursocurrenteOfEstudanteCollectionEstudante = estudanteCollectionEstudante.getCursocurrente();
-                estudanteCollectionEstudante.setCursocurrente(curso);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
-                if (oldCursocurrenteOfEstudanteCollectionEstudante != null) {
-                    oldCursocurrenteOfEstudanteCollectionEstudante.getEstudanteCollection().remove(estudanteCollectionEstudante);
-                    oldCursocurrenteOfEstudanteCollectionEstudante = em.merge(oldCursocurrenteOfEstudanteCollectionEstudante);
+            for (Estudante estudanteListEstudante : curso.getEstudanteList()) {
+                Curso oldCursocurrenteOfEstudanteListEstudante = estudanteListEstudante.getCursocurrente();
+                estudanteListEstudante.setCursocurrente(curso);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
+                if (oldCursocurrenteOfEstudanteListEstudante != null) {
+                    oldCursocurrenteOfEstudanteListEstudante.getEstudanteList().remove(estudanteListEstudante);
+                    oldCursocurrenteOfEstudanteListEstudante = em.merge(oldCursocurrenteOfEstudanteListEstudante);
                 }
             }
-            for (Estudante estudanteCollection1Estudante : curso.getEstudanteCollection1()) {
-                Curso oldCursoingressoOfEstudanteCollection1Estudante = estudanteCollection1Estudante.getCursoingresso();
-                estudanteCollection1Estudante.setCursoingresso(curso);
-                estudanteCollection1Estudante = em.merge(estudanteCollection1Estudante);
-                if (oldCursoingressoOfEstudanteCollection1Estudante != null) {
-                    oldCursoingressoOfEstudanteCollection1Estudante.getEstudanteCollection1().remove(estudanteCollection1Estudante);
-                    oldCursoingressoOfEstudanteCollection1Estudante = em.merge(oldCursoingressoOfEstudanteCollection1Estudante);
+            for (Estudante estudanteList1Estudante : curso.getEstudanteList1()) {
+                Curso oldCursoingressoOfEstudanteList1Estudante = estudanteList1Estudante.getCursoingresso();
+                estudanteList1Estudante.setCursoingresso(curso);
+                estudanteList1Estudante = em.merge(estudanteList1Estudante);
+                if (oldCursoingressoOfEstudanteList1Estudante != null) {
+                    oldCursoingressoOfEstudanteList1Estudante.getEstudanteList1().remove(estudanteList1Estudante);
+                    oldCursoingressoOfEstudanteList1Estudante = em.merge(oldCursoingressoOfEstudanteList1Estudante);
                 }
             }
             em.getTransaction().commit();
@@ -129,116 +128,116 @@ public class CursoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Curso persistentCurso = em.find(Curso.class, curso.getIdCurso());
-            Collection<SgObra> sgObraCollectionOld = persistentCurso.getSgObraCollection();
-            Collection<SgObra> sgObraCollectionNew = curso.getSgObraCollection();
-            Collection<BvArtigo> bvArtigoCollectionOld = persistentCurso.getBvArtigoCollection();
-            Collection<BvArtigo> bvArtigoCollectionNew = curso.getBvArtigoCollection();
-            Collection<Estudante> estudanteCollectionOld = persistentCurso.getEstudanteCollection();
-            Collection<Estudante> estudanteCollectionNew = curso.getEstudanteCollection();
-            Collection<Estudante> estudanteCollection1Old = persistentCurso.getEstudanteCollection1();
-            Collection<Estudante> estudanteCollection1New = curso.getEstudanteCollection1();
+            List<SgObra> sgObraListOld = persistentCurso.getSgObraList();
+            List<SgObra> sgObraListNew = curso.getSgObraList();
+            List<BvArtigo> bvArtigoListOld = persistentCurso.getBvArtigoList();
+            List<BvArtigo> bvArtigoListNew = curso.getBvArtigoList();
+            List<Estudante> estudanteListOld = persistentCurso.getEstudanteList();
+            List<Estudante> estudanteListNew = curso.getEstudanteList();
+            List<Estudante> estudanteList1Old = persistentCurso.getEstudanteList1();
+            List<Estudante> estudanteList1New = curso.getEstudanteList1();
             List<String> illegalOrphanMessages = null;
-            for (Estudante estudanteCollectionOldEstudante : estudanteCollectionOld) {
-                if (!estudanteCollectionNew.contains(estudanteCollectionOldEstudante)) {
+            for (Estudante estudanteListOldEstudante : estudanteListOld) {
+                if (!estudanteListNew.contains(estudanteListOldEstudante)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Estudante " + estudanteCollectionOldEstudante + " since its cursocurrente field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Estudante " + estudanteListOldEstudante + " since its cursocurrente field is not nullable.");
                 }
             }
-            for (Estudante estudanteCollection1OldEstudante : estudanteCollection1Old) {
-                if (!estudanteCollection1New.contains(estudanteCollection1OldEstudante)) {
+            for (Estudante estudanteList1OldEstudante : estudanteList1Old) {
+                if (!estudanteList1New.contains(estudanteList1OldEstudante)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Estudante " + estudanteCollection1OldEstudante + " since its cursoingresso field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Estudante " + estudanteList1OldEstudante + " since its cursoingresso field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<SgObra> attachedSgObraCollectionNew = new ArrayList<SgObra>();
-            for (SgObra sgObraCollectionNewSgObraToAttach : sgObraCollectionNew) {
-                sgObraCollectionNewSgObraToAttach = em.getReference(sgObraCollectionNewSgObraToAttach.getClass(), sgObraCollectionNewSgObraToAttach.getIdlivro());
-                attachedSgObraCollectionNew.add(sgObraCollectionNewSgObraToAttach);
+            List<SgObra> attachedSgObraListNew = new ArrayList<SgObra>();
+            for (SgObra sgObraListNewSgObraToAttach : sgObraListNew) {
+                sgObraListNewSgObraToAttach = em.getReference(sgObraListNewSgObraToAttach.getClass(), sgObraListNewSgObraToAttach.getIdlivro());
+                attachedSgObraListNew.add(sgObraListNewSgObraToAttach);
             }
-            sgObraCollectionNew = attachedSgObraCollectionNew;
-            curso.setSgObraCollection(sgObraCollectionNew);
-            Collection<BvArtigo> attachedBvArtigoCollectionNew = new ArrayList<BvArtigo>();
-            for (BvArtigo bvArtigoCollectionNewBvArtigoToAttach : bvArtigoCollectionNew) {
-                bvArtigoCollectionNewBvArtigoToAttach = em.getReference(bvArtigoCollectionNewBvArtigoToAttach.getClass(), bvArtigoCollectionNewBvArtigoToAttach.getIdartigo());
-                attachedBvArtigoCollectionNew.add(bvArtigoCollectionNewBvArtigoToAttach);
+            sgObraListNew = attachedSgObraListNew;
+            curso.setSgObraList(sgObraListNew);
+            List<BvArtigo> attachedBvArtigoListNew = new ArrayList<BvArtigo>();
+            for (BvArtigo bvArtigoListNewBvArtigoToAttach : bvArtigoListNew) {
+                bvArtigoListNewBvArtigoToAttach = em.getReference(bvArtigoListNewBvArtigoToAttach.getClass(), bvArtigoListNewBvArtigoToAttach.getIdartigo());
+                attachedBvArtigoListNew.add(bvArtigoListNewBvArtigoToAttach);
             }
-            bvArtigoCollectionNew = attachedBvArtigoCollectionNew;
-            curso.setBvArtigoCollection(bvArtigoCollectionNew);
-            Collection<Estudante> attachedEstudanteCollectionNew = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionNewEstudanteToAttach : estudanteCollectionNew) {
-                estudanteCollectionNewEstudanteToAttach = em.getReference(estudanteCollectionNewEstudanteToAttach.getClass(), estudanteCollectionNewEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollectionNew.add(estudanteCollectionNewEstudanteToAttach);
+            bvArtigoListNew = attachedBvArtigoListNew;
+            curso.setBvArtigoList(bvArtigoListNew);
+            List<Estudante> attachedEstudanteListNew = new ArrayList<Estudante>();
+            for (Estudante estudanteListNewEstudanteToAttach : estudanteListNew) {
+                estudanteListNewEstudanteToAttach = em.getReference(estudanteListNewEstudanteToAttach.getClass(), estudanteListNewEstudanteToAttach.getIdEstudante());
+                attachedEstudanteListNew.add(estudanteListNewEstudanteToAttach);
             }
-            estudanteCollectionNew = attachedEstudanteCollectionNew;
-            curso.setEstudanteCollection(estudanteCollectionNew);
-            Collection<Estudante> attachedEstudanteCollection1New = new ArrayList<Estudante>();
-            for (Estudante estudanteCollection1NewEstudanteToAttach : estudanteCollection1New) {
-                estudanteCollection1NewEstudanteToAttach = em.getReference(estudanteCollection1NewEstudanteToAttach.getClass(), estudanteCollection1NewEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollection1New.add(estudanteCollection1NewEstudanteToAttach);
+            estudanteListNew = attachedEstudanteListNew;
+            curso.setEstudanteList(estudanteListNew);
+            List<Estudante> attachedEstudanteList1New = new ArrayList<Estudante>();
+            for (Estudante estudanteList1NewEstudanteToAttach : estudanteList1New) {
+                estudanteList1NewEstudanteToAttach = em.getReference(estudanteList1NewEstudanteToAttach.getClass(), estudanteList1NewEstudanteToAttach.getIdEstudante());
+                attachedEstudanteList1New.add(estudanteList1NewEstudanteToAttach);
             }
-            estudanteCollection1New = attachedEstudanteCollection1New;
-            curso.setEstudanteCollection1(estudanteCollection1New);
+            estudanteList1New = attachedEstudanteList1New;
+            curso.setEstudanteList1(estudanteList1New);
             curso = em.merge(curso);
-            for (SgObra sgObraCollectionOldSgObra : sgObraCollectionOld) {
-                if (!sgObraCollectionNew.contains(sgObraCollectionOldSgObra)) {
-                    sgObraCollectionOldSgObra.setCurso(null);
-                    sgObraCollectionOldSgObra = em.merge(sgObraCollectionOldSgObra);
+            for (SgObra sgObraListOldSgObra : sgObraListOld) {
+                if (!sgObraListNew.contains(sgObraListOldSgObra)) {
+                    sgObraListOldSgObra.setCurso(null);
+                    sgObraListOldSgObra = em.merge(sgObraListOldSgObra);
                 }
             }
-            for (SgObra sgObraCollectionNewSgObra : sgObraCollectionNew) {
-                if (!sgObraCollectionOld.contains(sgObraCollectionNewSgObra)) {
-                    Curso oldCursoOfSgObraCollectionNewSgObra = sgObraCollectionNewSgObra.getCurso();
-                    sgObraCollectionNewSgObra.setCurso(curso);
-                    sgObraCollectionNewSgObra = em.merge(sgObraCollectionNewSgObra);
-                    if (oldCursoOfSgObraCollectionNewSgObra != null && !oldCursoOfSgObraCollectionNewSgObra.equals(curso)) {
-                        oldCursoOfSgObraCollectionNewSgObra.getSgObraCollection().remove(sgObraCollectionNewSgObra);
-                        oldCursoOfSgObraCollectionNewSgObra = em.merge(oldCursoOfSgObraCollectionNewSgObra);
+            for (SgObra sgObraListNewSgObra : sgObraListNew) {
+                if (!sgObraListOld.contains(sgObraListNewSgObra)) {
+                    Curso oldCursoOfSgObraListNewSgObra = sgObraListNewSgObra.getCurso();
+                    sgObraListNewSgObra.setCurso(curso);
+                    sgObraListNewSgObra = em.merge(sgObraListNewSgObra);
+                    if (oldCursoOfSgObraListNewSgObra != null && !oldCursoOfSgObraListNewSgObra.equals(curso)) {
+                        oldCursoOfSgObraListNewSgObra.getSgObraList().remove(sgObraListNewSgObra);
+                        oldCursoOfSgObraListNewSgObra = em.merge(oldCursoOfSgObraListNewSgObra);
                     }
                 }
             }
-            for (BvArtigo bvArtigoCollectionOldBvArtigo : bvArtigoCollectionOld) {
-                if (!bvArtigoCollectionNew.contains(bvArtigoCollectionOldBvArtigo)) {
-                    bvArtigoCollectionOldBvArtigo.setCursoAlvo(null);
-                    bvArtigoCollectionOldBvArtigo = em.merge(bvArtigoCollectionOldBvArtigo);
+            for (BvArtigo bvArtigoListOldBvArtigo : bvArtigoListOld) {
+                if (!bvArtigoListNew.contains(bvArtigoListOldBvArtigo)) {
+                    bvArtigoListOldBvArtigo.setCursoAlvo(null);
+                    bvArtigoListOldBvArtigo = em.merge(bvArtigoListOldBvArtigo);
                 }
             }
-            for (BvArtigo bvArtigoCollectionNewBvArtigo : bvArtigoCollectionNew) {
-                if (!bvArtigoCollectionOld.contains(bvArtigoCollectionNewBvArtigo)) {
-                    Curso oldCursoAlvoOfBvArtigoCollectionNewBvArtigo = bvArtigoCollectionNewBvArtigo.getCursoAlvo();
-                    bvArtigoCollectionNewBvArtigo.setCursoAlvo(curso);
-                    bvArtigoCollectionNewBvArtigo = em.merge(bvArtigoCollectionNewBvArtigo);
-                    if (oldCursoAlvoOfBvArtigoCollectionNewBvArtigo != null && !oldCursoAlvoOfBvArtigoCollectionNewBvArtigo.equals(curso)) {
-                        oldCursoAlvoOfBvArtigoCollectionNewBvArtigo.getBvArtigoCollection().remove(bvArtigoCollectionNewBvArtigo);
-                        oldCursoAlvoOfBvArtigoCollectionNewBvArtigo = em.merge(oldCursoAlvoOfBvArtigoCollectionNewBvArtigo);
+            for (BvArtigo bvArtigoListNewBvArtigo : bvArtigoListNew) {
+                if (!bvArtigoListOld.contains(bvArtigoListNewBvArtigo)) {
+                    Curso oldCursoAlvoOfBvArtigoListNewBvArtigo = bvArtigoListNewBvArtigo.getCursoAlvo();
+                    bvArtigoListNewBvArtigo.setCursoAlvo(curso);
+                    bvArtigoListNewBvArtigo = em.merge(bvArtigoListNewBvArtigo);
+                    if (oldCursoAlvoOfBvArtigoListNewBvArtigo != null && !oldCursoAlvoOfBvArtigoListNewBvArtigo.equals(curso)) {
+                        oldCursoAlvoOfBvArtigoListNewBvArtigo.getBvArtigoList().remove(bvArtigoListNewBvArtigo);
+                        oldCursoAlvoOfBvArtigoListNewBvArtigo = em.merge(oldCursoAlvoOfBvArtigoListNewBvArtigo);
                     }
                 }
             }
-            for (Estudante estudanteCollectionNewEstudante : estudanteCollectionNew) {
-                if (!estudanteCollectionOld.contains(estudanteCollectionNewEstudante)) {
-                    Curso oldCursocurrenteOfEstudanteCollectionNewEstudante = estudanteCollectionNewEstudante.getCursocurrente();
-                    estudanteCollectionNewEstudante.setCursocurrente(curso);
-                    estudanteCollectionNewEstudante = em.merge(estudanteCollectionNewEstudante);
-                    if (oldCursocurrenteOfEstudanteCollectionNewEstudante != null && !oldCursocurrenteOfEstudanteCollectionNewEstudante.equals(curso)) {
-                        oldCursocurrenteOfEstudanteCollectionNewEstudante.getEstudanteCollection().remove(estudanteCollectionNewEstudante);
-                        oldCursocurrenteOfEstudanteCollectionNewEstudante = em.merge(oldCursocurrenteOfEstudanteCollectionNewEstudante);
+            for (Estudante estudanteListNewEstudante : estudanteListNew) {
+                if (!estudanteListOld.contains(estudanteListNewEstudante)) {
+                    Curso oldCursocurrenteOfEstudanteListNewEstudante = estudanteListNewEstudante.getCursocurrente();
+                    estudanteListNewEstudante.setCursocurrente(curso);
+                    estudanteListNewEstudante = em.merge(estudanteListNewEstudante);
+                    if (oldCursocurrenteOfEstudanteListNewEstudante != null && !oldCursocurrenteOfEstudanteListNewEstudante.equals(curso)) {
+                        oldCursocurrenteOfEstudanteListNewEstudante.getEstudanteList().remove(estudanteListNewEstudante);
+                        oldCursocurrenteOfEstudanteListNewEstudante = em.merge(oldCursocurrenteOfEstudanteListNewEstudante);
                     }
                 }
             }
-            for (Estudante estudanteCollection1NewEstudante : estudanteCollection1New) {
-                if (!estudanteCollection1Old.contains(estudanteCollection1NewEstudante)) {
-                    Curso oldCursoingressoOfEstudanteCollection1NewEstudante = estudanteCollection1NewEstudante.getCursoingresso();
-                    estudanteCollection1NewEstudante.setCursoingresso(curso);
-                    estudanteCollection1NewEstudante = em.merge(estudanteCollection1NewEstudante);
-                    if (oldCursoingressoOfEstudanteCollection1NewEstudante != null && !oldCursoingressoOfEstudanteCollection1NewEstudante.equals(curso)) {
-                        oldCursoingressoOfEstudanteCollection1NewEstudante.getEstudanteCollection1().remove(estudanteCollection1NewEstudante);
-                        oldCursoingressoOfEstudanteCollection1NewEstudante = em.merge(oldCursoingressoOfEstudanteCollection1NewEstudante);
+            for (Estudante estudanteList1NewEstudante : estudanteList1New) {
+                if (!estudanteList1Old.contains(estudanteList1NewEstudante)) {
+                    Curso oldCursoingressoOfEstudanteList1NewEstudante = estudanteList1NewEstudante.getCursoingresso();
+                    estudanteList1NewEstudante.setCursoingresso(curso);
+                    estudanteList1NewEstudante = em.merge(estudanteList1NewEstudante);
+                    if (oldCursoingressoOfEstudanteList1NewEstudante != null && !oldCursoingressoOfEstudanteList1NewEstudante.equals(curso)) {
+                        oldCursoingressoOfEstudanteList1NewEstudante.getEstudanteList1().remove(estudanteList1NewEstudante);
+                        oldCursoingressoOfEstudanteList1NewEstudante = em.merge(oldCursoingressoOfEstudanteList1NewEstudante);
                     }
                 }
             }
@@ -272,32 +271,32 @@ public class CursoJpaController implements Serializable {
                 throw new NonexistentEntityException("The curso with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<Estudante> estudanteCollectionOrphanCheck = curso.getEstudanteCollection();
-            for (Estudante estudanteCollectionOrphanCheckEstudante : estudanteCollectionOrphanCheck) {
+            List<Estudante> estudanteListOrphanCheck = curso.getEstudanteList();
+            for (Estudante estudanteListOrphanCheckEstudante : estudanteListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Curso (" + curso + ") cannot be destroyed since the Estudante " + estudanteCollectionOrphanCheckEstudante + " in its estudanteCollection field has a non-nullable cursocurrente field.");
+                illegalOrphanMessages.add("This Curso (" + curso + ") cannot be destroyed since the Estudante " + estudanteListOrphanCheckEstudante + " in its estudanteList field has a non-nullable cursocurrente field.");
             }
-            Collection<Estudante> estudanteCollection1OrphanCheck = curso.getEstudanteCollection1();
-            for (Estudante estudanteCollection1OrphanCheckEstudante : estudanteCollection1OrphanCheck) {
+            List<Estudante> estudanteList1OrphanCheck = curso.getEstudanteList1();
+            for (Estudante estudanteList1OrphanCheckEstudante : estudanteList1OrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Curso (" + curso + ") cannot be destroyed since the Estudante " + estudanteCollection1OrphanCheckEstudante + " in its estudanteCollection1 field has a non-nullable cursoingresso field.");
+                illegalOrphanMessages.add("This Curso (" + curso + ") cannot be destroyed since the Estudante " + estudanteList1OrphanCheckEstudante + " in its estudanteList1 field has a non-nullable cursoingresso field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<SgObra> sgObraCollection = curso.getSgObraCollection();
-            for (SgObra sgObraCollectionSgObra : sgObraCollection) {
-                sgObraCollectionSgObra.setCurso(null);
-                sgObraCollectionSgObra = em.merge(sgObraCollectionSgObra);
+            List<SgObra> sgObraList = curso.getSgObraList();
+            for (SgObra sgObraListSgObra : sgObraList) {
+                sgObraListSgObra.setCurso(null);
+                sgObraListSgObra = em.merge(sgObraListSgObra);
             }
-            Collection<BvArtigo> bvArtigoCollection = curso.getBvArtigoCollection();
-            for (BvArtigo bvArtigoCollectionBvArtigo : bvArtigoCollection) {
-                bvArtigoCollectionBvArtigo.setCursoAlvo(null);
-                bvArtigoCollectionBvArtigo = em.merge(bvArtigoCollectionBvArtigo);
+            List<BvArtigo> bvArtigoList = curso.getBvArtigoList();
+            for (BvArtigo bvArtigoListBvArtigo : bvArtigoList) {
+                bvArtigoListBvArtigo.setCursoAlvo(null);
+                bvArtigoListBvArtigo = em.merge(bvArtigoListBvArtigo);
             }
             em.remove(curso);
             em.getTransaction().commit();

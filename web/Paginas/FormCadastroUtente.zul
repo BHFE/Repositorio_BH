@@ -219,7 +219,7 @@
                         </div>
                         <div sclass="col-lg-6">
                             <div sclass="input-group">
-                                <span sclass="input-group-addon">Moradia</span>
+                                <span sclass="input-group-addon">Morada</span>
                                 <textbox sclass="form-control" id="moradia_visitante"/>
                             </div>
                         </div>

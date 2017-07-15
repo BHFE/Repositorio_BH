@@ -14,7 +14,6 @@ import javax.persistence.criteria.Root;
 import entidades.Profissao;
 import entidades.Provincia;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,27 +34,27 @@ public class ProvinciaJpaController implements Serializable {
     }
 
     public void create(Provincia provincia) {
-        if (provincia.getProfissaoCollection() == null) {
-            provincia.setProfissaoCollection(new ArrayList<Profissao>());
+        if (provincia.getProfissaoList() == null) {
+            provincia.setProfissaoList(new ArrayList<Profissao>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Profissao> attachedProfissaoCollection = new ArrayList<Profissao>();
-            for (Profissao profissaoCollectionProfissaoToAttach : provincia.getProfissaoCollection()) {
-                profissaoCollectionProfissaoToAttach = em.getReference(profissaoCollectionProfissaoToAttach.getClass(), profissaoCollectionProfissaoToAttach.getIdEstudante());
-                attachedProfissaoCollection.add(profissaoCollectionProfissaoToAttach);
+            List<Profissao> attachedProfissaoList = new ArrayList<Profissao>();
+            for (Profissao profissaoListProfissaoToAttach : provincia.getProfissaoList()) {
+                profissaoListProfissaoToAttach = em.getReference(profissaoListProfissaoToAttach.getClass(), profissaoListProfissaoToAttach.getIdEstudante());
+                attachedProfissaoList.add(profissaoListProfissaoToAttach);
             }
-            provincia.setProfissaoCollection(attachedProfissaoCollection);
+            provincia.setProfissaoList(attachedProfissaoList);
             em.persist(provincia);
-            for (Profissao profissaoCollectionProfissao : provincia.getProfissaoCollection()) {
-                Provincia oldProvinciaprOfProfissaoCollectionProfissao = profissaoCollectionProfissao.getProvinciapr();
-                profissaoCollectionProfissao.setProvinciapr(provincia);
-                profissaoCollectionProfissao = em.merge(profissaoCollectionProfissao);
-                if (oldProvinciaprOfProfissaoCollectionProfissao != null) {
-                    oldProvinciaprOfProfissaoCollectionProfissao.getProfissaoCollection().remove(profissaoCollectionProfissao);
-                    oldProvinciaprOfProfissaoCollectionProfissao = em.merge(oldProvinciaprOfProfissaoCollectionProfissao);
+            for (Profissao profissaoListProfissao : provincia.getProfissaoList()) {
+                Provincia oldProvinciaprOfProfissaoListProfissao = profissaoListProfissao.getProvinciapr();
+                profissaoListProfissao.setProvinciapr(provincia);
+                profissaoListProfissao = em.merge(profissaoListProfissao);
+                if (oldProvinciaprOfProfissaoListProfissao != null) {
+                    oldProvinciaprOfProfissaoListProfissao.getProfissaoList().remove(profissaoListProfissao);
+                    oldProvinciaprOfProfissaoListProfissao = em.merge(oldProvinciaprOfProfissaoListProfissao);
                 }
             }
             em.getTransaction().commit();
@@ -72,30 +71,30 @@ public class ProvinciaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Provincia persistentProvincia = em.find(Provincia.class, provincia.getIdProvincia());
-            Collection<Profissao> profissaoCollectionOld = persistentProvincia.getProfissaoCollection();
-            Collection<Profissao> profissaoCollectionNew = provincia.getProfissaoCollection();
-            Collection<Profissao> attachedProfissaoCollectionNew = new ArrayList<Profissao>();
-            for (Profissao profissaoCollectionNewProfissaoToAttach : profissaoCollectionNew) {
-                profissaoCollectionNewProfissaoToAttach = em.getReference(profissaoCollectionNewProfissaoToAttach.getClass(), profissaoCollectionNewProfissaoToAttach.getIdEstudante());
-                attachedProfissaoCollectionNew.add(profissaoCollectionNewProfissaoToAttach);
+            List<Profissao> profissaoListOld = persistentProvincia.getProfissaoList();
+            List<Profissao> profissaoListNew = provincia.getProfissaoList();
+            List<Profissao> attachedProfissaoListNew = new ArrayList<Profissao>();
+            for (Profissao profissaoListNewProfissaoToAttach : profissaoListNew) {
+                profissaoListNewProfissaoToAttach = em.getReference(profissaoListNewProfissaoToAttach.getClass(), profissaoListNewProfissaoToAttach.getIdEstudante());
+                attachedProfissaoListNew.add(profissaoListNewProfissaoToAttach);
             }
-            profissaoCollectionNew = attachedProfissaoCollectionNew;
-            provincia.setProfissaoCollection(profissaoCollectionNew);
+            profissaoListNew = attachedProfissaoListNew;
+            provincia.setProfissaoList(profissaoListNew);
             provincia = em.merge(provincia);
-            for (Profissao profissaoCollectionOldProfissao : profissaoCollectionOld) {
-                if (!profissaoCollectionNew.contains(profissaoCollectionOldProfissao)) {
-                    profissaoCollectionOldProfissao.setProvinciapr(null);
-                    profissaoCollectionOldProfissao = em.merge(profissaoCollectionOldProfissao);
+            for (Profissao profissaoListOldProfissao : profissaoListOld) {
+                if (!profissaoListNew.contains(profissaoListOldProfissao)) {
+                    profissaoListOldProfissao.setProvinciapr(null);
+                    profissaoListOldProfissao = em.merge(profissaoListOldProfissao);
                 }
             }
-            for (Profissao profissaoCollectionNewProfissao : profissaoCollectionNew) {
-                if (!profissaoCollectionOld.contains(profissaoCollectionNewProfissao)) {
-                    Provincia oldProvinciaprOfProfissaoCollectionNewProfissao = profissaoCollectionNewProfissao.getProvinciapr();
-                    profissaoCollectionNewProfissao.setProvinciapr(provincia);
-                    profissaoCollectionNewProfissao = em.merge(profissaoCollectionNewProfissao);
-                    if (oldProvinciaprOfProfissaoCollectionNewProfissao != null && !oldProvinciaprOfProfissaoCollectionNewProfissao.equals(provincia)) {
-                        oldProvinciaprOfProfissaoCollectionNewProfissao.getProfissaoCollection().remove(profissaoCollectionNewProfissao);
-                        oldProvinciaprOfProfissaoCollectionNewProfissao = em.merge(oldProvinciaprOfProfissaoCollectionNewProfissao);
+            for (Profissao profissaoListNewProfissao : profissaoListNew) {
+                if (!profissaoListOld.contains(profissaoListNewProfissao)) {
+                    Provincia oldProvinciaprOfProfissaoListNewProfissao = profissaoListNewProfissao.getProvinciapr();
+                    profissaoListNewProfissao.setProvinciapr(provincia);
+                    profissaoListNewProfissao = em.merge(profissaoListNewProfissao);
+                    if (oldProvinciaprOfProfissaoListNewProfissao != null && !oldProvinciaprOfProfissaoListNewProfissao.equals(provincia)) {
+                        oldProvinciaprOfProfissaoListNewProfissao.getProfissaoList().remove(profissaoListNewProfissao);
+                        oldProvinciaprOfProfissaoListNewProfissao = em.merge(oldProvinciaprOfProfissaoListNewProfissao);
                     }
                 }
             }
@@ -128,10 +127,10 @@ public class ProvinciaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The provincia with id " + id + " no longer exists.", enfe);
             }
-            Collection<Profissao> profissaoCollection = provincia.getProfissaoCollection();
-            for (Profissao profissaoCollectionProfissao : profissaoCollection) {
-                profissaoCollectionProfissao.setProvinciapr(null);
-                profissaoCollectionProfissao = em.merge(profissaoCollectionProfissao);
+            List<Profissao> profissaoList = provincia.getProfissaoList();
+            for (Profissao profissaoListProfissao : profissaoList) {
+                profissaoListProfissao.setProvinciapr(null);
+                profissaoListProfissao = em.merge(profissaoListProfissao);
             }
             em.remove(provincia);
             em.getTransaction().commit();

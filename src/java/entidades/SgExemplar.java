@@ -6,8 +6,8 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_exemplar", catalog = "fecn2", schema = "public")
+@Table(name = "sg_exemplar", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgExemplar.findAll", query = "SELECT s FROM SgExemplar s")
@@ -47,7 +47,7 @@ public class SgExemplar implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "nr_registo")
+    @Column(name = "nr_registo", nullable = false)
     private Long nrRegisto;
     @Column(name = "data_aquisicao")
     @Temporal(TemporalType.DATE)
@@ -55,14 +55,14 @@ public class SgExemplar implements Serializable {
     @Column(name = "data_registo")
     @Temporal(TemporalType.DATE)
     private Date dataRegisto;
-    @Column(name = "estado")
+    @Column(name = "estado", length = 255)
     private String estado;
-    @Column(name = "forma")
+    @Column(name = "forma", length = 255)
     private String forma;
-    @Column(name = "motivo_remocao")
+    @Column(name = "motivo_remocao", length = 255)
     private String motivoRemocao;
     @OneToMany(mappedBy = "exemplarRef", fetch = FetchType.LAZY)
-    private Collection<SgEmprestimo> sgEmprestimoCollection;
+    private List<SgEmprestimo> sgEmprestimoList;
     @JoinColumn(name = "obra_ref", referencedColumnName = "idlivro")
     @ManyToOne(fetch = FetchType.LAZY)
     private SgObra obraRef;
@@ -70,7 +70,7 @@ public class SgExemplar implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Users agenteRegisto;
     @OneToMany(mappedBy = "livro", fetch = FetchType.LAZY)
-    private Collection<BReserva> bReservaCollection;
+    private List<BReserva> bReservaList;
 
     public SgExemplar() {
     }
@@ -128,12 +128,12 @@ public class SgExemplar implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgEmprestimo> getSgEmprestimoCollection() {
-        return sgEmprestimoCollection;
+    public List<SgEmprestimo> getSgEmprestimoList() {
+        return sgEmprestimoList;
     }
 
-    public void setSgEmprestimoCollection(Collection<SgEmprestimo> sgEmprestimoCollection) {
-        this.sgEmprestimoCollection = sgEmprestimoCollection;
+    public void setSgEmprestimoList(List<SgEmprestimo> sgEmprestimoList) {
+        this.sgEmprestimoList = sgEmprestimoList;
     }
 
     public SgObra getObraRef() {
@@ -153,12 +153,12 @@ public class SgExemplar implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BReserva> getBReservaCollection() {
-        return bReservaCollection;
+    public List<BReserva> getBReservaList() {
+        return bReservaList;
     }
 
-    public void setBReservaCollection(Collection<BReserva> bReservaCollection) {
-        this.bReservaCollection = bReservaCollection;
+    public void setBReservaList(List<BReserva> bReservaList) {
+        this.bReservaList = bReservaList;
     }
 
     @Override

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="19da0fc6-fbdc-4758-88dc-0ebf3dd9c0d0">
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     b_leitor."nome" AS b_leitor_nome,
+     users."nome" AS users_nome,
+     sg_emprestimo."data_devolucao" AS sg_emprestimo_data_devolucao,
+     sg_emprestimo."data_emprestimo" AS sg_emprestimo_data_emprestimo,
+     sg_emprestimo."multa_estado" AS sg_emprestimo_multa_estado,
+     sg_emprestimo."multa_motivo" AS sg_emprestimo_multa_motivo,
+     sg_emprestimo."multa_pagamento" AS sg_emprestimo_multa_pagamento,
+     sg_emprestimo."multa_valor" AS sg_emprestimo_multa_valor,
+     sg_emprestimo."tipo_emprestimo" AS sg_emprestimo_tipo_emprestimo,
+     sg_emprestimo."agente_bibliot" AS sg_emprestimo_agente_bibliot,
+     sg_emprestimo."id_leitor" AS sg_emprestimo_id_leitor,
+     sg_emprestimo."estado" AS sg_emprestimo_estado,
+     sg_emprestimo."estado_renovacao" AS sg_emprestimo_estado_renovacao
+FROM
+     "public"."users" users INNER JOIN "public"."b_leitor" b_leitor ON users."utilizador" = b_leitor."idagente"
+     AND users."utilizador" = b_leitor."idutilizador"
+     INNER JOIN "public"."sg_emprestimo" sg_emprestimo ON b_leitor."nr_cartao" = sg_emprestimo."id_leitor"
+     AND users."utilizador" = sg_emprestimo."agente_bibliot"]]>
+	</queryString>
+	<field name="b_leitor_nome" class="java.lang.String"/>
+	<field name="users_nome" class="java.lang.String"/>
+	<field name="sg_emprestimo_data_devolucao" class="java.sql.Date"/>
+	<field name="sg_emprestimo_data_emprestimo" class="java.sql.Date"/>
+	<field name="sg_emprestimo_multa_estado" class="java.lang.String"/>
+	<field name="sg_emprestimo_multa_motivo" class="java.lang.String"/>
+	<field name="sg_emprestimo_multa_pagamento" class="java.lang.String"/>
+	<field name="sg_emprestimo_multa_valor" class="java.lang.String"/>
+	<field name="sg_emprestimo_tipo_emprestimo" class="java.lang.String"/>
+	<field name="sg_emprestimo_agente_bibliot" class="java.lang.String"/>
+	<field name="sg_emprestimo_id_leitor" class="java.lang.Long"/>
+	<field name="sg_emprestimo_estado" class="java.lang.String"/>
+	<field name="sg_emprestimo_estado_renovacao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="164" height="126" uuid="53463639-3ac4-4893-81c0-078f1bc8d53f"/>
+				<imageExpression><![CDATA["coffee.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="270" y="0" width="263" height="62" uuid="ca0f22d4-1cd4-433b-81ac-39dd972e2cc3"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Coffee Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="303" y="62" width="196" height="22" uuid="aa59f1ea-80a9-4ff3-82fa-c57bfa9dc344"/>
+				<textElement>
+					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Coffee SubTitle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="94" width="383" height="42" uuid="0e7fa54b-16b2-44e5-8253-2f99452da695"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce auctor purus gravida arcu aliquam mattis. Donec et nulla libero, ut varius massa. Nulla sed turpis elit. Etiam aliquet mauris a ligula hendrerit in auctor leo lobortis.]]></text>
+			</staticText>
+			<image>
+				<reportElement x="633" y="-73" width="219" height="209" uuid="b951d85e-ba41-4e73-9ab6-e2b94ca7daff"/>
+				<imageExpression><![CDATA["coffee_stain.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="eb03a9c3-a227-45e6-86ec-043ed649e933"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="61" height="15" forecolor="#736343" uuid="5cf57482-e2b5-449f-9b8e-4650793cbaaf"/>
+				<text><![CDATA[b_leitor_nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="61" y="0" width="61" height="15" forecolor="#736343" uuid="0a72390d-a336-40ea-a506-888695f5c41e"/>
+				<text><![CDATA[users_nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="122" y="0" width="61" height="15" forecolor="#736343" uuid="31c18fec-3e91-418c-847c-17b050d8bbd2"/>
+				<text><![CDATA[sg_emprestimo_data_devolucao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="183" y="0" width="61" height="15" forecolor="#736343" uuid="c0b4642b-4c7e-4dea-96e0-7bf80a23bad6"/>
+				<text><![CDATA[sg_emprestimo_data_emprestimo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="244" y="0" width="61" height="15" forecolor="#736343" uuid="87586899-5754-4f1b-9e56-0cc1ab12056d"/>
+				<text><![CDATA[sg_emprestimo_multa_estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="305" y="0" width="61" height="15" forecolor="#736343" uuid="aa4ed861-feae-4540-8bc9-21dc039ea589"/>
+				<text><![CDATA[sg_emprestimo_multa_motivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="366" y="0" width="61" height="15" forecolor="#736343" uuid="fcf152a8-a032-42f2-8466-1e768d0510ef"/>
+				<text><![CDATA[sg_emprestimo_multa_pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="427" y="0" width="61" height="15" forecolor="#736343" uuid="ab93ff05-9a88-4039-875e-bbc465032073"/>
+				<text><![CDATA[sg_emprestimo_multa_valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="488" y="0" width="61" height="15" forecolor="#736343" uuid="ce6eb601-1b0e-4406-9b22-cbb78c96b526"/>
+				<text><![CDATA[sg_emprestimo_tipo_emprestimo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="549" y="0" width="61" height="15" forecolor="#736343" uuid="49f4f8d3-15a8-452e-a022-25a3ed831ab6"/>
+				<text><![CDATA[sg_emprestimo_agente_bibliot]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="610" y="0" width="61" height="15" forecolor="#736343" uuid="63121734-3a42-4727-91b4-3ddf1ec42c31"/>
+				<text><![CDATA[sg_emprestimo_id_leitor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="671" y="0" width="61" height="15" forecolor="#736343" uuid="8ca3564a-71d6-4d11-a97c-2b3223513eb7"/>
+				<text><![CDATA[sg_emprestimo_estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="732" y="0" width="61" height="15" forecolor="#736343" uuid="5a899807-4195-442c-a94e-8816c17276d6"/>
+				<text><![CDATA[sg_emprestimo_estado_renovacao]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="15" uuid="36135be8-5847-4a4b-aed4-ebac706da690"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="0" y="0" width="61" height="15" uuid="c045d3cb-9bed-487c-a9da-780155d0d35f"/>
+					<textFieldExpression><![CDATA[$F{b_leitor_nome}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="61" y="0" width="61" height="15" uuid="fdb63e7f-c6b1-4be6-884b-e6c4d4d6455e"/>
+					<textFieldExpression><![CDATA[$F{users_nome}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="122" y="0" width="61" height="15" uuid="2c75dfb7-6553-4e36-b925-1ba157ceb1cb"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_data_devolucao}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="183" y="0" width="61" height="15" uuid="43d973de-36bc-4f08-bc37-84b4630f433f"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_data_emprestimo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="244" y="0" width="61" height="15" uuid="1833841f-34ed-423e-bf4c-2f78ea2606c6"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_multa_estado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="305" y="0" width="61" height="15" uuid="a702e89f-12b0-4ca1-af77-a881562266e4"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_multa_motivo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="366" y="0" width="61" height="15" uuid="b1344911-57dc-4970-a39c-ae8ca0b96435"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_multa_pagamento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="427" y="0" width="61" height="15" uuid="a398cdf4-8f56-429e-896d-7434ef38815b"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_multa_valor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="488" y="0" width="61" height="15" uuid="3e32452b-6116-45a2-9236-c5bb2357fc2f"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_tipo_emprestimo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="549" y="0" width="61" height="15" uuid="d9ffbcd6-21a1-428d-abdc-e322bdb692e7"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_agente_bibliot}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="610" y="0" width="61" height="15" uuid="c0676eeb-9bd0-41d0-b272-17ba48355811"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_id_leitor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="671" y="0" width="61" height="15" uuid="94a61d7b-41d4-49f5-8986-4f42fc50ca7c"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_estado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="732" y="0" width="61" height="15" uuid="5feb1d80-037f-40e1-b0c1-242a3c6d88d3"/>
+					<textFieldExpression><![CDATA[$F{sg_emprestimo_estado_renovacao}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="13b7b8bb-4eca-4650-be7d-6d691cf6e406"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="eff664aa-86a8-4213-9153-4fcbac231484"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="a72724dd-b3a3-4848-b44e-c6251a0227bd"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="938dfff7-f651-4317-972c-16956dabb391"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="4b6272c4-e91f-4b96-98bd-1f997c079510"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

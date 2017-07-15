@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_obra_area", catalog = "fecn2", schema = "public")
+@Table(name = "sg_obra_area", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgObraArea.findAll", query = "SELECT s FROM SgObraArea s")
@@ -35,14 +35,14 @@ public class SgObraArea implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "idarea")
+    @Column(name = "idarea", nullable = false)
     private Long idarea;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 255)
     private String descricao;
     @OneToMany(mappedBy = "area", fetch = FetchType.LAZY)
-    private Collection<SgObra> sgObraCollection;
+    private List<SgObra> sgObraList;
     @OneToMany(mappedBy = "area", fetch = FetchType.LAZY)
-    private Collection<BvArtigo> bvArtigoCollection;
+    private List<BvArtigo> bvArtigoList;
 
     public SgObraArea() {
     }
@@ -68,21 +68,21 @@ public class SgObraArea implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgObra> getSgObraCollection() {
-        return sgObraCollection;
+    public List<SgObra> getSgObraList() {
+        return sgObraList;
     }
 
-    public void setSgObraCollection(Collection<SgObra> sgObraCollection) {
-        this.sgObraCollection = sgObraCollection;
+    public void setSgObraList(List<SgObra> sgObraList) {
+        this.sgObraList = sgObraList;
     }
 
     @XmlTransient
-    public Collection<BvArtigo> getBvArtigoCollection() {
-        return bvArtigoCollection;
+    public List<BvArtigo> getBvArtigoList() {
+        return bvArtigoList;
     }
 
-    public void setBvArtigoCollection(Collection<BvArtigo> bvArtigoCollection) {
-        this.bvArtigoCollection = bvArtigoCollection;
+    public void setBvArtigoList(List<BvArtigo> bvArtigoList) {
+        this.bvArtigoList = bvArtigoList;
     }
 
     @Override

@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
-
+	 <div sclass="conteudo" apply="">
+        <script src="bootstrap/zk/js/Button-bs.js" />
+        <script src="bootstrap/zk/js/panel-bs.js"/>
+        Gerar Relatorio: 
+        <div sclass="sub-menu">
+            <hlayout>
+                <div sclass="btn-group">
+                    <button label="Relatorio de Emprestimo" sclass="btn-primary" tooltiptext="Novo Relatorio de Emprestimos" height="38px">
+                        <attribute name="onClick">{
+                            final Window win = (Window) Executions.createComponents(
+                            "/Paginas/NovoRelatorio.zul", null, null);
+                            win.position =  &quot;center&quot;;
+                            win.setMaximizable(true);
+                            win.doModal();
+                            }</attribute>
+                    </button>
+                    <button label="Relatorio de Obras" sclass="btn-primary" height="38px"/>
+                </div>
+                <label sclass="sub-menu-texto">Relatorios</label>
+            </hlayout>
+        </div>
+        </div>
 </zk>

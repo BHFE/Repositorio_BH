@@ -14,10 +14,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.SgObra;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import entidades.BvArtigo;
 import entidades.SgObraArea;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -37,45 +36,45 @@ public class SgObraAreaJpaController implements Serializable {
     }
 
     public void create(SgObraArea sgObraArea) throws PreexistingEntityException, Exception {
-        if (sgObraArea.getSgObraCollection() == null) {
-            sgObraArea.setSgObraCollection(new ArrayList<SgObra>());
+        if (sgObraArea.getSgObraList() == null) {
+            sgObraArea.setSgObraList(new ArrayList<SgObra>());
         }
-        if (sgObraArea.getBvArtigoCollection() == null) {
-            sgObraArea.setBvArtigoCollection(new ArrayList<BvArtigo>());
+        if (sgObraArea.getBvArtigoList() == null) {
+            sgObraArea.setBvArtigoList(new ArrayList<BvArtigo>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<SgObra> attachedSgObraCollection = new ArrayList<SgObra>();
-            for (SgObra sgObraCollectionSgObraToAttach : sgObraArea.getSgObraCollection()) {
-                sgObraCollectionSgObraToAttach = em.getReference(sgObraCollectionSgObraToAttach.getClass(), sgObraCollectionSgObraToAttach.getIdlivro());
-                attachedSgObraCollection.add(sgObraCollectionSgObraToAttach);
+            List<SgObra> attachedSgObraList = new ArrayList<SgObra>();
+            for (SgObra sgObraListSgObraToAttach : sgObraArea.getSgObraList()) {
+                sgObraListSgObraToAttach = em.getReference(sgObraListSgObraToAttach.getClass(), sgObraListSgObraToAttach.getIdlivro());
+                attachedSgObraList.add(sgObraListSgObraToAttach);
             }
-            sgObraArea.setSgObraCollection(attachedSgObraCollection);
-            Collection<BvArtigo> attachedBvArtigoCollection = new ArrayList<BvArtigo>();
-            for (BvArtigo bvArtigoCollectionBvArtigoToAttach : sgObraArea.getBvArtigoCollection()) {
-                bvArtigoCollectionBvArtigoToAttach = em.getReference(bvArtigoCollectionBvArtigoToAttach.getClass(), bvArtigoCollectionBvArtigoToAttach.getIdartigo());
-                attachedBvArtigoCollection.add(bvArtigoCollectionBvArtigoToAttach);
+            sgObraArea.setSgObraList(attachedSgObraList);
+            List<BvArtigo> attachedBvArtigoList = new ArrayList<BvArtigo>();
+            for (BvArtigo bvArtigoListBvArtigoToAttach : sgObraArea.getBvArtigoList()) {
+                bvArtigoListBvArtigoToAttach = em.getReference(bvArtigoListBvArtigoToAttach.getClass(), bvArtigoListBvArtigoToAttach.getIdartigo());
+                attachedBvArtigoList.add(bvArtigoListBvArtigoToAttach);
             }
-            sgObraArea.setBvArtigoCollection(attachedBvArtigoCollection);
+            sgObraArea.setBvArtigoList(attachedBvArtigoList);
             em.persist(sgObraArea);
-            for (SgObra sgObraCollectionSgObra : sgObraArea.getSgObraCollection()) {
-                SgObraArea oldAreaOfSgObraCollectionSgObra = sgObraCollectionSgObra.getArea();
-                sgObraCollectionSgObra.setArea(sgObraArea);
-                sgObraCollectionSgObra = em.merge(sgObraCollectionSgObra);
-                if (oldAreaOfSgObraCollectionSgObra != null) {
-                    oldAreaOfSgObraCollectionSgObra.getSgObraCollection().remove(sgObraCollectionSgObra);
-                    oldAreaOfSgObraCollectionSgObra = em.merge(oldAreaOfSgObraCollectionSgObra);
+            for (SgObra sgObraListSgObra : sgObraArea.getSgObraList()) {
+                SgObraArea oldAreaOfSgObraListSgObra = sgObraListSgObra.getArea();
+                sgObraListSgObra.setArea(sgObraArea);
+                sgObraListSgObra = em.merge(sgObraListSgObra);
+                if (oldAreaOfSgObraListSgObra != null) {
+                    oldAreaOfSgObraListSgObra.getSgObraList().remove(sgObraListSgObra);
+                    oldAreaOfSgObraListSgObra = em.merge(oldAreaOfSgObraListSgObra);
                 }
             }
-            for (BvArtigo bvArtigoCollectionBvArtigo : sgObraArea.getBvArtigoCollection()) {
-                SgObraArea oldAreaOfBvArtigoCollectionBvArtigo = bvArtigoCollectionBvArtigo.getArea();
-                bvArtigoCollectionBvArtigo.setArea(sgObraArea);
-                bvArtigoCollectionBvArtigo = em.merge(bvArtigoCollectionBvArtigo);
-                if (oldAreaOfBvArtigoCollectionBvArtigo != null) {
-                    oldAreaOfBvArtigoCollectionBvArtigo.getBvArtigoCollection().remove(bvArtigoCollectionBvArtigo);
-                    oldAreaOfBvArtigoCollectionBvArtigo = em.merge(oldAreaOfBvArtigoCollectionBvArtigo);
+            for (BvArtigo bvArtigoListBvArtigo : sgObraArea.getBvArtigoList()) {
+                SgObraArea oldAreaOfBvArtigoListBvArtigo = bvArtigoListBvArtigo.getArea();
+                bvArtigoListBvArtigo.setArea(sgObraArea);
+                bvArtigoListBvArtigo = em.merge(bvArtigoListBvArtigo);
+                if (oldAreaOfBvArtigoListBvArtigo != null) {
+                    oldAreaOfBvArtigoListBvArtigo.getBvArtigoList().remove(bvArtigoListBvArtigo);
+                    oldAreaOfBvArtigoListBvArtigo = em.merge(oldAreaOfBvArtigoListBvArtigo);
                 }
             }
             em.getTransaction().commit();
@@ -97,56 +96,56 @@ public class SgObraAreaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             SgObraArea persistentSgObraArea = em.find(SgObraArea.class, sgObraArea.getIdarea());
-            Collection<SgObra> sgObraCollectionOld = persistentSgObraArea.getSgObraCollection();
-            Collection<SgObra> sgObraCollectionNew = sgObraArea.getSgObraCollection();
-            Collection<BvArtigo> bvArtigoCollectionOld = persistentSgObraArea.getBvArtigoCollection();
-            Collection<BvArtigo> bvArtigoCollectionNew = sgObraArea.getBvArtigoCollection();
-            Collection<SgObra> attachedSgObraCollectionNew = new ArrayList<SgObra>();
-            for (SgObra sgObraCollectionNewSgObraToAttach : sgObraCollectionNew) {
-                sgObraCollectionNewSgObraToAttach = em.getReference(sgObraCollectionNewSgObraToAttach.getClass(), sgObraCollectionNewSgObraToAttach.getIdlivro());
-                attachedSgObraCollectionNew.add(sgObraCollectionNewSgObraToAttach);
+            List<SgObra> sgObraListOld = persistentSgObraArea.getSgObraList();
+            List<SgObra> sgObraListNew = sgObraArea.getSgObraList();
+            List<BvArtigo> bvArtigoListOld = persistentSgObraArea.getBvArtigoList();
+            List<BvArtigo> bvArtigoListNew = sgObraArea.getBvArtigoList();
+            List<SgObra> attachedSgObraListNew = new ArrayList<SgObra>();
+            for (SgObra sgObraListNewSgObraToAttach : sgObraListNew) {
+                sgObraListNewSgObraToAttach = em.getReference(sgObraListNewSgObraToAttach.getClass(), sgObraListNewSgObraToAttach.getIdlivro());
+                attachedSgObraListNew.add(sgObraListNewSgObraToAttach);
             }
-            sgObraCollectionNew = attachedSgObraCollectionNew;
-            sgObraArea.setSgObraCollection(sgObraCollectionNew);
-            Collection<BvArtigo> attachedBvArtigoCollectionNew = new ArrayList<BvArtigo>();
-            for (BvArtigo bvArtigoCollectionNewBvArtigoToAttach : bvArtigoCollectionNew) {
-                bvArtigoCollectionNewBvArtigoToAttach = em.getReference(bvArtigoCollectionNewBvArtigoToAttach.getClass(), bvArtigoCollectionNewBvArtigoToAttach.getIdartigo());
-                attachedBvArtigoCollectionNew.add(bvArtigoCollectionNewBvArtigoToAttach);
+            sgObraListNew = attachedSgObraListNew;
+            sgObraArea.setSgObraList(sgObraListNew);
+            List<BvArtigo> attachedBvArtigoListNew = new ArrayList<BvArtigo>();
+            for (BvArtigo bvArtigoListNewBvArtigoToAttach : bvArtigoListNew) {
+                bvArtigoListNewBvArtigoToAttach = em.getReference(bvArtigoListNewBvArtigoToAttach.getClass(), bvArtigoListNewBvArtigoToAttach.getIdartigo());
+                attachedBvArtigoListNew.add(bvArtigoListNewBvArtigoToAttach);
             }
-            bvArtigoCollectionNew = attachedBvArtigoCollectionNew;
-            sgObraArea.setBvArtigoCollection(bvArtigoCollectionNew);
+            bvArtigoListNew = attachedBvArtigoListNew;
+            sgObraArea.setBvArtigoList(bvArtigoListNew);
             sgObraArea = em.merge(sgObraArea);
-            for (SgObra sgObraCollectionOldSgObra : sgObraCollectionOld) {
-                if (!sgObraCollectionNew.contains(sgObraCollectionOldSgObra)) {
-                    sgObraCollectionOldSgObra.setArea(null);
-                    sgObraCollectionOldSgObra = em.merge(sgObraCollectionOldSgObra);
+            for (SgObra sgObraListOldSgObra : sgObraListOld) {
+                if (!sgObraListNew.contains(sgObraListOldSgObra)) {
+                    sgObraListOldSgObra.setArea(null);
+                    sgObraListOldSgObra = em.merge(sgObraListOldSgObra);
                 }
             }
-            for (SgObra sgObraCollectionNewSgObra : sgObraCollectionNew) {
-                if (!sgObraCollectionOld.contains(sgObraCollectionNewSgObra)) {
-                    SgObraArea oldAreaOfSgObraCollectionNewSgObra = sgObraCollectionNewSgObra.getArea();
-                    sgObraCollectionNewSgObra.setArea(sgObraArea);
-                    sgObraCollectionNewSgObra = em.merge(sgObraCollectionNewSgObra);
-                    if (oldAreaOfSgObraCollectionNewSgObra != null && !oldAreaOfSgObraCollectionNewSgObra.equals(sgObraArea)) {
-                        oldAreaOfSgObraCollectionNewSgObra.getSgObraCollection().remove(sgObraCollectionNewSgObra);
-                        oldAreaOfSgObraCollectionNewSgObra = em.merge(oldAreaOfSgObraCollectionNewSgObra);
+            for (SgObra sgObraListNewSgObra : sgObraListNew) {
+                if (!sgObraListOld.contains(sgObraListNewSgObra)) {
+                    SgObraArea oldAreaOfSgObraListNewSgObra = sgObraListNewSgObra.getArea();
+                    sgObraListNewSgObra.setArea(sgObraArea);
+                    sgObraListNewSgObra = em.merge(sgObraListNewSgObra);
+                    if (oldAreaOfSgObraListNewSgObra != null && !oldAreaOfSgObraListNewSgObra.equals(sgObraArea)) {
+                        oldAreaOfSgObraListNewSgObra.getSgObraList().remove(sgObraListNewSgObra);
+                        oldAreaOfSgObraListNewSgObra = em.merge(oldAreaOfSgObraListNewSgObra);
                     }
                 }
             }
-            for (BvArtigo bvArtigoCollectionOldBvArtigo : bvArtigoCollectionOld) {
-                if (!bvArtigoCollectionNew.contains(bvArtigoCollectionOldBvArtigo)) {
-                    bvArtigoCollectionOldBvArtigo.setArea(null);
-                    bvArtigoCollectionOldBvArtigo = em.merge(bvArtigoCollectionOldBvArtigo);
+            for (BvArtigo bvArtigoListOldBvArtigo : bvArtigoListOld) {
+                if (!bvArtigoListNew.contains(bvArtigoListOldBvArtigo)) {
+                    bvArtigoListOldBvArtigo.setArea(null);
+                    bvArtigoListOldBvArtigo = em.merge(bvArtigoListOldBvArtigo);
                 }
             }
-            for (BvArtigo bvArtigoCollectionNewBvArtigo : bvArtigoCollectionNew) {
-                if (!bvArtigoCollectionOld.contains(bvArtigoCollectionNewBvArtigo)) {
-                    SgObraArea oldAreaOfBvArtigoCollectionNewBvArtigo = bvArtigoCollectionNewBvArtigo.getArea();
-                    bvArtigoCollectionNewBvArtigo.setArea(sgObraArea);
-                    bvArtigoCollectionNewBvArtigo = em.merge(bvArtigoCollectionNewBvArtigo);
-                    if (oldAreaOfBvArtigoCollectionNewBvArtigo != null && !oldAreaOfBvArtigoCollectionNewBvArtigo.equals(sgObraArea)) {
-                        oldAreaOfBvArtigoCollectionNewBvArtigo.getBvArtigoCollection().remove(bvArtigoCollectionNewBvArtigo);
-                        oldAreaOfBvArtigoCollectionNewBvArtigo = em.merge(oldAreaOfBvArtigoCollectionNewBvArtigo);
+            for (BvArtigo bvArtigoListNewBvArtigo : bvArtigoListNew) {
+                if (!bvArtigoListOld.contains(bvArtigoListNewBvArtigo)) {
+                    SgObraArea oldAreaOfBvArtigoListNewBvArtigo = bvArtigoListNewBvArtigo.getArea();
+                    bvArtigoListNewBvArtigo.setArea(sgObraArea);
+                    bvArtigoListNewBvArtigo = em.merge(bvArtigoListNewBvArtigo);
+                    if (oldAreaOfBvArtigoListNewBvArtigo != null && !oldAreaOfBvArtigoListNewBvArtigo.equals(sgObraArea)) {
+                        oldAreaOfBvArtigoListNewBvArtigo.getBvArtigoList().remove(bvArtigoListNewBvArtigo);
+                        oldAreaOfBvArtigoListNewBvArtigo = em.merge(oldAreaOfBvArtigoListNewBvArtigo);
                     }
                 }
             }
@@ -179,15 +178,15 @@ public class SgObraAreaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The sgObraArea with id " + id + " no longer exists.", enfe);
             }
-            Collection<SgObra> sgObraCollection = sgObraArea.getSgObraCollection();
-            for (SgObra sgObraCollectionSgObra : sgObraCollection) {
-                sgObraCollectionSgObra.setArea(null);
-                sgObraCollectionSgObra = em.merge(sgObraCollectionSgObra);
+            List<SgObra> sgObraList = sgObraArea.getSgObraList();
+            for (SgObra sgObraListSgObra : sgObraList) {
+                sgObraListSgObra.setArea(null);
+                sgObraListSgObra = em.merge(sgObraListSgObra);
             }
-            Collection<BvArtigo> bvArtigoCollection = sgObraArea.getBvArtigoCollection();
-            for (BvArtigo bvArtigoCollectionBvArtigo : bvArtigoCollection) {
-                bvArtigoCollectionBvArtigo.setArea(null);
-                bvArtigoCollectionBvArtigo = em.merge(bvArtigoCollectionBvArtigo);
+            List<BvArtigo> bvArtigoList = sgObraArea.getBvArtigoList();
+            for (BvArtigo bvArtigoListBvArtigo : bvArtigoList) {
+                bvArtigoListBvArtigo.setArea(null);
+                bvArtigoListBvArtigo = em.merge(bvArtigoListBvArtigo);
             }
             em.remove(sgObraArea);
             em.getTransaction().commit();

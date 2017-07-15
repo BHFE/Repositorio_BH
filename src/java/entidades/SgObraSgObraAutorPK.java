@@ -21,17 +21,17 @@ import javax.persistence.TemporalType;
 public class SgObraSgObraAutorPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "sgobra_idlivro")
+    @Column(name = "sgobra_idlivro", nullable = false)
     private long sgobraIdlivro;
     @Basic(optional = false)
-    @Column(name = "data_alocacao")
+    @Column(name = "data_alocacao", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataAlocacao;
     @Basic(optional = false)
-    @Column(name = "idautor")
+    @Column(name = "idautor", nullable = false)
     private long idautor;
     @Basic(optional = false)
-    @Column(name = "idlivro")
+    @Column(name = "idlivro", nullable = false)
     private long idlivro;
 
     public SgObraSgObraAutorPK() {

@@ -14,9 +14,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.Funcionario;
 import java.util.ArrayList;
-import java.util.Collection;
-import entidades.Users;
 import java.util.List;
+import entidades.Users;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -36,45 +35,45 @@ public class FaculdadeJpaController implements Serializable {
     }
 
     public void create(Faculdade faculdade) {
-        if (faculdade.getFuncionarioCollection() == null) {
-            faculdade.setFuncionarioCollection(new ArrayList<Funcionario>());
+        if (faculdade.getFuncionarioList() == null) {
+            faculdade.setFuncionarioList(new ArrayList<Funcionario>());
         }
-        if (faculdade.getUsersCollection() == null) {
-            faculdade.setUsersCollection(new ArrayList<Users>());
+        if (faculdade.getUsersList() == null) {
+            faculdade.setUsersList(new ArrayList<Users>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Funcionario> attachedFuncionarioCollection = new ArrayList<Funcionario>();
-            for (Funcionario funcionarioCollectionFuncionarioToAttach : faculdade.getFuncionarioCollection()) {
-                funcionarioCollectionFuncionarioToAttach = em.getReference(funcionarioCollectionFuncionarioToAttach.getClass(), funcionarioCollectionFuncionarioToAttach.getIdFuncionario());
-                attachedFuncionarioCollection.add(funcionarioCollectionFuncionarioToAttach);
+            List<Funcionario> attachedFuncionarioList = new ArrayList<Funcionario>();
+            for (Funcionario funcionarioListFuncionarioToAttach : faculdade.getFuncionarioList()) {
+                funcionarioListFuncionarioToAttach = em.getReference(funcionarioListFuncionarioToAttach.getClass(), funcionarioListFuncionarioToAttach.getIdFuncionario());
+                attachedFuncionarioList.add(funcionarioListFuncionarioToAttach);
             }
-            faculdade.setFuncionarioCollection(attachedFuncionarioCollection);
-            Collection<Users> attachedUsersCollection = new ArrayList<Users>();
-            for (Users usersCollectionUsersToAttach : faculdade.getUsersCollection()) {
-                usersCollectionUsersToAttach = em.getReference(usersCollectionUsersToAttach.getClass(), usersCollectionUsersToAttach.getUtilizador());
-                attachedUsersCollection.add(usersCollectionUsersToAttach);
+            faculdade.setFuncionarioList(attachedFuncionarioList);
+            List<Users> attachedUsersList = new ArrayList<Users>();
+            for (Users usersListUsersToAttach : faculdade.getUsersList()) {
+                usersListUsersToAttach = em.getReference(usersListUsersToAttach.getClass(), usersListUsersToAttach.getUtilizador());
+                attachedUsersList.add(usersListUsersToAttach);
             }
-            faculdade.setUsersCollection(attachedUsersCollection);
+            faculdade.setUsersList(attachedUsersList);
             em.persist(faculdade);
-            for (Funcionario funcionarioCollectionFuncionario : faculdade.getFuncionarioCollection()) {
-                Faculdade oldFaculdadeOfFuncionarioCollectionFuncionario = funcionarioCollectionFuncionario.getFaculdade();
-                funcionarioCollectionFuncionario.setFaculdade(faculdade);
-                funcionarioCollectionFuncionario = em.merge(funcionarioCollectionFuncionario);
-                if (oldFaculdadeOfFuncionarioCollectionFuncionario != null) {
-                    oldFaculdadeOfFuncionarioCollectionFuncionario.getFuncionarioCollection().remove(funcionarioCollectionFuncionario);
-                    oldFaculdadeOfFuncionarioCollectionFuncionario = em.merge(oldFaculdadeOfFuncionarioCollectionFuncionario);
+            for (Funcionario funcionarioListFuncionario : faculdade.getFuncionarioList()) {
+                Faculdade oldFaculdadeOfFuncionarioListFuncionario = funcionarioListFuncionario.getFaculdade();
+                funcionarioListFuncionario.setFaculdade(faculdade);
+                funcionarioListFuncionario = em.merge(funcionarioListFuncionario);
+                if (oldFaculdadeOfFuncionarioListFuncionario != null) {
+                    oldFaculdadeOfFuncionarioListFuncionario.getFuncionarioList().remove(funcionarioListFuncionario);
+                    oldFaculdadeOfFuncionarioListFuncionario = em.merge(oldFaculdadeOfFuncionarioListFuncionario);
                 }
             }
-            for (Users usersCollectionUsers : faculdade.getUsersCollection()) {
-                Faculdade oldFaculdadeOfUsersCollectionUsers = usersCollectionUsers.getFaculdade();
-                usersCollectionUsers.setFaculdade(faculdade);
-                usersCollectionUsers = em.merge(usersCollectionUsers);
-                if (oldFaculdadeOfUsersCollectionUsers != null) {
-                    oldFaculdadeOfUsersCollectionUsers.getUsersCollection().remove(usersCollectionUsers);
-                    oldFaculdadeOfUsersCollectionUsers = em.merge(oldFaculdadeOfUsersCollectionUsers);
+            for (Users usersListUsers : faculdade.getUsersList()) {
+                Faculdade oldFaculdadeOfUsersListUsers = usersListUsers.getFaculdade();
+                usersListUsers.setFaculdade(faculdade);
+                usersListUsers = em.merge(usersListUsers);
+                if (oldFaculdadeOfUsersListUsers != null) {
+                    oldFaculdadeOfUsersListUsers.getUsersList().remove(usersListUsers);
+                    oldFaculdadeOfUsersListUsers = em.merge(oldFaculdadeOfUsersListUsers);
                 }
             }
             em.getTransaction().commit();
@@ -91,56 +90,56 @@ public class FaculdadeJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Faculdade persistentFaculdade = em.find(Faculdade.class, faculdade.getIdFaculdade());
-            Collection<Funcionario> funcionarioCollectionOld = persistentFaculdade.getFuncionarioCollection();
-            Collection<Funcionario> funcionarioCollectionNew = faculdade.getFuncionarioCollection();
-            Collection<Users> usersCollectionOld = persistentFaculdade.getUsersCollection();
-            Collection<Users> usersCollectionNew = faculdade.getUsersCollection();
-            Collection<Funcionario> attachedFuncionarioCollectionNew = new ArrayList<Funcionario>();
-            for (Funcionario funcionarioCollectionNewFuncionarioToAttach : funcionarioCollectionNew) {
-                funcionarioCollectionNewFuncionarioToAttach = em.getReference(funcionarioCollectionNewFuncionarioToAttach.getClass(), funcionarioCollectionNewFuncionarioToAttach.getIdFuncionario());
-                attachedFuncionarioCollectionNew.add(funcionarioCollectionNewFuncionarioToAttach);
+            List<Funcionario> funcionarioListOld = persistentFaculdade.getFuncionarioList();
+            List<Funcionario> funcionarioListNew = faculdade.getFuncionarioList();
+            List<Users> usersListOld = persistentFaculdade.getUsersList();
+            List<Users> usersListNew = faculdade.getUsersList();
+            List<Funcionario> attachedFuncionarioListNew = new ArrayList<Funcionario>();
+            for (Funcionario funcionarioListNewFuncionarioToAttach : funcionarioListNew) {
+                funcionarioListNewFuncionarioToAttach = em.getReference(funcionarioListNewFuncionarioToAttach.getClass(), funcionarioListNewFuncionarioToAttach.getIdFuncionario());
+                attachedFuncionarioListNew.add(funcionarioListNewFuncionarioToAttach);
             }
-            funcionarioCollectionNew = attachedFuncionarioCollectionNew;
-            faculdade.setFuncionarioCollection(funcionarioCollectionNew);
-            Collection<Users> attachedUsersCollectionNew = new ArrayList<Users>();
-            for (Users usersCollectionNewUsersToAttach : usersCollectionNew) {
-                usersCollectionNewUsersToAttach = em.getReference(usersCollectionNewUsersToAttach.getClass(), usersCollectionNewUsersToAttach.getUtilizador());
-                attachedUsersCollectionNew.add(usersCollectionNewUsersToAttach);
+            funcionarioListNew = attachedFuncionarioListNew;
+            faculdade.setFuncionarioList(funcionarioListNew);
+            List<Users> attachedUsersListNew = new ArrayList<Users>();
+            for (Users usersListNewUsersToAttach : usersListNew) {
+                usersListNewUsersToAttach = em.getReference(usersListNewUsersToAttach.getClass(), usersListNewUsersToAttach.getUtilizador());
+                attachedUsersListNew.add(usersListNewUsersToAttach);
             }
-            usersCollectionNew = attachedUsersCollectionNew;
-            faculdade.setUsersCollection(usersCollectionNew);
+            usersListNew = attachedUsersListNew;
+            faculdade.setUsersList(usersListNew);
             faculdade = em.merge(faculdade);
-            for (Funcionario funcionarioCollectionOldFuncionario : funcionarioCollectionOld) {
-                if (!funcionarioCollectionNew.contains(funcionarioCollectionOldFuncionario)) {
-                    funcionarioCollectionOldFuncionario.setFaculdade(null);
-                    funcionarioCollectionOldFuncionario = em.merge(funcionarioCollectionOldFuncionario);
+            for (Funcionario funcionarioListOldFuncionario : funcionarioListOld) {
+                if (!funcionarioListNew.contains(funcionarioListOldFuncionario)) {
+                    funcionarioListOldFuncionario.setFaculdade(null);
+                    funcionarioListOldFuncionario = em.merge(funcionarioListOldFuncionario);
                 }
             }
-            for (Funcionario funcionarioCollectionNewFuncionario : funcionarioCollectionNew) {
-                if (!funcionarioCollectionOld.contains(funcionarioCollectionNewFuncionario)) {
-                    Faculdade oldFaculdadeOfFuncionarioCollectionNewFuncionario = funcionarioCollectionNewFuncionario.getFaculdade();
-                    funcionarioCollectionNewFuncionario.setFaculdade(faculdade);
-                    funcionarioCollectionNewFuncionario = em.merge(funcionarioCollectionNewFuncionario);
-                    if (oldFaculdadeOfFuncionarioCollectionNewFuncionario != null && !oldFaculdadeOfFuncionarioCollectionNewFuncionario.equals(faculdade)) {
-                        oldFaculdadeOfFuncionarioCollectionNewFuncionario.getFuncionarioCollection().remove(funcionarioCollectionNewFuncionario);
-                        oldFaculdadeOfFuncionarioCollectionNewFuncionario = em.merge(oldFaculdadeOfFuncionarioCollectionNewFuncionario);
+            for (Funcionario funcionarioListNewFuncionario : funcionarioListNew) {
+                if (!funcionarioListOld.contains(funcionarioListNewFuncionario)) {
+                    Faculdade oldFaculdadeOfFuncionarioListNewFuncionario = funcionarioListNewFuncionario.getFaculdade();
+                    funcionarioListNewFuncionario.setFaculdade(faculdade);
+                    funcionarioListNewFuncionario = em.merge(funcionarioListNewFuncionario);
+                    if (oldFaculdadeOfFuncionarioListNewFuncionario != null && !oldFaculdadeOfFuncionarioListNewFuncionario.equals(faculdade)) {
+                        oldFaculdadeOfFuncionarioListNewFuncionario.getFuncionarioList().remove(funcionarioListNewFuncionario);
+                        oldFaculdadeOfFuncionarioListNewFuncionario = em.merge(oldFaculdadeOfFuncionarioListNewFuncionario);
                     }
                 }
             }
-            for (Users usersCollectionOldUsers : usersCollectionOld) {
-                if (!usersCollectionNew.contains(usersCollectionOldUsers)) {
-                    usersCollectionOldUsers.setFaculdade(null);
-                    usersCollectionOldUsers = em.merge(usersCollectionOldUsers);
+            for (Users usersListOldUsers : usersListOld) {
+                if (!usersListNew.contains(usersListOldUsers)) {
+                    usersListOldUsers.setFaculdade(null);
+                    usersListOldUsers = em.merge(usersListOldUsers);
                 }
             }
-            for (Users usersCollectionNewUsers : usersCollectionNew) {
-                if (!usersCollectionOld.contains(usersCollectionNewUsers)) {
-                    Faculdade oldFaculdadeOfUsersCollectionNewUsers = usersCollectionNewUsers.getFaculdade();
-                    usersCollectionNewUsers.setFaculdade(faculdade);
-                    usersCollectionNewUsers = em.merge(usersCollectionNewUsers);
-                    if (oldFaculdadeOfUsersCollectionNewUsers != null && !oldFaculdadeOfUsersCollectionNewUsers.equals(faculdade)) {
-                        oldFaculdadeOfUsersCollectionNewUsers.getUsersCollection().remove(usersCollectionNewUsers);
-                        oldFaculdadeOfUsersCollectionNewUsers = em.merge(oldFaculdadeOfUsersCollectionNewUsers);
+            for (Users usersListNewUsers : usersListNew) {
+                if (!usersListOld.contains(usersListNewUsers)) {
+                    Faculdade oldFaculdadeOfUsersListNewUsers = usersListNewUsers.getFaculdade();
+                    usersListNewUsers.setFaculdade(faculdade);
+                    usersListNewUsers = em.merge(usersListNewUsers);
+                    if (oldFaculdadeOfUsersListNewUsers != null && !oldFaculdadeOfUsersListNewUsers.equals(faculdade)) {
+                        oldFaculdadeOfUsersListNewUsers.getUsersList().remove(usersListNewUsers);
+                        oldFaculdadeOfUsersListNewUsers = em.merge(oldFaculdadeOfUsersListNewUsers);
                     }
                 }
             }
@@ -173,15 +172,15 @@ public class FaculdadeJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The faculdade with id " + id + " no longer exists.", enfe);
             }
-            Collection<Funcionario> funcionarioCollection = faculdade.getFuncionarioCollection();
-            for (Funcionario funcionarioCollectionFuncionario : funcionarioCollection) {
-                funcionarioCollectionFuncionario.setFaculdade(null);
-                funcionarioCollectionFuncionario = em.merge(funcionarioCollectionFuncionario);
+            List<Funcionario> funcionarioList = faculdade.getFuncionarioList();
+            for (Funcionario funcionarioListFuncionario : funcionarioList) {
+                funcionarioListFuncionario.setFaculdade(null);
+                funcionarioListFuncionario = em.merge(funcionarioListFuncionario);
             }
-            Collection<Users> usersCollection = faculdade.getUsersCollection();
-            for (Users usersCollectionUsers : usersCollection) {
-                usersCollectionUsers.setFaculdade(null);
-                usersCollectionUsers = em.merge(usersCollectionUsers);
+            List<Users> usersList = faculdade.getUsersList();
+            for (Users usersListUsers : usersList) {
+                usersListUsers.setFaculdade(null);
+                usersListUsers = em.merge(usersListUsers);
             }
             em.remove(faculdade);
             em.getTransaction().commit();

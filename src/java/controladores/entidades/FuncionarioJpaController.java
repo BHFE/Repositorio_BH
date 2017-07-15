@@ -18,7 +18,6 @@ import entidades.Docente;
 import entidades.Funcionario;
 import entidades.Users;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,8 +38,8 @@ public class FuncionarioJpaController implements Serializable {
     }
 
     public void create(Funcionario funcionario) {
-        if (funcionario.getUsersCollection() == null) {
-            funcionario.setUsersCollection(new ArrayList<Users>());
+        if (funcionario.getUsersList() == null) {
+            funcionario.setUsersList(new ArrayList<Users>());
         }
         EntityManager em = null;
         try {
@@ -61,12 +60,12 @@ public class FuncionarioJpaController implements Serializable {
                 docente = em.getReference(docente.getClass(), docente.getIddocente());
                 funcionario.setDocente(docente);
             }
-            Collection<Users> attachedUsersCollection = new ArrayList<Users>();
-            for (Users usersCollectionUsersToAttach : funcionario.getUsersCollection()) {
-                usersCollectionUsersToAttach = em.getReference(usersCollectionUsersToAttach.getClass(), usersCollectionUsersToAttach.getUtilizador());
-                attachedUsersCollection.add(usersCollectionUsersToAttach);
+            List<Users> attachedUsersList = new ArrayList<Users>();
+            for (Users usersListUsersToAttach : funcionario.getUsersList()) {
+                usersListUsersToAttach = em.getReference(usersListUsersToAttach.getClass(), usersListUsersToAttach.getUtilizador());
+                attachedUsersList.add(usersListUsersToAttach);
             }
-            funcionario.setUsersCollection(attachedUsersCollection);
+            funcionario.setUsersList(attachedUsersList);
             em.persist(funcionario);
             if (tipochefia != null) {
                 Funcionario oldFuncionarioOfTipochefia = tipochefia.getFuncionario();
@@ -78,7 +77,7 @@ public class FuncionarioJpaController implements Serializable {
                 tipochefia = em.merge(tipochefia);
             }
             if (faculdade != null) {
-                faculdade.getFuncionarioCollection().add(funcionario);
+                faculdade.getFuncionarioList().add(funcionario);
                 faculdade = em.merge(faculdade);
             }
             if (docente != null) {
@@ -90,13 +89,13 @@ public class FuncionarioJpaController implements Serializable {
                 docente.setFuncionario(funcionario);
                 docente = em.merge(docente);
             }
-            for (Users usersCollectionUsers : funcionario.getUsersCollection()) {
-                Funcionario oldIdFuncionarioOfUsersCollectionUsers = usersCollectionUsers.getIdFuncionario();
-                usersCollectionUsers.setIdFuncionario(funcionario);
-                usersCollectionUsers = em.merge(usersCollectionUsers);
-                if (oldIdFuncionarioOfUsersCollectionUsers != null) {
-                    oldIdFuncionarioOfUsersCollectionUsers.getUsersCollection().remove(usersCollectionUsers);
-                    oldIdFuncionarioOfUsersCollectionUsers = em.merge(oldIdFuncionarioOfUsersCollectionUsers);
+            for (Users usersListUsers : funcionario.getUsersList()) {
+                Funcionario oldIdFuncionarioOfUsersListUsers = usersListUsers.getIdFuncionario();
+                usersListUsers.setIdFuncionario(funcionario);
+                usersListUsers = em.merge(usersListUsers);
+                if (oldIdFuncionarioOfUsersListUsers != null) {
+                    oldIdFuncionarioOfUsersListUsers.getUsersList().remove(usersListUsers);
+                    oldIdFuncionarioOfUsersListUsers = em.merge(oldIdFuncionarioOfUsersListUsers);
                 }
             }
             em.getTransaction().commit();
@@ -119,8 +118,8 @@ public class FuncionarioJpaController implements Serializable {
             Faculdade faculdadeNew = funcionario.getFaculdade();
             Docente docenteOld = persistentFuncionario.getDocente();
             Docente docenteNew = funcionario.getDocente();
-            Collection<Users> usersCollectionOld = persistentFuncionario.getUsersCollection();
-            Collection<Users> usersCollectionNew = funcionario.getUsersCollection();
+            List<Users> usersListOld = persistentFuncionario.getUsersList();
+            List<Users> usersListNew = funcionario.getUsersList();
             List<String> illegalOrphanMessages = null;
             if (tipochefiaOld != null && !tipochefiaOld.equals(tipochefiaNew)) {
                 if (illegalOrphanMessages == null) {
@@ -149,13 +148,13 @@ public class FuncionarioJpaController implements Serializable {
                 docenteNew = em.getReference(docenteNew.getClass(), docenteNew.getIddocente());
                 funcionario.setDocente(docenteNew);
             }
-            Collection<Users> attachedUsersCollectionNew = new ArrayList<Users>();
-            for (Users usersCollectionNewUsersToAttach : usersCollectionNew) {
-                usersCollectionNewUsersToAttach = em.getReference(usersCollectionNewUsersToAttach.getClass(), usersCollectionNewUsersToAttach.getUtilizador());
-                attachedUsersCollectionNew.add(usersCollectionNewUsersToAttach);
+            List<Users> attachedUsersListNew = new ArrayList<Users>();
+            for (Users usersListNewUsersToAttach : usersListNew) {
+                usersListNewUsersToAttach = em.getReference(usersListNewUsersToAttach.getClass(), usersListNewUsersToAttach.getUtilizador());
+                attachedUsersListNew.add(usersListNewUsersToAttach);
             }
-            usersCollectionNew = attachedUsersCollectionNew;
-            funcionario.setUsersCollection(usersCollectionNew);
+            usersListNew = attachedUsersListNew;
+            funcionario.setUsersList(usersListNew);
             funcionario = em.merge(funcionario);
             if (tipochefiaNew != null && !tipochefiaNew.equals(tipochefiaOld)) {
                 Funcionario oldFuncionarioOfTipochefia = tipochefiaNew.getFuncionario();
@@ -167,11 +166,11 @@ public class FuncionarioJpaController implements Serializable {
                 tipochefiaNew = em.merge(tipochefiaNew);
             }
             if (faculdadeOld != null && !faculdadeOld.equals(faculdadeNew)) {
-                faculdadeOld.getFuncionarioCollection().remove(funcionario);
+                faculdadeOld.getFuncionarioList().remove(funcionario);
                 faculdadeOld = em.merge(faculdadeOld);
             }
             if (faculdadeNew != null && !faculdadeNew.equals(faculdadeOld)) {
-                faculdadeNew.getFuncionarioCollection().add(funcionario);
+                faculdadeNew.getFuncionarioList().add(funcionario);
                 faculdadeNew = em.merge(faculdadeNew);
             }
             if (docenteNew != null && !docenteNew.equals(docenteOld)) {
@@ -183,20 +182,20 @@ public class FuncionarioJpaController implements Serializable {
                 docenteNew.setFuncionario(funcionario);
                 docenteNew = em.merge(docenteNew);
             }
-            for (Users usersCollectionOldUsers : usersCollectionOld) {
-                if (!usersCollectionNew.contains(usersCollectionOldUsers)) {
-                    usersCollectionOldUsers.setIdFuncionario(null);
-                    usersCollectionOldUsers = em.merge(usersCollectionOldUsers);
+            for (Users usersListOldUsers : usersListOld) {
+                if (!usersListNew.contains(usersListOldUsers)) {
+                    usersListOldUsers.setIdFuncionario(null);
+                    usersListOldUsers = em.merge(usersListOldUsers);
                 }
             }
-            for (Users usersCollectionNewUsers : usersCollectionNew) {
-                if (!usersCollectionOld.contains(usersCollectionNewUsers)) {
-                    Funcionario oldIdFuncionarioOfUsersCollectionNewUsers = usersCollectionNewUsers.getIdFuncionario();
-                    usersCollectionNewUsers.setIdFuncionario(funcionario);
-                    usersCollectionNewUsers = em.merge(usersCollectionNewUsers);
-                    if (oldIdFuncionarioOfUsersCollectionNewUsers != null && !oldIdFuncionarioOfUsersCollectionNewUsers.equals(funcionario)) {
-                        oldIdFuncionarioOfUsersCollectionNewUsers.getUsersCollection().remove(usersCollectionNewUsers);
-                        oldIdFuncionarioOfUsersCollectionNewUsers = em.merge(oldIdFuncionarioOfUsersCollectionNewUsers);
+            for (Users usersListNewUsers : usersListNew) {
+                if (!usersListOld.contains(usersListNewUsers)) {
+                    Funcionario oldIdFuncionarioOfUsersListNewUsers = usersListNewUsers.getIdFuncionario();
+                    usersListNewUsers.setIdFuncionario(funcionario);
+                    usersListNewUsers = em.merge(usersListNewUsers);
+                    if (oldIdFuncionarioOfUsersListNewUsers != null && !oldIdFuncionarioOfUsersListNewUsers.equals(funcionario)) {
+                        oldIdFuncionarioOfUsersListNewUsers.getUsersList().remove(usersListNewUsers);
+                        oldIdFuncionarioOfUsersListNewUsers = em.merge(oldIdFuncionarioOfUsersListNewUsers);
                     }
                 }
             }
@@ -249,13 +248,13 @@ public class FuncionarioJpaController implements Serializable {
             }
             Faculdade faculdade = funcionario.getFaculdade();
             if (faculdade != null) {
-                faculdade.getFuncionarioCollection().remove(funcionario);
+                faculdade.getFuncionarioList().remove(funcionario);
                 faculdade = em.merge(faculdade);
             }
-            Collection<Users> usersCollection = funcionario.getUsersCollection();
-            for (Users usersCollectionUsers : usersCollection) {
-                usersCollectionUsers.setIdFuncionario(null);
-                usersCollectionUsers = em.merge(usersCollectionUsers);
+            List<Users> usersList = funcionario.getUsersList();
+            for (Users usersListUsers : usersList) {
+                usersListUsers.setIdFuncionario(null);
+                usersListUsers = em.merge(usersListUsers);
             }
             em.remove(funcionario);
             em.getTransaction().commit();

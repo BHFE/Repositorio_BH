@@ -18,13 +18,13 @@ import javax.persistence.Embeddable;
 public class SgObraSgExemplarPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "getsgexemplarlist_nr_registo")
+    @Column(name = "getsgexemplarlist_nr_registo", nullable = false)
     private long getsgexemplarlistNrRegisto;
     @Basic(optional = false)
-    @Column(name = "sgobra_idlivro")
+    @Column(name = "sgobra_idlivro", nullable = false)
     private long sgobraIdlivro;
     @Basic(optional = false)
-    @Column(name = "sgexemplarlist_nr_registo")
+    @Column(name = "sgexemplarlist_nr_registo", nullable = false)
     private long sgexemplarlistNrRegisto;
 
     public SgObraSgExemplarPK() {

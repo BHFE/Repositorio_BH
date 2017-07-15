@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "bv_artigo_categoria", catalog = "fecn2", schema = "public")
+@Table(name = "bv_artigo_categoria", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BvArtigoCategoria.findAll", query = "SELECT b FROM BvArtigoCategoria b")
@@ -36,14 +36,14 @@ public class BvArtigoCategoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "categoria")
+    @Column(name = "categoria", nullable = false, length = 64)
     private String categoria;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 255)
     private String descricao;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArea", fetch = FetchType.LAZY)
-    private Collection<BvAvaliador> bvAvaliadorCollection;
+    private List<BvAvaliador> bvAvaliadorList;
     @OneToMany(mappedBy = "tipodoc", fetch = FetchType.LAZY)
-    private Collection<BvArtigo> bvArtigoCollection;
+    private List<BvArtigo> bvArtigoList;
 
     public BvArtigoCategoria() {
     }
@@ -69,21 +69,21 @@ public class BvArtigoCategoria implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BvAvaliador> getBvAvaliadorCollection() {
-        return bvAvaliadorCollection;
+    public List<BvAvaliador> getBvAvaliadorList() {
+        return bvAvaliadorList;
     }
 
-    public void setBvAvaliadorCollection(Collection<BvAvaliador> bvAvaliadorCollection) {
-        this.bvAvaliadorCollection = bvAvaliadorCollection;
+    public void setBvAvaliadorList(List<BvAvaliador> bvAvaliadorList) {
+        this.bvAvaliadorList = bvAvaliadorList;
     }
 
     @XmlTransient
-    public Collection<BvArtigo> getBvArtigoCollection() {
-        return bvArtigoCollection;
+    public List<BvArtigo> getBvArtigoList() {
+        return bvArtigoList;
     }
 
-    public void setBvArtigoCollection(Collection<BvArtigo> bvArtigoCollection) {
-        this.bvArtigoCollection = bvArtigoCollection;
+    public void setBvArtigoList(List<BvArtigo> bvArtigoList) {
+        this.bvArtigoList = bvArtigoList;
     }
 
     @Override

@@ -13,15 +13,13 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.BLeitor;
+import entidades.BvArtigo;
 import entidades.BvArtigoCategoria;
 import entidades.BvAvaliador;
 import entidades.Curso;
 import entidades.SgObraArea;
-import entidades.BNotificacao;
-import entidades.BvArtigo;
-import java.util.ArrayList;
-import java.util.Collection;
 import entidades.BvLeitura;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,11 +40,8 @@ public class BvArtigoJpaController implements Serializable {
     }
 
     public void create(BvArtigo bvArtigo) {
-        if (bvArtigo.getBNotificacaoCollection() == null) {
-            bvArtigo.setBNotificacaoCollection(new ArrayList<BNotificacao>());
-        }
-        if (bvArtigo.getBvLeituraCollection() == null) {
-            bvArtigo.setBvLeituraCollection(new ArrayList<BvLeitura>());
+        if (bvArtigo.getBvLeituraList() == null) {
+            bvArtigo.setBvLeituraList(new ArrayList<BvLeitura>());
         }
         EntityManager em = null;
         try {
@@ -77,55 +72,40 @@ public class BvArtigoJpaController implements Serializable {
                 area = em.getReference(area.getClass(), area.getIdarea());
                 bvArtigo.setArea(area);
             }
-            Collection<BNotificacao> attachedBNotificacaoCollection = new ArrayList<BNotificacao>();
-            for (BNotificacao BNotificacaoCollectionBNotificacaoToAttach : bvArtigo.getBNotificacaoCollection()) {
-                BNotificacaoCollectionBNotificacaoToAttach = em.getReference(BNotificacaoCollectionBNotificacaoToAttach.getClass(), BNotificacaoCollectionBNotificacaoToAttach.getIdNotificacao());
-                attachedBNotificacaoCollection.add(BNotificacaoCollectionBNotificacaoToAttach);
+            List<BvLeitura> attachedBvLeituraList = new ArrayList<BvLeitura>();
+            for (BvLeitura bvLeituraListBvLeituraToAttach : bvArtigo.getBvLeituraList()) {
+                bvLeituraListBvLeituraToAttach = em.getReference(bvLeituraListBvLeituraToAttach.getClass(), bvLeituraListBvLeituraToAttach.getBvLeituraPK());
+                attachedBvLeituraList.add(bvLeituraListBvLeituraToAttach);
             }
-            bvArtigo.setBNotificacaoCollection(attachedBNotificacaoCollection);
-            Collection<BvLeitura> attachedBvLeituraCollection = new ArrayList<BvLeitura>();
-            for (BvLeitura bvLeituraCollectionBvLeituraToAttach : bvArtigo.getBvLeituraCollection()) {
-                bvLeituraCollectionBvLeituraToAttach = em.getReference(bvLeituraCollectionBvLeituraToAttach.getClass(), bvLeituraCollectionBvLeituraToAttach.getBvLeituraPK());
-                attachedBvLeituraCollection.add(bvLeituraCollectionBvLeituraToAttach);
-            }
-            bvArtigo.setBvLeituraCollection(attachedBvLeituraCollection);
+            bvArtigo.setBvLeituraList(attachedBvLeituraList);
             em.persist(bvArtigo);
             if (publicador != null) {
-                publicador.getBvArtigoCollection().add(bvArtigo);
+                publicador.getBvArtigoList().add(bvArtigo);
                 publicador = em.merge(publicador);
             }
             if (tipodoc != null) {
-                tipodoc.getBvArtigoCollection().add(bvArtigo);
+                tipodoc.getBvArtigoList().add(bvArtigo);
                 tipodoc = em.merge(tipodoc);
             }
             if (avaliador != null) {
-                avaliador.getBvArtigoCollection().add(bvArtigo);
+                avaliador.getBvArtigoList().add(bvArtigo);
                 avaliador = em.merge(avaliador);
             }
             if (cursoAlvo != null) {
-                cursoAlvo.getBvArtigoCollection().add(bvArtigo);
+                cursoAlvo.getBvArtigoList().add(bvArtigo);
                 cursoAlvo = em.merge(cursoAlvo);
             }
             if (area != null) {
-                area.getBvArtigoCollection().add(bvArtigo);
+                area.getBvArtigoList().add(bvArtigo);
                 area = em.merge(area);
             }
-            for (BNotificacao BNotificacaoCollectionBNotificacao : bvArtigo.getBNotificacaoCollection()) {
-                BvArtigo oldIdPublicacaoOfBNotificacaoCollectionBNotificacao = BNotificacaoCollectionBNotificacao.getIdPublicacao();
-                BNotificacaoCollectionBNotificacao.setIdPublicacao(bvArtigo);
-                BNotificacaoCollectionBNotificacao = em.merge(BNotificacaoCollectionBNotificacao);
-                if (oldIdPublicacaoOfBNotificacaoCollectionBNotificacao != null) {
-                    oldIdPublicacaoOfBNotificacaoCollectionBNotificacao.getBNotificacaoCollection().remove(BNotificacaoCollectionBNotificacao);
-                    oldIdPublicacaoOfBNotificacaoCollectionBNotificacao = em.merge(oldIdPublicacaoOfBNotificacaoCollectionBNotificacao);
-                }
-            }
-            for (BvLeitura bvLeituraCollectionBvLeitura : bvArtigo.getBvLeituraCollection()) {
-                BvArtigo oldBvArtigoOfBvLeituraCollectionBvLeitura = bvLeituraCollectionBvLeitura.getBvArtigo();
-                bvLeituraCollectionBvLeitura.setBvArtigo(bvArtigo);
-                bvLeituraCollectionBvLeitura = em.merge(bvLeituraCollectionBvLeitura);
-                if (oldBvArtigoOfBvLeituraCollectionBvLeitura != null) {
-                    oldBvArtigoOfBvLeituraCollectionBvLeitura.getBvLeituraCollection().remove(bvLeituraCollectionBvLeitura);
-                    oldBvArtigoOfBvLeituraCollectionBvLeitura = em.merge(oldBvArtigoOfBvLeituraCollectionBvLeitura);
+            for (BvLeitura bvLeituraListBvLeitura : bvArtigo.getBvLeituraList()) {
+                BvArtigo oldBvArtigoOfBvLeituraListBvLeitura = bvLeituraListBvLeitura.getBvArtigo();
+                bvLeituraListBvLeitura.setBvArtigo(bvArtigo);
+                bvLeituraListBvLeitura = em.merge(bvLeituraListBvLeitura);
+                if (oldBvArtigoOfBvLeituraListBvLeitura != null) {
+                    oldBvArtigoOfBvLeituraListBvLeitura.getBvLeituraList().remove(bvLeituraListBvLeitura);
+                    oldBvArtigoOfBvLeituraListBvLeitura = em.merge(oldBvArtigoOfBvLeituraListBvLeitura);
                 }
             }
             em.getTransaction().commit();
@@ -152,17 +132,15 @@ public class BvArtigoJpaController implements Serializable {
             Curso cursoAlvoNew = bvArtigo.getCursoAlvo();
             SgObraArea areaOld = persistentBvArtigo.getArea();
             SgObraArea areaNew = bvArtigo.getArea();
-            Collection<BNotificacao> BNotificacaoCollectionOld = persistentBvArtigo.getBNotificacaoCollection();
-            Collection<BNotificacao> BNotificacaoCollectionNew = bvArtigo.getBNotificacaoCollection();
-            Collection<BvLeitura> bvLeituraCollectionOld = persistentBvArtigo.getBvLeituraCollection();
-            Collection<BvLeitura> bvLeituraCollectionNew = bvArtigo.getBvLeituraCollection();
+            List<BvLeitura> bvLeituraListOld = persistentBvArtigo.getBvLeituraList();
+            List<BvLeitura> bvLeituraListNew = bvArtigo.getBvLeituraList();
             List<String> illegalOrphanMessages = null;
-            for (BvLeitura bvLeituraCollectionOldBvLeitura : bvLeituraCollectionOld) {
-                if (!bvLeituraCollectionNew.contains(bvLeituraCollectionOldBvLeitura)) {
+            for (BvLeitura bvLeituraListOldBvLeitura : bvLeituraListOld) {
+                if (!bvLeituraListNew.contains(bvLeituraListOldBvLeitura)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain BvLeitura " + bvLeituraCollectionOldBvLeitura + " since its bvArtigo field is not nullable.");
+                    illegalOrphanMessages.add("You must retain BvLeitura " + bvLeituraListOldBvLeitura + " since its bvArtigo field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -188,86 +166,62 @@ public class BvArtigoJpaController implements Serializable {
                 areaNew = em.getReference(areaNew.getClass(), areaNew.getIdarea());
                 bvArtigo.setArea(areaNew);
             }
-            Collection<BNotificacao> attachedBNotificacaoCollectionNew = new ArrayList<BNotificacao>();
-            for (BNotificacao BNotificacaoCollectionNewBNotificacaoToAttach : BNotificacaoCollectionNew) {
-                BNotificacaoCollectionNewBNotificacaoToAttach = em.getReference(BNotificacaoCollectionNewBNotificacaoToAttach.getClass(), BNotificacaoCollectionNewBNotificacaoToAttach.getIdNotificacao());
-                attachedBNotificacaoCollectionNew.add(BNotificacaoCollectionNewBNotificacaoToAttach);
+            List<BvLeitura> attachedBvLeituraListNew = new ArrayList<BvLeitura>();
+            for (BvLeitura bvLeituraListNewBvLeituraToAttach : bvLeituraListNew) {
+                bvLeituraListNewBvLeituraToAttach = em.getReference(bvLeituraListNewBvLeituraToAttach.getClass(), bvLeituraListNewBvLeituraToAttach.getBvLeituraPK());
+                attachedBvLeituraListNew.add(bvLeituraListNewBvLeituraToAttach);
             }
-            BNotificacaoCollectionNew = attachedBNotificacaoCollectionNew;
-            bvArtigo.setBNotificacaoCollection(BNotificacaoCollectionNew);
-            Collection<BvLeitura> attachedBvLeituraCollectionNew = new ArrayList<BvLeitura>();
-            for (BvLeitura bvLeituraCollectionNewBvLeituraToAttach : bvLeituraCollectionNew) {
-                bvLeituraCollectionNewBvLeituraToAttach = em.getReference(bvLeituraCollectionNewBvLeituraToAttach.getClass(), bvLeituraCollectionNewBvLeituraToAttach.getBvLeituraPK());
-                attachedBvLeituraCollectionNew.add(bvLeituraCollectionNewBvLeituraToAttach);
-            }
-            bvLeituraCollectionNew = attachedBvLeituraCollectionNew;
-            bvArtigo.setBvLeituraCollection(bvLeituraCollectionNew);
+            bvLeituraListNew = attachedBvLeituraListNew;
+            bvArtigo.setBvLeituraList(bvLeituraListNew);
             bvArtigo = em.merge(bvArtigo);
             if (publicadorOld != null && !publicadorOld.equals(publicadorNew)) {
-                publicadorOld.getBvArtigoCollection().remove(bvArtigo);
+                publicadorOld.getBvArtigoList().remove(bvArtigo);
                 publicadorOld = em.merge(publicadorOld);
             }
             if (publicadorNew != null && !publicadorNew.equals(publicadorOld)) {
-                publicadorNew.getBvArtigoCollection().add(bvArtigo);
+                publicadorNew.getBvArtigoList().add(bvArtigo);
                 publicadorNew = em.merge(publicadorNew);
             }
             if (tipodocOld != null && !tipodocOld.equals(tipodocNew)) {
-                tipodocOld.getBvArtigoCollection().remove(bvArtigo);
+                tipodocOld.getBvArtigoList().remove(bvArtigo);
                 tipodocOld = em.merge(tipodocOld);
             }
             if (tipodocNew != null && !tipodocNew.equals(tipodocOld)) {
-                tipodocNew.getBvArtigoCollection().add(bvArtigo);
+                tipodocNew.getBvArtigoList().add(bvArtigo);
                 tipodocNew = em.merge(tipodocNew);
             }
             if (avaliadorOld != null && !avaliadorOld.equals(avaliadorNew)) {
-                avaliadorOld.getBvArtigoCollection().remove(bvArtigo);
+                avaliadorOld.getBvArtigoList().remove(bvArtigo);
                 avaliadorOld = em.merge(avaliadorOld);
             }
             if (avaliadorNew != null && !avaliadorNew.equals(avaliadorOld)) {
-                avaliadorNew.getBvArtigoCollection().add(bvArtigo);
+                avaliadorNew.getBvArtigoList().add(bvArtigo);
                 avaliadorNew = em.merge(avaliadorNew);
             }
             if (cursoAlvoOld != null && !cursoAlvoOld.equals(cursoAlvoNew)) {
-                cursoAlvoOld.getBvArtigoCollection().remove(bvArtigo);
+                cursoAlvoOld.getBvArtigoList().remove(bvArtigo);
                 cursoAlvoOld = em.merge(cursoAlvoOld);
             }
             if (cursoAlvoNew != null && !cursoAlvoNew.equals(cursoAlvoOld)) {
-                cursoAlvoNew.getBvArtigoCollection().add(bvArtigo);
+                cursoAlvoNew.getBvArtigoList().add(bvArtigo);
                 cursoAlvoNew = em.merge(cursoAlvoNew);
             }
             if (areaOld != null && !areaOld.equals(areaNew)) {
-                areaOld.getBvArtigoCollection().remove(bvArtigo);
+                areaOld.getBvArtigoList().remove(bvArtigo);
                 areaOld = em.merge(areaOld);
             }
             if (areaNew != null && !areaNew.equals(areaOld)) {
-                areaNew.getBvArtigoCollection().add(bvArtigo);
+                areaNew.getBvArtigoList().add(bvArtigo);
                 areaNew = em.merge(areaNew);
             }
-            for (BNotificacao BNotificacaoCollectionOldBNotificacao : BNotificacaoCollectionOld) {
-                if (!BNotificacaoCollectionNew.contains(BNotificacaoCollectionOldBNotificacao)) {
-                    BNotificacaoCollectionOldBNotificacao.setIdPublicacao(null);
-                    BNotificacaoCollectionOldBNotificacao = em.merge(BNotificacaoCollectionOldBNotificacao);
-                }
-            }
-            for (BNotificacao BNotificacaoCollectionNewBNotificacao : BNotificacaoCollectionNew) {
-                if (!BNotificacaoCollectionOld.contains(BNotificacaoCollectionNewBNotificacao)) {
-                    BvArtigo oldIdPublicacaoOfBNotificacaoCollectionNewBNotificacao = BNotificacaoCollectionNewBNotificacao.getIdPublicacao();
-                    BNotificacaoCollectionNewBNotificacao.setIdPublicacao(bvArtigo);
-                    BNotificacaoCollectionNewBNotificacao = em.merge(BNotificacaoCollectionNewBNotificacao);
-                    if (oldIdPublicacaoOfBNotificacaoCollectionNewBNotificacao != null && !oldIdPublicacaoOfBNotificacaoCollectionNewBNotificacao.equals(bvArtigo)) {
-                        oldIdPublicacaoOfBNotificacaoCollectionNewBNotificacao.getBNotificacaoCollection().remove(BNotificacaoCollectionNewBNotificacao);
-                        oldIdPublicacaoOfBNotificacaoCollectionNewBNotificacao = em.merge(oldIdPublicacaoOfBNotificacaoCollectionNewBNotificacao);
-                    }
-                }
-            }
-            for (BvLeitura bvLeituraCollectionNewBvLeitura : bvLeituraCollectionNew) {
-                if (!bvLeituraCollectionOld.contains(bvLeituraCollectionNewBvLeitura)) {
-                    BvArtigo oldBvArtigoOfBvLeituraCollectionNewBvLeitura = bvLeituraCollectionNewBvLeitura.getBvArtigo();
-                    bvLeituraCollectionNewBvLeitura.setBvArtigo(bvArtigo);
-                    bvLeituraCollectionNewBvLeitura = em.merge(bvLeituraCollectionNewBvLeitura);
-                    if (oldBvArtigoOfBvLeituraCollectionNewBvLeitura != null && !oldBvArtigoOfBvLeituraCollectionNewBvLeitura.equals(bvArtigo)) {
-                        oldBvArtigoOfBvLeituraCollectionNewBvLeitura.getBvLeituraCollection().remove(bvLeituraCollectionNewBvLeitura);
-                        oldBvArtigoOfBvLeituraCollectionNewBvLeitura = em.merge(oldBvArtigoOfBvLeituraCollectionNewBvLeitura);
+            for (BvLeitura bvLeituraListNewBvLeitura : bvLeituraListNew) {
+                if (!bvLeituraListOld.contains(bvLeituraListNewBvLeitura)) {
+                    BvArtigo oldBvArtigoOfBvLeituraListNewBvLeitura = bvLeituraListNewBvLeitura.getBvArtigo();
+                    bvLeituraListNewBvLeitura.setBvArtigo(bvArtigo);
+                    bvLeituraListNewBvLeitura = em.merge(bvLeituraListNewBvLeitura);
+                    if (oldBvArtigoOfBvLeituraListNewBvLeitura != null && !oldBvArtigoOfBvLeituraListNewBvLeitura.equals(bvArtigo)) {
+                        oldBvArtigoOfBvLeituraListNewBvLeitura.getBvLeituraList().remove(bvLeituraListNewBvLeitura);
+                        oldBvArtigoOfBvLeituraListNewBvLeitura = em.merge(oldBvArtigoOfBvLeituraListNewBvLeitura);
                     }
                 }
             }
@@ -301,45 +255,40 @@ public class BvArtigoJpaController implements Serializable {
                 throw new NonexistentEntityException("The bvArtigo with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<BvLeitura> bvLeituraCollectionOrphanCheck = bvArtigo.getBvLeituraCollection();
-            for (BvLeitura bvLeituraCollectionOrphanCheckBvLeitura : bvLeituraCollectionOrphanCheck) {
+            List<BvLeitura> bvLeituraListOrphanCheck = bvArtigo.getBvLeituraList();
+            for (BvLeitura bvLeituraListOrphanCheckBvLeitura : bvLeituraListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This BvArtigo (" + bvArtigo + ") cannot be destroyed since the BvLeitura " + bvLeituraCollectionOrphanCheckBvLeitura + " in its bvLeituraCollection field has a non-nullable bvArtigo field.");
+                illegalOrphanMessages.add("This BvArtigo (" + bvArtigo + ") cannot be destroyed since the BvLeitura " + bvLeituraListOrphanCheckBvLeitura + " in its bvLeituraList field has a non-nullable bvArtigo field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             BLeitor publicador = bvArtigo.getPublicador();
             if (publicador != null) {
-                publicador.getBvArtigoCollection().remove(bvArtigo);
+                publicador.getBvArtigoList().remove(bvArtigo);
                 publicador = em.merge(publicador);
             }
             BvArtigoCategoria tipodoc = bvArtigo.getTipodoc();
             if (tipodoc != null) {
-                tipodoc.getBvArtigoCollection().remove(bvArtigo);
+                tipodoc.getBvArtigoList().remove(bvArtigo);
                 tipodoc = em.merge(tipodoc);
             }
             BvAvaliador avaliador = bvArtigo.getAvaliador();
             if (avaliador != null) {
-                avaliador.getBvArtigoCollection().remove(bvArtigo);
+                avaliador.getBvArtigoList().remove(bvArtigo);
                 avaliador = em.merge(avaliador);
             }
             Curso cursoAlvo = bvArtigo.getCursoAlvo();
             if (cursoAlvo != null) {
-                cursoAlvo.getBvArtigoCollection().remove(bvArtigo);
+                cursoAlvo.getBvArtigoList().remove(bvArtigo);
                 cursoAlvo = em.merge(cursoAlvo);
             }
             SgObraArea area = bvArtigo.getArea();
             if (area != null) {
-                area.getBvArtigoCollection().remove(bvArtigo);
+                area.getBvArtigoList().remove(bvArtigo);
                 area = em.merge(area);
-            }
-            Collection<BNotificacao> BNotificacaoCollection = bvArtigo.getBNotificacaoCollection();
-            for (BNotificacao BNotificacaoCollectionBNotificacao : BNotificacaoCollection) {
-                BNotificacaoCollectionBNotificacao.setIdPublicacao(null);
-                BNotificacaoCollectionBNotificacao = em.merge(BNotificacaoCollectionBNotificacao);
             }
             em.remove(bvArtigo);
             em.getTransaction().commit();

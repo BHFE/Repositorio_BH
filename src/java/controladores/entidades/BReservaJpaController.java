@@ -12,12 +12,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.BLeitor;
+import entidades.BReserva;
 import entidades.SgExemplar;
 import entidades.SgEmprestimo;
 import java.util.ArrayList;
-import java.util.Collection;
-import entidades.BNotificacao;
-import entidades.BReserva;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,11 +36,8 @@ public class BReservaJpaController implements Serializable {
     }
 
     public void create(BReserva BReserva) {
-        if (BReserva.getSgEmprestimoCollection() == null) {
-            BReserva.setSgEmprestimoCollection(new ArrayList<SgEmprestimo>());
-        }
-        if (BReserva.getBNotificacaoCollection() == null) {
-            BReserva.setBNotificacaoCollection(new ArrayList<BNotificacao>());
+        if (BReserva.getSgEmprestimoList() == null) {
+            BReserva.setSgEmprestimoList(new ArrayList<SgEmprestimo>());
         }
         EntityManager em = null;
         try {
@@ -58,43 +53,28 @@ public class BReservaJpaController implements Serializable {
                 livro = em.getReference(livro.getClass(), livro.getNrRegisto());
                 BReserva.setLivro(livro);
             }
-            Collection<SgEmprestimo> attachedSgEmprestimoCollection = new ArrayList<SgEmprestimo>();
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimoToAttach : BReserva.getSgEmprestimoCollection()) {
-                sgEmprestimoCollectionSgEmprestimoToAttach = em.getReference(sgEmprestimoCollectionSgEmprestimoToAttach.getClass(), sgEmprestimoCollectionSgEmprestimoToAttach.getIdemprestimo());
-                attachedSgEmprestimoCollection.add(sgEmprestimoCollectionSgEmprestimoToAttach);
+            List<SgEmprestimo> attachedSgEmprestimoList = new ArrayList<SgEmprestimo>();
+            for (SgEmprestimo sgEmprestimoListSgEmprestimoToAttach : BReserva.getSgEmprestimoList()) {
+                sgEmprestimoListSgEmprestimoToAttach = em.getReference(sgEmprestimoListSgEmprestimoToAttach.getClass(), sgEmprestimoListSgEmprestimoToAttach.getIdemprestimo());
+                attachedSgEmprestimoList.add(sgEmprestimoListSgEmprestimoToAttach);
             }
-            BReserva.setSgEmprestimoCollection(attachedSgEmprestimoCollection);
-            Collection<BNotificacao> attachedBNotificacaoCollection = new ArrayList<BNotificacao>();
-            for (BNotificacao BNotificacaoCollectionBNotificacaoToAttach : BReserva.getBNotificacaoCollection()) {
-                BNotificacaoCollectionBNotificacaoToAttach = em.getReference(BNotificacaoCollectionBNotificacaoToAttach.getClass(), BNotificacaoCollectionBNotificacaoToAttach.getIdNotificacao());
-                attachedBNotificacaoCollection.add(BNotificacaoCollectionBNotificacaoToAttach);
-            }
-            BReserva.setBNotificacaoCollection(attachedBNotificacaoCollection);
+            BReserva.setSgEmprestimoList(attachedSgEmprestimoList);
             em.persist(BReserva);
             if (leitor != null) {
-                leitor.getBReservaCollection().add(BReserva);
+                leitor.getBReservaList().add(BReserva);
                 leitor = em.merge(leitor);
             }
             if (livro != null) {
-                livro.getBReservaCollection().add(BReserva);
+                livro.getBReservaList().add(BReserva);
                 livro = em.merge(livro);
             }
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimo : BReserva.getSgEmprestimoCollection()) {
-                BReserva oldReservaRefOfSgEmprestimoCollectionSgEmprestimo = sgEmprestimoCollectionSgEmprestimo.getReservaRef();
-                sgEmprestimoCollectionSgEmprestimo.setReservaRef(BReserva);
-                sgEmprestimoCollectionSgEmprestimo = em.merge(sgEmprestimoCollectionSgEmprestimo);
-                if (oldReservaRefOfSgEmprestimoCollectionSgEmprestimo != null) {
-                    oldReservaRefOfSgEmprestimoCollectionSgEmprestimo.getSgEmprestimoCollection().remove(sgEmprestimoCollectionSgEmprestimo);
-                    oldReservaRefOfSgEmprestimoCollectionSgEmprestimo = em.merge(oldReservaRefOfSgEmprestimoCollectionSgEmprestimo);
-                }
-            }
-            for (BNotificacao BNotificacaoCollectionBNotificacao : BReserva.getBNotificacaoCollection()) {
-                BReserva oldIdReservaOfBNotificacaoCollectionBNotificacao = BNotificacaoCollectionBNotificacao.getIdReserva();
-                BNotificacaoCollectionBNotificacao.setIdReserva(BReserva);
-                BNotificacaoCollectionBNotificacao = em.merge(BNotificacaoCollectionBNotificacao);
-                if (oldIdReservaOfBNotificacaoCollectionBNotificacao != null) {
-                    oldIdReservaOfBNotificacaoCollectionBNotificacao.getBNotificacaoCollection().remove(BNotificacaoCollectionBNotificacao);
-                    oldIdReservaOfBNotificacaoCollectionBNotificacao = em.merge(oldIdReservaOfBNotificacaoCollectionBNotificacao);
+            for (SgEmprestimo sgEmprestimoListSgEmprestimo : BReserva.getSgEmprestimoList()) {
+                BReserva oldReservaRefOfSgEmprestimoListSgEmprestimo = sgEmprestimoListSgEmprestimo.getReservaRef();
+                sgEmprestimoListSgEmprestimo.setReservaRef(BReserva);
+                sgEmprestimoListSgEmprestimo = em.merge(sgEmprestimoListSgEmprestimo);
+                if (oldReservaRefOfSgEmprestimoListSgEmprestimo != null) {
+                    oldReservaRefOfSgEmprestimoListSgEmprestimo.getSgEmprestimoList().remove(sgEmprestimoListSgEmprestimo);
+                    oldReservaRefOfSgEmprestimoListSgEmprestimo = em.merge(oldReservaRefOfSgEmprestimoListSgEmprestimo);
                 }
             }
             em.getTransaction().commit();
@@ -115,10 +95,8 @@ public class BReservaJpaController implements Serializable {
             BLeitor leitorNew = BReserva.getLeitor();
             SgExemplar livroOld = persistentBReserva.getLivro();
             SgExemplar livroNew = BReserva.getLivro();
-            Collection<SgEmprestimo> sgEmprestimoCollectionOld = persistentBReserva.getSgEmprestimoCollection();
-            Collection<SgEmprestimo> sgEmprestimoCollectionNew = BReserva.getSgEmprestimoCollection();
-            Collection<BNotificacao> BNotificacaoCollectionOld = persistentBReserva.getBNotificacaoCollection();
-            Collection<BNotificacao> BNotificacaoCollectionNew = BReserva.getBNotificacaoCollection();
+            List<SgEmprestimo> sgEmprestimoListOld = persistentBReserva.getSgEmprestimoList();
+            List<SgEmprestimo> sgEmprestimoListNew = BReserva.getSgEmprestimoList();
             if (leitorNew != null) {
                 leitorNew = em.getReference(leitorNew.getClass(), leitorNew.getNrCartao());
                 BReserva.setLeitor(leitorNew);
@@ -127,68 +105,44 @@ public class BReservaJpaController implements Serializable {
                 livroNew = em.getReference(livroNew.getClass(), livroNew.getNrRegisto());
                 BReserva.setLivro(livroNew);
             }
-            Collection<SgEmprestimo> attachedSgEmprestimoCollectionNew = new ArrayList<SgEmprestimo>();
-            for (SgEmprestimo sgEmprestimoCollectionNewSgEmprestimoToAttach : sgEmprestimoCollectionNew) {
-                sgEmprestimoCollectionNewSgEmprestimoToAttach = em.getReference(sgEmprestimoCollectionNewSgEmprestimoToAttach.getClass(), sgEmprestimoCollectionNewSgEmprestimoToAttach.getIdemprestimo());
-                attachedSgEmprestimoCollectionNew.add(sgEmprestimoCollectionNewSgEmprestimoToAttach);
+            List<SgEmprestimo> attachedSgEmprestimoListNew = new ArrayList<SgEmprestimo>();
+            for (SgEmprestimo sgEmprestimoListNewSgEmprestimoToAttach : sgEmprestimoListNew) {
+                sgEmprestimoListNewSgEmprestimoToAttach = em.getReference(sgEmprestimoListNewSgEmprestimoToAttach.getClass(), sgEmprestimoListNewSgEmprestimoToAttach.getIdemprestimo());
+                attachedSgEmprestimoListNew.add(sgEmprestimoListNewSgEmprestimoToAttach);
             }
-            sgEmprestimoCollectionNew = attachedSgEmprestimoCollectionNew;
-            BReserva.setSgEmprestimoCollection(sgEmprestimoCollectionNew);
-            Collection<BNotificacao> attachedBNotificacaoCollectionNew = new ArrayList<BNotificacao>();
-            for (BNotificacao BNotificacaoCollectionNewBNotificacaoToAttach : BNotificacaoCollectionNew) {
-                BNotificacaoCollectionNewBNotificacaoToAttach = em.getReference(BNotificacaoCollectionNewBNotificacaoToAttach.getClass(), BNotificacaoCollectionNewBNotificacaoToAttach.getIdNotificacao());
-                attachedBNotificacaoCollectionNew.add(BNotificacaoCollectionNewBNotificacaoToAttach);
-            }
-            BNotificacaoCollectionNew = attachedBNotificacaoCollectionNew;
-            BReserva.setBNotificacaoCollection(BNotificacaoCollectionNew);
+            sgEmprestimoListNew = attachedSgEmprestimoListNew;
+            BReserva.setSgEmprestimoList(sgEmprestimoListNew);
             BReserva = em.merge(BReserva);
             if (leitorOld != null && !leitorOld.equals(leitorNew)) {
-                leitorOld.getBReservaCollection().remove(BReserva);
+                leitorOld.getBReservaList().remove(BReserva);
                 leitorOld = em.merge(leitorOld);
             }
             if (leitorNew != null && !leitorNew.equals(leitorOld)) {
-                leitorNew.getBReservaCollection().add(BReserva);
+                leitorNew.getBReservaList().add(BReserva);
                 leitorNew = em.merge(leitorNew);
             }
             if (livroOld != null && !livroOld.equals(livroNew)) {
-                livroOld.getBReservaCollection().remove(BReserva);
+                livroOld.getBReservaList().remove(BReserva);
                 livroOld = em.merge(livroOld);
             }
             if (livroNew != null && !livroNew.equals(livroOld)) {
-                livroNew.getBReservaCollection().add(BReserva);
+                livroNew.getBReservaList().add(BReserva);
                 livroNew = em.merge(livroNew);
             }
-            for (SgEmprestimo sgEmprestimoCollectionOldSgEmprestimo : sgEmprestimoCollectionOld) {
-                if (!sgEmprestimoCollectionNew.contains(sgEmprestimoCollectionOldSgEmprestimo)) {
-                    sgEmprestimoCollectionOldSgEmprestimo.setReservaRef(null);
-                    sgEmprestimoCollectionOldSgEmprestimo = em.merge(sgEmprestimoCollectionOldSgEmprestimo);
+            for (SgEmprestimo sgEmprestimoListOldSgEmprestimo : sgEmprestimoListOld) {
+                if (!sgEmprestimoListNew.contains(sgEmprestimoListOldSgEmprestimo)) {
+                    sgEmprestimoListOldSgEmprestimo.setReservaRef(null);
+                    sgEmprestimoListOldSgEmprestimo = em.merge(sgEmprestimoListOldSgEmprestimo);
                 }
             }
-            for (SgEmprestimo sgEmprestimoCollectionNewSgEmprestimo : sgEmprestimoCollectionNew) {
-                if (!sgEmprestimoCollectionOld.contains(sgEmprestimoCollectionNewSgEmprestimo)) {
-                    BReserva oldReservaRefOfSgEmprestimoCollectionNewSgEmprestimo = sgEmprestimoCollectionNewSgEmprestimo.getReservaRef();
-                    sgEmprestimoCollectionNewSgEmprestimo.setReservaRef(BReserva);
-                    sgEmprestimoCollectionNewSgEmprestimo = em.merge(sgEmprestimoCollectionNewSgEmprestimo);
-                    if (oldReservaRefOfSgEmprestimoCollectionNewSgEmprestimo != null && !oldReservaRefOfSgEmprestimoCollectionNewSgEmprestimo.equals(BReserva)) {
-                        oldReservaRefOfSgEmprestimoCollectionNewSgEmprestimo.getSgEmprestimoCollection().remove(sgEmprestimoCollectionNewSgEmprestimo);
-                        oldReservaRefOfSgEmprestimoCollectionNewSgEmprestimo = em.merge(oldReservaRefOfSgEmprestimoCollectionNewSgEmprestimo);
-                    }
-                }
-            }
-            for (BNotificacao BNotificacaoCollectionOldBNotificacao : BNotificacaoCollectionOld) {
-                if (!BNotificacaoCollectionNew.contains(BNotificacaoCollectionOldBNotificacao)) {
-                    BNotificacaoCollectionOldBNotificacao.setIdReserva(null);
-                    BNotificacaoCollectionOldBNotificacao = em.merge(BNotificacaoCollectionOldBNotificacao);
-                }
-            }
-            for (BNotificacao BNotificacaoCollectionNewBNotificacao : BNotificacaoCollectionNew) {
-                if (!BNotificacaoCollectionOld.contains(BNotificacaoCollectionNewBNotificacao)) {
-                    BReserva oldIdReservaOfBNotificacaoCollectionNewBNotificacao = BNotificacaoCollectionNewBNotificacao.getIdReserva();
-                    BNotificacaoCollectionNewBNotificacao.setIdReserva(BReserva);
-                    BNotificacaoCollectionNewBNotificacao = em.merge(BNotificacaoCollectionNewBNotificacao);
-                    if (oldIdReservaOfBNotificacaoCollectionNewBNotificacao != null && !oldIdReservaOfBNotificacaoCollectionNewBNotificacao.equals(BReserva)) {
-                        oldIdReservaOfBNotificacaoCollectionNewBNotificacao.getBNotificacaoCollection().remove(BNotificacaoCollectionNewBNotificacao);
-                        oldIdReservaOfBNotificacaoCollectionNewBNotificacao = em.merge(oldIdReservaOfBNotificacaoCollectionNewBNotificacao);
+            for (SgEmprestimo sgEmprestimoListNewSgEmprestimo : sgEmprestimoListNew) {
+                if (!sgEmprestimoListOld.contains(sgEmprestimoListNewSgEmprestimo)) {
+                    BReserva oldReservaRefOfSgEmprestimoListNewSgEmprestimo = sgEmprestimoListNewSgEmprestimo.getReservaRef();
+                    sgEmprestimoListNewSgEmprestimo.setReservaRef(BReserva);
+                    sgEmprestimoListNewSgEmprestimo = em.merge(sgEmprestimoListNewSgEmprestimo);
+                    if (oldReservaRefOfSgEmprestimoListNewSgEmprestimo != null && !oldReservaRefOfSgEmprestimoListNewSgEmprestimo.equals(BReserva)) {
+                        oldReservaRefOfSgEmprestimoListNewSgEmprestimo.getSgEmprestimoList().remove(sgEmprestimoListNewSgEmprestimo);
+                        oldReservaRefOfSgEmprestimoListNewSgEmprestimo = em.merge(oldReservaRefOfSgEmprestimoListNewSgEmprestimo);
                     }
                 }
             }
@@ -223,23 +177,18 @@ public class BReservaJpaController implements Serializable {
             }
             BLeitor leitor = BReserva.getLeitor();
             if (leitor != null) {
-                leitor.getBReservaCollection().remove(BReserva);
+                leitor.getBReservaList().remove(BReserva);
                 leitor = em.merge(leitor);
             }
             SgExemplar livro = BReserva.getLivro();
             if (livro != null) {
-                livro.getBReservaCollection().remove(BReserva);
+                livro.getBReservaList().remove(BReserva);
                 livro = em.merge(livro);
             }
-            Collection<SgEmprestimo> sgEmprestimoCollection = BReserva.getSgEmprestimoCollection();
-            for (SgEmprestimo sgEmprestimoCollectionSgEmprestimo : sgEmprestimoCollection) {
-                sgEmprestimoCollectionSgEmprestimo.setReservaRef(null);
-                sgEmprestimoCollectionSgEmprestimo = em.merge(sgEmprestimoCollectionSgEmprestimo);
-            }
-            Collection<BNotificacao> BNotificacaoCollection = BReserva.getBNotificacaoCollection();
-            for (BNotificacao BNotificacaoCollectionBNotificacao : BNotificacaoCollection) {
-                BNotificacaoCollectionBNotificacao.setIdReserva(null);
-                BNotificacaoCollectionBNotificacao = em.merge(BNotificacaoCollectionBNotificacao);
+            List<SgEmprestimo> sgEmprestimoList = BReserva.getSgEmprestimoList();
+            for (SgEmprestimo sgEmprestimoListSgEmprestimo : sgEmprestimoList) {
+                sgEmprestimoListSgEmprestimo.setReservaRef(null);
+                sgEmprestimoListSgEmprestimo = em.merge(sgEmprestimoListSgEmprestimo);
             }
             em.remove(BReserva);
             em.getTransaction().commit();

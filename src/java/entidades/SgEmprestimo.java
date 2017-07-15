@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_emprestimo", catalog = "fecn2", schema = "public")
+@Table(name = "sg_emprestimo", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgEmprestimo.findAll", query = "SELECT s FROM SgEmprestimo s")
@@ -49,7 +49,7 @@ public class SgEmprestimo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idemprestimo")
+    @Column(name = "idemprestimo", nullable = false)
     private Long idemprestimo;
     @Column(name = "data_devolucao")
     @Temporal(TemporalType.DATE)
@@ -57,22 +57,22 @@ public class SgEmprestimo implements Serializable {
     @Column(name = "data_emprestimo")
     @Temporal(TemporalType.DATE)
     private Date dataEmprestimo;
-    @Column(name = "multa_estado")
+    @Column(name = "multa_estado", length = 255)
     private String multaEstado;
-    @Column(name = "multa_motivo")
+    @Column(name = "multa_motivo", length = 255)
     private String multaMotivo;
-    @Column(name = "multa_pagamento")
+    @Column(name = "multa_pagamento", length = 255)
     private String multaPagamento;
-    @Column(name = "multa_valor")
+    @Column(name = "multa_valor", length = 255)
     private String multaValor;
-    @Column(name = "tipo_emprestimo")
+    @Column(name = "tipo_emprestimo", length = 255)
     private String tipoEmprestimo;
     @Column(name = "multa_criacaodata")
     @Temporal(TemporalType.DATE)
     private Date multaCriacaodata;
-    @Column(name = "estado")
+    @Column(name = "estado", length = 255)
     private String estado;
-    @Column(name = "estado_renovacao")
+    @Column(name = "estado_renovacao", length = 255)
     private String estadoRenovacao;
     @JoinColumn(name = "id_leitor", referencedColumnName = "nr_cartao")
     @ManyToOne(fetch = FetchType.LAZY)

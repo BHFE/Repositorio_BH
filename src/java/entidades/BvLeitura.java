@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "bv_leitura", catalog = "fecn2", schema = "public")
+@Table(name = "bv_leitura", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BvLeitura.findAll", query = "SELECT b FROM BvLeitura b")
@@ -35,10 +35,10 @@ public class BvLeitura implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BvLeituraPK bvLeituraPK;
-    @JoinColumn(name = "leitor", referencedColumnName = "nr_cartao", insertable = false, updatable = false)
+    @JoinColumn(name = "leitor", referencedColumnName = "nr_cartao", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BLeitor bLeitor;
-    @JoinColumn(name = "obra", referencedColumnName = "idartigo", insertable = false, updatable = false)
+    @JoinColumn(name = "obra", referencedColumnName = "idartigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BvArtigo bvArtigo;
 

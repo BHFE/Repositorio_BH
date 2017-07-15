@@ -21,7 +21,6 @@ import entidades.Pais;
 import entidades.Viaingresso;
 import entidades.Users;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,8 +41,8 @@ public class EstudanteJpaController implements Serializable {
     }
 
     public void create(Estudante estudante) {
-        if (estudante.getUsersCollection() == null) {
-            estudante.setUsersCollection(new ArrayList<Users>());
+        if (estudante.getUsersList() == null) {
+            estudante.setUsersList(new ArrayList<Users>());
         }
         EntityManager em = null;
         try {
@@ -89,12 +88,12 @@ public class EstudanteJpaController implements Serializable {
                 viaIngresso = em.getReference(viaIngresso.getClass(), viaIngresso.getIdViaIngresso());
                 estudante.setViaIngresso(viaIngresso);
             }
-            Collection<Users> attachedUsersCollection = new ArrayList<Users>();
-            for (Users usersCollectionUsersToAttach : estudante.getUsersCollection()) {
-                usersCollectionUsersToAttach = em.getReference(usersCollectionUsersToAttach.getClass(), usersCollectionUsersToAttach.getUtilizador());
-                attachedUsersCollection.add(usersCollectionUsersToAttach);
+            List<Users> attachedUsersList = new ArrayList<Users>();
+            for (Users usersListUsersToAttach : estudante.getUsersList()) {
+                usersListUsersToAttach = em.getReference(usersListUsersToAttach.getClass(), usersListUsersToAttach.getUtilizador());
+                attachedUsersList.add(usersListUsersToAttach);
             }
-            estudante.setUsersCollection(attachedUsersCollection);
+            estudante.setUsersList(attachedUsersList);
             em.persist(estudante);
             if (profissao != null) {
                 Estudante oldEstudanteOfProfissao = profissao.getEstudante();
@@ -106,40 +105,40 @@ public class EstudanteJpaController implements Serializable {
                 profissao = em.merge(profissao);
             }
             if (bolsa != null) {
-                bolsa.getEstudanteCollection().add(estudante);
+                bolsa.getEstudanteList().add(estudante);
                 bolsa = em.merge(bolsa);
             }
             if (cursocurrente != null) {
-                cursocurrente.getEstudanteCollection().add(estudante);
+                cursocurrente.getEstudanteList().add(estudante);
                 cursocurrente = em.merge(cursocurrente);
             }
             if (cursoingresso != null) {
-                cursoingresso.getEstudanteCollection().add(estudante);
+                cursoingresso.getEstudanteList().add(estudante);
                 cursoingresso = em.merge(cursoingresso);
             }
             if (estadoCivil != null) {
-                estadoCivil.getEstudanteCollection().add(estudante);
+                estadoCivil.getEstudanteList().add(estudante);
                 estadoCivil = em.merge(estadoCivil);
             }
             if (escolaPais != null) {
-                escolaPais.getEstudanteCollection().add(estudante);
+                escolaPais.getEstudanteList().add(estudante);
                 escolaPais = em.merge(escolaPais);
             }
             if (nacionalidade != null) {
-                nacionalidade.getEstudanteCollection().add(estudante);
+                nacionalidade.getEstudanteList().add(estudante);
                 nacionalidade = em.merge(nacionalidade);
             }
             if (viaIngresso != null) {
-                viaIngresso.getEstudanteCollection().add(estudante);
+                viaIngresso.getEstudanteList().add(estudante);
                 viaIngresso = em.merge(viaIngresso);
             }
-            for (Users usersCollectionUsers : estudante.getUsersCollection()) {
-                Estudante oldIdEstudanteOfUsersCollectionUsers = usersCollectionUsers.getIdEstudante();
-                usersCollectionUsers.setIdEstudante(estudante);
-                usersCollectionUsers = em.merge(usersCollectionUsers);
-                if (oldIdEstudanteOfUsersCollectionUsers != null) {
-                    oldIdEstudanteOfUsersCollectionUsers.getUsersCollection().remove(usersCollectionUsers);
-                    oldIdEstudanteOfUsersCollectionUsers = em.merge(oldIdEstudanteOfUsersCollectionUsers);
+            for (Users usersListUsers : estudante.getUsersList()) {
+                Estudante oldIdEstudanteOfUsersListUsers = usersListUsers.getIdEstudante();
+                usersListUsers.setIdEstudante(estudante);
+                usersListUsers = em.merge(usersListUsers);
+                if (oldIdEstudanteOfUsersListUsers != null) {
+                    oldIdEstudanteOfUsersListUsers.getUsersList().remove(usersListUsers);
+                    oldIdEstudanteOfUsersListUsers = em.merge(oldIdEstudanteOfUsersListUsers);
                 }
             }
             em.getTransaction().commit();
@@ -172,8 +171,8 @@ public class EstudanteJpaController implements Serializable {
             Pais nacionalidadeNew = estudante.getNacionalidade();
             Viaingresso viaIngressoOld = persistentEstudante.getViaIngresso();
             Viaingresso viaIngressoNew = estudante.getViaIngresso();
-            Collection<Users> usersCollectionOld = persistentEstudante.getUsersCollection();
-            Collection<Users> usersCollectionNew = estudante.getUsersCollection();
+            List<Users> usersListOld = persistentEstudante.getUsersList();
+            List<Users> usersListNew = estudante.getUsersList();
             List<String> illegalOrphanMessages = null;
             if (profissaoOld != null && !profissaoOld.equals(profissaoNew)) {
                 if (illegalOrphanMessages == null) {
@@ -216,13 +215,13 @@ public class EstudanteJpaController implements Serializable {
                 viaIngressoNew = em.getReference(viaIngressoNew.getClass(), viaIngressoNew.getIdViaIngresso());
                 estudante.setViaIngresso(viaIngressoNew);
             }
-            Collection<Users> attachedUsersCollectionNew = new ArrayList<Users>();
-            for (Users usersCollectionNewUsersToAttach : usersCollectionNew) {
-                usersCollectionNewUsersToAttach = em.getReference(usersCollectionNewUsersToAttach.getClass(), usersCollectionNewUsersToAttach.getUtilizador());
-                attachedUsersCollectionNew.add(usersCollectionNewUsersToAttach);
+            List<Users> attachedUsersListNew = new ArrayList<Users>();
+            for (Users usersListNewUsersToAttach : usersListNew) {
+                usersListNewUsersToAttach = em.getReference(usersListNewUsersToAttach.getClass(), usersListNewUsersToAttach.getUtilizador());
+                attachedUsersListNew.add(usersListNewUsersToAttach);
             }
-            usersCollectionNew = attachedUsersCollectionNew;
-            estudante.setUsersCollection(usersCollectionNew);
+            usersListNew = attachedUsersListNew;
+            estudante.setUsersList(usersListNew);
             estudante = em.merge(estudante);
             if (profissaoNew != null && !profissaoNew.equals(profissaoOld)) {
                 Estudante oldEstudanteOfProfissao = profissaoNew.getEstudante();
@@ -234,75 +233,75 @@ public class EstudanteJpaController implements Serializable {
                 profissaoNew = em.merge(profissaoNew);
             }
             if (bolsaOld != null && !bolsaOld.equals(bolsaNew)) {
-                bolsaOld.getEstudanteCollection().remove(estudante);
+                bolsaOld.getEstudanteList().remove(estudante);
                 bolsaOld = em.merge(bolsaOld);
             }
             if (bolsaNew != null && !bolsaNew.equals(bolsaOld)) {
-                bolsaNew.getEstudanteCollection().add(estudante);
+                bolsaNew.getEstudanteList().add(estudante);
                 bolsaNew = em.merge(bolsaNew);
             }
             if (cursocurrenteOld != null && !cursocurrenteOld.equals(cursocurrenteNew)) {
-                cursocurrenteOld.getEstudanteCollection().remove(estudante);
+                cursocurrenteOld.getEstudanteList().remove(estudante);
                 cursocurrenteOld = em.merge(cursocurrenteOld);
             }
             if (cursocurrenteNew != null && !cursocurrenteNew.equals(cursocurrenteOld)) {
-                cursocurrenteNew.getEstudanteCollection().add(estudante);
+                cursocurrenteNew.getEstudanteList().add(estudante);
                 cursocurrenteNew = em.merge(cursocurrenteNew);
             }
             if (cursoingressoOld != null && !cursoingressoOld.equals(cursoingressoNew)) {
-                cursoingressoOld.getEstudanteCollection().remove(estudante);
+                cursoingressoOld.getEstudanteList().remove(estudante);
                 cursoingressoOld = em.merge(cursoingressoOld);
             }
             if (cursoingressoNew != null && !cursoingressoNew.equals(cursoingressoOld)) {
-                cursoingressoNew.getEstudanteCollection().add(estudante);
+                cursoingressoNew.getEstudanteList().add(estudante);
                 cursoingressoNew = em.merge(cursoingressoNew);
             }
             if (estadoCivilOld != null && !estadoCivilOld.equals(estadoCivilNew)) {
-                estadoCivilOld.getEstudanteCollection().remove(estudante);
+                estadoCivilOld.getEstudanteList().remove(estudante);
                 estadoCivilOld = em.merge(estadoCivilOld);
             }
             if (estadoCivilNew != null && !estadoCivilNew.equals(estadoCivilOld)) {
-                estadoCivilNew.getEstudanteCollection().add(estudante);
+                estadoCivilNew.getEstudanteList().add(estudante);
                 estadoCivilNew = em.merge(estadoCivilNew);
             }
             if (escolaPaisOld != null && !escolaPaisOld.equals(escolaPaisNew)) {
-                escolaPaisOld.getEstudanteCollection().remove(estudante);
+                escolaPaisOld.getEstudanteList().remove(estudante);
                 escolaPaisOld = em.merge(escolaPaisOld);
             }
             if (escolaPaisNew != null && !escolaPaisNew.equals(escolaPaisOld)) {
-                escolaPaisNew.getEstudanteCollection().add(estudante);
+                escolaPaisNew.getEstudanteList().add(estudante);
                 escolaPaisNew = em.merge(escolaPaisNew);
             }
             if (nacionalidadeOld != null && !nacionalidadeOld.equals(nacionalidadeNew)) {
-                nacionalidadeOld.getEstudanteCollection().remove(estudante);
+                nacionalidadeOld.getEstudanteList().remove(estudante);
                 nacionalidadeOld = em.merge(nacionalidadeOld);
             }
             if (nacionalidadeNew != null && !nacionalidadeNew.equals(nacionalidadeOld)) {
-                nacionalidadeNew.getEstudanteCollection().add(estudante);
+                nacionalidadeNew.getEstudanteList().add(estudante);
                 nacionalidadeNew = em.merge(nacionalidadeNew);
             }
             if (viaIngressoOld != null && !viaIngressoOld.equals(viaIngressoNew)) {
-                viaIngressoOld.getEstudanteCollection().remove(estudante);
+                viaIngressoOld.getEstudanteList().remove(estudante);
                 viaIngressoOld = em.merge(viaIngressoOld);
             }
             if (viaIngressoNew != null && !viaIngressoNew.equals(viaIngressoOld)) {
-                viaIngressoNew.getEstudanteCollection().add(estudante);
+                viaIngressoNew.getEstudanteList().add(estudante);
                 viaIngressoNew = em.merge(viaIngressoNew);
             }
-            for (Users usersCollectionOldUsers : usersCollectionOld) {
-                if (!usersCollectionNew.contains(usersCollectionOldUsers)) {
-                    usersCollectionOldUsers.setIdEstudante(null);
-                    usersCollectionOldUsers = em.merge(usersCollectionOldUsers);
+            for (Users usersListOldUsers : usersListOld) {
+                if (!usersListNew.contains(usersListOldUsers)) {
+                    usersListOldUsers.setIdEstudante(null);
+                    usersListOldUsers = em.merge(usersListOldUsers);
                 }
             }
-            for (Users usersCollectionNewUsers : usersCollectionNew) {
-                if (!usersCollectionOld.contains(usersCollectionNewUsers)) {
-                    Estudante oldIdEstudanteOfUsersCollectionNewUsers = usersCollectionNewUsers.getIdEstudante();
-                    usersCollectionNewUsers.setIdEstudante(estudante);
-                    usersCollectionNewUsers = em.merge(usersCollectionNewUsers);
-                    if (oldIdEstudanteOfUsersCollectionNewUsers != null && !oldIdEstudanteOfUsersCollectionNewUsers.equals(estudante)) {
-                        oldIdEstudanteOfUsersCollectionNewUsers.getUsersCollection().remove(usersCollectionNewUsers);
-                        oldIdEstudanteOfUsersCollectionNewUsers = em.merge(oldIdEstudanteOfUsersCollectionNewUsers);
+            for (Users usersListNewUsers : usersListNew) {
+                if (!usersListOld.contains(usersListNewUsers)) {
+                    Estudante oldIdEstudanteOfUsersListNewUsers = usersListNewUsers.getIdEstudante();
+                    usersListNewUsers.setIdEstudante(estudante);
+                    usersListNewUsers = em.merge(usersListNewUsers);
+                    if (oldIdEstudanteOfUsersListNewUsers != null && !oldIdEstudanteOfUsersListNewUsers.equals(estudante)) {
+                        oldIdEstudanteOfUsersListNewUsers.getUsersList().remove(usersListNewUsers);
+                        oldIdEstudanteOfUsersListNewUsers = em.merge(oldIdEstudanteOfUsersListNewUsers);
                     }
                 }
             }
@@ -348,43 +347,43 @@ public class EstudanteJpaController implements Serializable {
             }
             Bolsa bolsa = estudante.getBolsa();
             if (bolsa != null) {
-                bolsa.getEstudanteCollection().remove(estudante);
+                bolsa.getEstudanteList().remove(estudante);
                 bolsa = em.merge(bolsa);
             }
             Curso cursocurrente = estudante.getCursocurrente();
             if (cursocurrente != null) {
-                cursocurrente.getEstudanteCollection().remove(estudante);
+                cursocurrente.getEstudanteList().remove(estudante);
                 cursocurrente = em.merge(cursocurrente);
             }
             Curso cursoingresso = estudante.getCursoingresso();
             if (cursoingresso != null) {
-                cursoingresso.getEstudanteCollection().remove(estudante);
+                cursoingresso.getEstudanteList().remove(estudante);
                 cursoingresso = em.merge(cursoingresso);
             }
             Estadocivil estadoCivil = estudante.getEstadoCivil();
             if (estadoCivil != null) {
-                estadoCivil.getEstudanteCollection().remove(estudante);
+                estadoCivil.getEstudanteList().remove(estudante);
                 estadoCivil = em.merge(estadoCivil);
             }
             Pais escolaPais = estudante.getEscolaPais();
             if (escolaPais != null) {
-                escolaPais.getEstudanteCollection().remove(estudante);
+                escolaPais.getEstudanteList().remove(estudante);
                 escolaPais = em.merge(escolaPais);
             }
             Pais nacionalidade = estudante.getNacionalidade();
             if (nacionalidade != null) {
-                nacionalidade.getEstudanteCollection().remove(estudante);
+                nacionalidade.getEstudanteList().remove(estudante);
                 nacionalidade = em.merge(nacionalidade);
             }
             Viaingresso viaIngresso = estudante.getViaIngresso();
             if (viaIngresso != null) {
-                viaIngresso.getEstudanteCollection().remove(estudante);
+                viaIngresso.getEstudanteList().remove(estudante);
                 viaIngresso = em.merge(viaIngresso);
             }
-            Collection<Users> usersCollection = estudante.getUsersCollection();
-            for (Users usersCollectionUsers : usersCollection) {
-                usersCollectionUsers.setIdEstudante(null);
-                usersCollectionUsers = em.merge(usersCollectionUsers);
+            List<Users> usersList = estudante.getUsersList();
+            for (Users usersListUsers : usersList) {
+                usersListUsers.setIdEstudante(null);
+                usersListUsers = em.merge(usersListUsers);
             }
             em.remove(estudante);
             em.getTransaction().commit();

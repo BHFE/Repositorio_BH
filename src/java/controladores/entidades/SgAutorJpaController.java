@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.SgObraAutor;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,28 +35,24 @@ public class SgAutorJpaController implements Serializable {
     }
 
     public void create(SgAutor sgAutor) {
-        if (sgAutor.getSgObraAutorCollection() == null) {
-            sgAutor.setSgObraAutorCollection(new ArrayList<SgObraAutor>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<SgObraAutor> attachedSgObraAutorCollection = new ArrayList<SgObraAutor>();
-            for (SgObraAutor sgObraAutorCollectionSgObraAutorToAttach : sgAutor.getSgObraAutorCollection()) {
-                sgObraAutorCollectionSgObraAutorToAttach = em.getReference(sgObraAutorCollectionSgObraAutorToAttach.getClass(), sgObraAutorCollectionSgObraAutorToAttach.getSgObraAutorPK());
-                attachedSgObraAutorCollection.add(sgObraAutorCollectionSgObraAutorToAttach);
+            SgObraAutor sgObraAutor = sgAutor.getSgObraAutor();
+            if (sgObraAutor != null) {
+                sgObraAutor = em.getReference(sgObraAutor.getClass(), sgObraAutor.getIdautor());
+                sgAutor.setSgObraAutor(sgObraAutor);
             }
-            sgAutor.setSgObraAutorCollection(attachedSgObraAutorCollection);
             em.persist(sgAutor);
-            for (SgObraAutor sgObraAutorCollectionSgObraAutor : sgAutor.getSgObraAutorCollection()) {
-                SgAutor oldSgAutorOfSgObraAutorCollectionSgObraAutor = sgObraAutorCollectionSgObraAutor.getSgAutor();
-                sgObraAutorCollectionSgObraAutor.setSgAutor(sgAutor);
-                sgObraAutorCollectionSgObraAutor = em.merge(sgObraAutorCollectionSgObraAutor);
-                if (oldSgAutorOfSgObraAutorCollectionSgObraAutor != null) {
-                    oldSgAutorOfSgObraAutorCollectionSgObraAutor.getSgObraAutorCollection().remove(sgObraAutorCollectionSgObraAutor);
-                    oldSgAutorOfSgObraAutorCollectionSgObraAutor = em.merge(oldSgAutorOfSgObraAutorCollectionSgObraAutor);
+            if (sgObraAutor != null) {
+                SgAutor oldSgAutorOfSgObraAutor = sgObraAutor.getSgAutor();
+                if (oldSgAutorOfSgObraAutor != null) {
+                    oldSgAutorOfSgObraAutor.setSgObraAutor(null);
+                    oldSgAutorOfSgObraAutor = em.merge(oldSgAutorOfSgObraAutor);
                 }
+                sgObraAutor.setSgAutor(sgAutor);
+                sgObraAutor = em.merge(sgObraAutor);
             }
             em.getTransaction().commit();
         } finally {
@@ -73,38 +68,31 @@ public class SgAutorJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             SgAutor persistentSgAutor = em.find(SgAutor.class, sgAutor.getIdautor());
-            Collection<SgObraAutor> sgObraAutorCollectionOld = persistentSgAutor.getSgObraAutorCollection();
-            Collection<SgObraAutor> sgObraAutorCollectionNew = sgAutor.getSgObraAutorCollection();
+            SgObraAutor sgObraAutorOld = persistentSgAutor.getSgObraAutor();
+            SgObraAutor sgObraAutorNew = sgAutor.getSgObraAutor();
             List<String> illegalOrphanMessages = null;
-            for (SgObraAutor sgObraAutorCollectionOldSgObraAutor : sgObraAutorCollectionOld) {
-                if (!sgObraAutorCollectionNew.contains(sgObraAutorCollectionOldSgObraAutor)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain SgObraAutor " + sgObraAutorCollectionOldSgObraAutor + " since its sgAutor field is not nullable.");
+            if (sgObraAutorOld != null && !sgObraAutorOld.equals(sgObraAutorNew)) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
                 }
+                illegalOrphanMessages.add("You must retain SgObraAutor " + sgObraAutorOld + " since its sgAutor field is not nullable.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<SgObraAutor> attachedSgObraAutorCollectionNew = new ArrayList<SgObraAutor>();
-            for (SgObraAutor sgObraAutorCollectionNewSgObraAutorToAttach : sgObraAutorCollectionNew) {
-                sgObraAutorCollectionNewSgObraAutorToAttach = em.getReference(sgObraAutorCollectionNewSgObraAutorToAttach.getClass(), sgObraAutorCollectionNewSgObraAutorToAttach.getSgObraAutorPK());
-                attachedSgObraAutorCollectionNew.add(sgObraAutorCollectionNewSgObraAutorToAttach);
+            if (sgObraAutorNew != null) {
+                sgObraAutorNew = em.getReference(sgObraAutorNew.getClass(), sgObraAutorNew.getIdautor());
+                sgAutor.setSgObraAutor(sgObraAutorNew);
             }
-            sgObraAutorCollectionNew = attachedSgObraAutorCollectionNew;
-            sgAutor.setSgObraAutorCollection(sgObraAutorCollectionNew);
             sgAutor = em.merge(sgAutor);
-            for (SgObraAutor sgObraAutorCollectionNewSgObraAutor : sgObraAutorCollectionNew) {
-                if (!sgObraAutorCollectionOld.contains(sgObraAutorCollectionNewSgObraAutor)) {
-                    SgAutor oldSgAutorOfSgObraAutorCollectionNewSgObraAutor = sgObraAutorCollectionNewSgObraAutor.getSgAutor();
-                    sgObraAutorCollectionNewSgObraAutor.setSgAutor(sgAutor);
-                    sgObraAutorCollectionNewSgObraAutor = em.merge(sgObraAutorCollectionNewSgObraAutor);
-                    if (oldSgAutorOfSgObraAutorCollectionNewSgObraAutor != null && !oldSgAutorOfSgObraAutorCollectionNewSgObraAutor.equals(sgAutor)) {
-                        oldSgAutorOfSgObraAutorCollectionNewSgObraAutor.getSgObraAutorCollection().remove(sgObraAutorCollectionNewSgObraAutor);
-                        oldSgAutorOfSgObraAutorCollectionNewSgObraAutor = em.merge(oldSgAutorOfSgObraAutorCollectionNewSgObraAutor);
-                    }
+            if (sgObraAutorNew != null && !sgObraAutorNew.equals(sgObraAutorOld)) {
+                SgAutor oldSgAutorOfSgObraAutor = sgObraAutorNew.getSgAutor();
+                if (oldSgAutorOfSgObraAutor != null) {
+                    oldSgAutorOfSgObraAutor.setSgObraAutor(null);
+                    oldSgAutorOfSgObraAutor = em.merge(oldSgAutorOfSgObraAutor);
                 }
+                sgObraAutorNew.setSgAutor(sgAutor);
+                sgObraAutorNew = em.merge(sgObraAutorNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -136,12 +124,12 @@ public class SgAutorJpaController implements Serializable {
                 throw new NonexistentEntityException("The sgAutor with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<SgObraAutor> sgObraAutorCollectionOrphanCheck = sgAutor.getSgObraAutorCollection();
-            for (SgObraAutor sgObraAutorCollectionOrphanCheckSgObraAutor : sgObraAutorCollectionOrphanCheck) {
+            SgObraAutor sgObraAutorOrphanCheck = sgAutor.getSgObraAutor();
+            if (sgObraAutorOrphanCheck != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This SgAutor (" + sgAutor + ") cannot be destroyed since the SgObraAutor " + sgObraAutorCollectionOrphanCheckSgObraAutor + " in its sgObraAutorCollection field has a non-nullable sgAutor field.");
+                illegalOrphanMessages.add("This SgAutor (" + sgAutor + ") cannot be destroyed since the SgObraAutor " + sgObraAutorOrphanCheck + " in its sgObraAutor field has a non-nullable sgAutor field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

@@ -26,6 +26,7 @@ public class SidebarPageConfigAjax implements SidebarPageConfig{
 		pageMap.put("fn2",new SidebarPage("fn2","Gerir obra","","/Paginas/Catalogacao.zul"));
 		pageMap.put("fn3",new SidebarPage("fn3","Circulação","","/Paginas/Emprestimo.zul"));
                 pageMap.put("fn4",new SidebarPage("fn4","Administração","","/Paginas/Administracao.zul"));
+                 pageMap.put("fn5",new SidebarPage("fn4","Gerar relatorios","","/Paginas/Relatorio.zul"));
 	}
 	
 	public List<SidebarPage> getPages(){

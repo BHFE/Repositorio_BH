@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "viaingresso", catalog = "fecn2", schema = "public")
+@Table(name = "viaingresso", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Viaingresso.findAll", query = "SELECT v FROM Viaingresso v")
@@ -35,12 +35,12 @@ public class Viaingresso implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_via_ingresso")
+    @Column(name = "id_via_ingresso", nullable = false)
     private Integer idViaIngresso;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 45)
     private String descricao;
     @OneToMany(mappedBy = "viaIngresso", fetch = FetchType.LAZY)
-    private Collection<Estudante> estudanteCollection;
+    private List<Estudante> estudanteList;
 
     public Viaingresso() {
     }
@@ -66,12 +66,12 @@ public class Viaingresso implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Estudante> getEstudanteCollection() {
-        return estudanteCollection;
+    public List<Estudante> getEstudanteList() {
+        return estudanteList;
     }
 
-    public void setEstudanteCollection(Collection<Estudante> estudanteCollection) {
-        this.estudanteCollection = estudanteCollection;
+    public void setEstudanteList(List<Estudante> estudanteList) {
+        this.estudanteList = estudanteList;
     }
 
     @Override

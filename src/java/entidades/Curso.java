@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "curso", catalog = "fecn2", schema = "public")
+@Table(name = "curso", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Curso.findAll", query = "SELECT c FROM Curso c")
@@ -43,26 +43,26 @@ public class Curso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_curso")
+    @Column(name = "id_curso", nullable = false)
     private Long idCurso;
-    @Column(name = "codigo_curso")
+    @Column(name = "codigo_curso", length = 45)
     private String codigoCurso;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 45)
     private String descricao;
     @Column(name = "faculdade")
     private Integer faculdade;
     @Column(name = "qtd_semestres")
     private Integer qtdSemestres;
-    @Column(name = "abreviatura")
+    @Column(name = "abreviatura", length = 11)
     private String abreviatura;
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
-    private Collection<SgObra> sgObraCollection;
+    private List<SgObra> sgObraList;
     @OneToMany(mappedBy = "cursoAlvo", fetch = FetchType.LAZY)
-    private Collection<BvArtigo> bvArtigoCollection;
+    private List<BvArtigo> bvArtigoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cursocurrente", fetch = FetchType.LAZY)
-    private Collection<Estudante> estudanteCollection;
+    private List<Estudante> estudanteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cursoingresso", fetch = FetchType.LAZY)
-    private Collection<Estudante> estudanteCollection1;
+    private List<Estudante> estudanteList1;
 
     public Curso() {
     }
@@ -120,39 +120,39 @@ public class Curso implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SgObra> getSgObraCollection() {
-        return sgObraCollection;
+    public List<SgObra> getSgObraList() {
+        return sgObraList;
     }
 
-    public void setSgObraCollection(Collection<SgObra> sgObraCollection) {
-        this.sgObraCollection = sgObraCollection;
-    }
-
-    @XmlTransient
-    public Collection<BvArtigo> getBvArtigoCollection() {
-        return bvArtigoCollection;
-    }
-
-    public void setBvArtigoCollection(Collection<BvArtigo> bvArtigoCollection) {
-        this.bvArtigoCollection = bvArtigoCollection;
+    public void setSgObraList(List<SgObra> sgObraList) {
+        this.sgObraList = sgObraList;
     }
 
     @XmlTransient
-    public Collection<Estudante> getEstudanteCollection() {
-        return estudanteCollection;
+    public List<BvArtigo> getBvArtigoList() {
+        return bvArtigoList;
     }
 
-    public void setEstudanteCollection(Collection<Estudante> estudanteCollection) {
-        this.estudanteCollection = estudanteCollection;
+    public void setBvArtigoList(List<BvArtigo> bvArtigoList) {
+        this.bvArtigoList = bvArtigoList;
     }
 
     @XmlTransient
-    public Collection<Estudante> getEstudanteCollection1() {
-        return estudanteCollection1;
+    public List<Estudante> getEstudanteList() {
+        return estudanteList;
     }
 
-    public void setEstudanteCollection1(Collection<Estudante> estudanteCollection1) {
-        this.estudanteCollection1 = estudanteCollection1;
+    public void setEstudanteList(List<Estudante> estudanteList) {
+        this.estudanteList = estudanteList;
+    }
+
+    @XmlTransient
+    public List<Estudante> getEstudanteList1() {
+        return estudanteList1;
+    }
+
+    public void setEstudanteList1(List<Estudante> estudanteList1) {
+        this.estudanteList1 = estudanteList1;
     }
 
     @Override

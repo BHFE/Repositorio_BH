@@ -6,7 +6,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,17 +16,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Migueljr
  */
 @Entity
-@Table(name = "sg_autor", catalog = "fecn2", schema = "public")
+@Table(name = "sg_autor", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgAutor.findAll", query = "SELECT s FROM SgAutor s")
@@ -39,12 +37,12 @@ public class SgAutor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idautor")
+    @Column(name = "idautor", nullable = false)
     private Long idautor;
-    @Column(name = "nome")
+    @Column(name = "nome", length = 255)
     private String nome;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sgAutor", fetch = FetchType.LAZY)
-    private Collection<SgObraAutor> sgObraAutorCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "sgAutor", fetch = FetchType.LAZY)
+    private SgObraAutor sgObraAutor;
 
     public SgAutor() {
     }
@@ -69,13 +67,12 @@ public class SgAutor implements Serializable {
         this.nome = nome;
     }
 
-    @XmlTransient
-    public Collection<SgObraAutor> getSgObraAutorCollection() {
-        return sgObraAutorCollection;
+    public SgObraAutor getSgObraAutor() {
+        return sgObraAutor;
     }
 
-    public void setSgObraAutorCollection(Collection<SgObraAutor> sgObraAutorCollection) {
-        this.sgObraAutorCollection = sgObraAutorCollection;
+    public void setSgObraAutor(SgObraAutor sgObraAutor) {
+        this.sgObraAutor = sgObraAutor;
     }
 
     @Override

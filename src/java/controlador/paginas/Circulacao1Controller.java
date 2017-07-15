@@ -28,6 +28,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
 import servicos.Autenticacao;
 import servicos.AutenticacaoImpl;
 import servicos.UserCredential;
@@ -44,6 +45,9 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
     
     @Wire
     Listbox emprestimoLista;
+        
+    @Wire
+    Textbox utente;
     
     @Wire
     Listheader colunaDev, colunaOperacao1, colunaOperacao2, colunaMulta;
@@ -93,6 +97,7 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
         try {
             new SgEmprestimoJpaController(new JPA().getEmf()).edit(e);
             new SgExemplarJpaController(new JPA().getEmf()).edit(exe);
+            Clients.showNotification("Devolução registada com sucesso", "info", null, null, 5000);
         } catch (Exception ex) {
             Clients.showNotification("Não foi possivel registar a devolução", "warning", null, null, 3000);
         }
@@ -108,7 +113,7 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
 
         SgEmprestimo empre = litem.getValue();
       PagarMulta(empre);
-        pesquisarEmprestimosAbertos();
+    pesquisarMultasNaoPagas();
     }
 
     //Funcao para pagar multa
@@ -131,13 +136,20 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
             int dia = e.getDataEmprestimo().getDate();
             int mes = e.getDataEmprestimo().getMonth();
             int ano = e.getDataEmprestimo().getYear();
-            Date dataEmp = new Date(ano, mes, dia);
+           int hora=e.getDataEmprestimo().getHours();
+            int minuto=e.getDataEmprestimo().getMinutes();
+            Date dataEmp = new Date(ano, mes, dia,hora,minuto);
+            
+            
             dia = new Date().getDate();
             mes = new Date().getMonth();
             ano = new Date().getYear();
-            Date actual = new Date(ano, mes, dia);
+            hora=new Date().getHours();
+            minuto= new Date().getMinutes();
+           Date actual = new Date(ano, mes, dia,hora,minuto);
             if (dataEmp.before(actual)) {
                 int days = daysBetween(dataEmp, actual);
+                if(days>=1){
                 double valor = (days*50)+500;
                 e.setMultaCriacaodata(new Date());
                 e.setMultaEstado("Nao paga");
@@ -149,6 +161,8 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
                     Clients.showNotification("Nao foi possivel registar a multa", "warning", null, null, 3000);
                 }
                 
+            }
+        
             }
         }
     
@@ -168,8 +182,10 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
             minuto= new Date().getMinutes();
            Date actual = new Date(ano, mes, dia,hora,minuto);
             if (dataEmp.before(actual)) {
+                
                 int days = daysBetween(dataEmp, actual);
                 double valor = days*25;
+                if(days>=1){
                 e.setMultaCriacaodata(new Date());
                 e.setMultaEstado("Nao paga");
                 e.setMultaValor(String.valueOf(valor));
@@ -183,20 +199,85 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
                 
             }
         }
-    }
+                    }
+                    }
     
         
          //renovacoa
-    @Listen("onRenovarEmprestimo=#emprestimoLista")
-    public void subtrairLista4(ForwardEvent evt) {
+       @Listen("onRenovarEmprestimo=#emprestimoLista")
+        public void subtrairLista4(ForwardEvent evt) {
         Image img = (Image) evt.getOrigin().getTarget();
 
         Listitem litem = (Listitem) img.getParent().getParent();
 
         SgEmprestimo empre = litem.getValue();
-         renovarEmprestimo(empre);
+         analisarRenovacao(empre);
              pesquisarEmprestimosAbertos();
     }
+    
+     public void analisarRenovacao(SgEmprestimo e){
+         
+         if (isLeituraInterna(e)) {
+            int dia = e.getDataEmprestimo().getDate();
+            int mes = e.getDataEmprestimo().getMonth();
+            int ano = e.getDataEmprestimo().getYear();
+           int hora=e.getDataEmprestimo().getHours();
+            int minuto=e.getDataEmprestimo().getMinutes();
+            Date dataEmp = new Date(ano, mes, dia,hora,minuto);
+            
+            
+            dia = new Date().getDate();
+            mes = new Date().getMonth();
+            ano = new Date().getYear();
+            hora=new Date().getHours();
+            minuto= new Date().getMinutes();
+           Date actual = new Date(ano, mes, dia,hora,minuto);
+            if (dataEmp.before(actual)) {
+                     int days = daysBetween(dataEmp, actual);
+                     if(days>1){
+                    Clients.showNotification("Dispoe de Multa nao podera renovar o emprestimo", "warning", null, null, 3000);
+                  
+               devolverObra(e);
+                     }else {
+                         renovarEmprestimo(e); 
+                     }
+                
+          
+                 
+            }
+        }
+    
+                    else if  (isLeituraDomiciliar(e)) {
+             int dia = e.getDataEmprestimo().getDate();
+            int mes = e.getDataEmprestimo().getMonth();
+            int ano = e.getDataEmprestimo().getYear();
+            int hora=e.getDataEmprestimo().getHours();
+            int minuto=e.getDataEmprestimo().getMinutes();
+            Date dataEmp = new Date(ano, mes, dia,hora,minuto);
+            
+            
+            dia = new Date().getDate();
+            mes = new Date().getMonth();
+            ano = new Date().getYear();
+            hora=new Date().getHours();
+            minuto= new Date().getMinutes();
+           Date actual = new Date(ano, mes, dia,hora,minuto);
+            if (dataEmp.before(actual)) {
+                 int days = daysBetween(dataEmp, actual);
+                     if(days>1){
+                    Clients.showNotification("Dispoe de Multa nao podera renovar o emprestimo", "warning", null, null, 3000);
+                  
+               devolverObra(e);
+                     }else {
+                         renovarEmprestimo(e); 
+                     }
+                
+            }
+        }
+         
+     }
+ 
+   
 
     public void renovarEmprestimo(SgEmprestimo e){
     if (isLeituraInterna(e)) {
@@ -205,7 +286,7 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
         if(isRenovado(e)){
            Clients.showNotification("Nao sera possivel renovar novamente", "warning", null, null, 3000); 
         } else{
-         devolucaoAtrasada(e);
+       
         e.setDataEmprestimo(new Date());
         e.setEstadoRenovacao("Activo");
         e.setDataDevolucao(new Date());
@@ -248,6 +329,16 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
         pesquisarEmprestimosAbertos();
     }
     
+     @Listen("onClick = #menuEmp")
+    public void mostrarListaEmprestimo() {
+        colunaDev.setVisible(false);
+        colunaMulta.setVisible(false);
+        colunaOperacao1.setVisible(true);
+        colunaOperacao2.setVisible(false);
+        pesquisarEmprestimosAbertos();
+    }
+    
+    
     @Listen("onClick = #menuDev")
     public void mostrarListaDevolucoes(){
         colunaDev.setVisible(true);
@@ -278,11 +369,13 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
         emprestimoLista.setModel(subEmprestimos);
     }
     
+    
+    
     public void pesquisarMultasNaoPagas(){
         ListModelList<SgEmprestimo> emprestimos = new ListModelList<SgEmprestimo>(new SgEmprestimoJpaController(new JPA().getEmf()).findSgEmprestimoEntities());
         ListModelList<SgEmprestimo> subEmprestimos = new ListModelList<SgEmprestimo>();
         for (SgEmprestimo emprestimo : emprestimos) {
-            if (emprestimo.getEstado() != null && emprestimo.getEstado().equals("Devolvido") || emprestimo.getEstadoRenovacao().equals("Activo")) {
+            if (emprestimo.getEstado() != null && emprestimo.getEstado().equals("Devolvido")) {
                 if(emprestimo.getMultaEstado() != null && emprestimo.getMultaEstado().equals("Nao paga")){
                     subEmprestimos.add(emprestimo);
                 }
@@ -298,4 +391,32 @@ public class Circulacao1Controller extends SelectorComposer<Component> {
         }
         return false;
     }
+
+
+ @Listen("onClick = #sair")
+   public void mostrarListaEmprestimo1() {
+        colunaDev.setVisible(false);
+        colunaMulta.setVisible(false);
+        colunaOperacao1.setVisible(true);
+        colunaOperacao2.setVisible(false);
+        pesquisarEmprestimosAbertos();
+    }
+   
+   
+//    @Listen("onClick = #idutente")
+//   
+//    public void pesquisarMultasNaoPagasNome(){
+//        ListModelList<SgEmprestimo> emprestimos = new ListModelList<SgEmprestimo>(new SgEmprestimoJpaController(new JPA().getEmf()).findSgEmprestimoEntities());
+//        ListModelList<SgEmprestimo> subEmprestimos = new ListModelList<SgEmprestimo>();
+//        for (SgEmprestimo emprestimo : emprestimos) {
+//            
+//            if (emprestimo.getEstado() != null && emprestimo.getEstado().equals("Devolvido") && emprestimo.getIdLeitor().getIdutilizador().getUtilizador().equals(utente.getValue())) {
+//                if(emprestimo.getMultaEstado() != null && emprestimo.getMultaEstado().equals("Nao paga")){
+//                    subEmprestimos.add(emprestimo);
+//                }
+//            }
+//        }
+//        emprestimoLista.setModel(subEmprestimos);
+//    }
+
 }

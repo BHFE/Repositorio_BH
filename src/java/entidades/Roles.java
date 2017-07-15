@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "roles", catalog = "fecn2", schema = "public")
+@Table(name = "roles", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")
@@ -35,15 +35,15 @@ public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RolesPK rolesPK;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 255)
     private String descricao;
-    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", insertable = false, updatable = false)
+    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Categoria categoria;
-    @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo", insertable = false, updatable = false)
+    @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Grupo grupo;
-    @JoinColumn(name = "id_item", referencedColumnName = "item", insertable = false, updatable = false)
+    @JoinColumn(name = "id_item", referencedColumnName = "item", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Item item;
 

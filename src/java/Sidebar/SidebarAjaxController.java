@@ -48,7 +48,8 @@ public class SidebarAjaxController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         UserCredential cre = authService.getUserCredential();
-        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount());
+        //this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount());
+     this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount());
 
         //to initial view after view constructed.
         Rows rows = fnList.getRows();
@@ -63,7 +64,7 @@ public class SidebarAjaxController extends SelectorComposer<Component> {
 
             } if  (isAdministrador(currentUser)){
         for (SidebarPage page : pageConfig.getPages()) {
-            if(page.getLabel().equals("Administração")){
+            if(page.getLabel().equals("Administração") && page.getLabel().equals("Gerar relatorios") ){
              Row row = constructSidebarRow(page.getName(), page.getLabel(), page.getImage(), page.getUri());
                   rows.appendChild(row);
                 }
@@ -121,10 +122,10 @@ public class SidebarAjaxController extends SelectorComposer<Component> {
     }
 
     public Boolean isGestor(Users usr) {
-        //List<Usergrupo> listaGrupo = usr.getUsergrupoList();
-        List<Usergrupo> listaGrupo = (List<Usergrupo>) usr.getUsergrupoCollection();
+        List<Usergrupo> listaGrupo = usr.getUsergrupoList();
+
         for (Usergrupo usergrupo : listaGrupo) {
-            if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Gestor Bibliotecario")) {
+            if (usergrupo.getIdGrupo().equals("Gestor Bibliotecario")) {
                 return true;
             }
         }
@@ -132,20 +133,20 @@ public class SidebarAjaxController extends SelectorComposer<Component> {
     }
     
        public Boolean isAdministrador(Users usr) {
-        //List<Usergrupo> listaGrupo = usr.getUsergrupoList();
-        List<Usergrupo> listaGrupo = (List<Usergrupo>) usr.getUsergrupoCollection();
+        List<Usergrupo> listaGrupo = usr.getUsergrupoList();
+    
         for (Usergrupo usergrupo : listaGrupo) {
-            if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Administrador")) {
+            if (usergrupo.getIdGrupo().equals("Administrador")) {
                 return true;
             }
         }
         return false;
     }
  public Boolean isBibliotecario(Users usr) {
-        //List<Usergrupo> listaGrupo = usr.getUsergrupoList();
-        List<Usergrupo> listaGrupo = (List<Usergrupo>) usr.getUsergrupoCollection();
+        List<Usergrupo> listaGrupo = usr.getUsergrupoList();
+      
         for (Usergrupo usergrupo : listaGrupo) {
-            if (usergrupo.getUsergrupoPK().getIdGrupo().equals("Bibliotecario")) {
+            if (usergrupo.getIdGrupo().equals("Bibliotecario")) {
                 return true;
             }
         }

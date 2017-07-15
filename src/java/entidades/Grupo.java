@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "grupo", catalog = "fecn2", schema = "public")
+@Table(name = "grupo", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g")
@@ -36,14 +37,14 @@ public class Grupo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_grupo")
+    @Column(name = "id_grupo", nullable = false, length = 45)
     private String idGrupo;
-    @Column(name = "descricao")
+    @Column(name = "descricao", length = 45)
     private String descricao;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupo", fetch = FetchType.LAZY)
-    private Collection<Roles> rolesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupo", fetch = FetchType.LAZY)
-    private Collection<Usergrupo> usergrupoCollection;
+    private List<Roles> rolesList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "grupo", fetch = FetchType.LAZY)
+    private Usergrupo usergrupo;
 
     public Grupo() {
     }
@@ -69,21 +70,20 @@ public class Grupo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Roles> getRolesCollection() {
-        return rolesCollection;
+    public List<Roles> getRolesList() {
+        return rolesList;
     }
 
-    public void setRolesCollection(Collection<Roles> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRolesList(List<Roles> rolesList) {
+        this.rolesList = rolesList;
     }
 
-    @XmlTransient
-    public Collection<Usergrupo> getUsergrupoCollection() {
-        return usergrupoCollection;
+    public Usergrupo getUsergrupo() {
+        return usergrupo;
     }
 
-    public void setUsergrupoCollection(Collection<Usergrupo> usergrupoCollection) {
-        this.usergrupoCollection = usergrupoCollection;
+    public void setUsergrupo(Usergrupo usergrupo) {
+        this.usergrupo = usergrupo;
     }
 
     @Override

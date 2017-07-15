@@ -40,8 +40,8 @@ public class RolesJpaController implements Serializable {
         if (roles.getRolesPK() == null) {
             roles.setRolesPK(new RolesPK());
         }
-        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         roles.getRolesPK().setIdItem(roles.getItem().getItem());
+        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         roles.getRolesPK().setIdGrupo(roles.getGrupo().getIdGrupo());
         EntityManager em = null;
         try {
@@ -64,15 +64,15 @@ public class RolesJpaController implements Serializable {
             }
             em.persist(roles);
             if (categoria != null) {
-                categoria.getRolesCollection().add(roles);
+                categoria.getRolesList().add(roles);
                 categoria = em.merge(categoria);
             }
             if (grupo != null) {
-                grupo.getRolesCollection().add(roles);
+                grupo.getRolesList().add(roles);
                 grupo = em.merge(grupo);
             }
             if (item != null) {
-                item.getRolesCollection().add(roles);
+                item.getRolesList().add(roles);
                 item = em.merge(item);
             }
             em.getTransaction().commit();
@@ -89,8 +89,8 @@ public class RolesJpaController implements Serializable {
     }
 
     public void edit(Roles roles) throws NonexistentEntityException, Exception {
-        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         roles.getRolesPK().setIdItem(roles.getItem().getItem());
+        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         roles.getRolesPK().setIdGrupo(roles.getGrupo().getIdGrupo());
         EntityManager em = null;
         try {
@@ -117,27 +117,27 @@ public class RolesJpaController implements Serializable {
             }
             roles = em.merge(roles);
             if (categoriaOld != null && !categoriaOld.equals(categoriaNew)) {
-                categoriaOld.getRolesCollection().remove(roles);
+                categoriaOld.getRolesList().remove(roles);
                 categoriaOld = em.merge(categoriaOld);
             }
             if (categoriaNew != null && !categoriaNew.equals(categoriaOld)) {
-                categoriaNew.getRolesCollection().add(roles);
+                categoriaNew.getRolesList().add(roles);
                 categoriaNew = em.merge(categoriaNew);
             }
             if (grupoOld != null && !grupoOld.equals(grupoNew)) {
-                grupoOld.getRolesCollection().remove(roles);
+                grupoOld.getRolesList().remove(roles);
                 grupoOld = em.merge(grupoOld);
             }
             if (grupoNew != null && !grupoNew.equals(grupoOld)) {
-                grupoNew.getRolesCollection().add(roles);
+                grupoNew.getRolesList().add(roles);
                 grupoNew = em.merge(grupoNew);
             }
             if (itemOld != null && !itemOld.equals(itemNew)) {
-                itemOld.getRolesCollection().remove(roles);
+                itemOld.getRolesList().remove(roles);
                 itemOld = em.merge(itemOld);
             }
             if (itemNew != null && !itemNew.equals(itemOld)) {
-                itemNew.getRolesCollection().add(roles);
+                itemNew.getRolesList().add(roles);
                 itemNew = em.merge(itemNew);
             }
             em.getTransaction().commit();
@@ -171,17 +171,17 @@ public class RolesJpaController implements Serializable {
             }
             Categoria categoria = roles.getCategoria();
             if (categoria != null) {
-                categoria.getRolesCollection().remove(roles);
+                categoria.getRolesList().remove(roles);
                 categoria = em.merge(categoria);
             }
             Grupo grupo = roles.getGrupo();
             if (grupo != null) {
-                grupo.getRolesCollection().remove(roles);
+                grupo.getRolesList().remove(roles);
                 grupo = em.merge(grupo);
             }
             Item item = roles.getItem();
             if (item != null) {
-                item.getRolesCollection().remove(roles);
+                item.getRolesList().remove(roles);
                 item = em.merge(item);
             }
             em.remove(roles);

@@ -14,7 +14,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidades.Estudante;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,27 +34,27 @@ public class BolsaJpaController implements Serializable {
     }
 
     public void create(Bolsa bolsa) {
-        if (bolsa.getEstudanteCollection() == null) {
-            bolsa.setEstudanteCollection(new ArrayList<Estudante>());
+        if (bolsa.getEstudanteList() == null) {
+            bolsa.setEstudanteList(new ArrayList<Estudante>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Estudante> attachedEstudanteCollection = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionEstudanteToAttach : bolsa.getEstudanteCollection()) {
-                estudanteCollectionEstudanteToAttach = em.getReference(estudanteCollectionEstudanteToAttach.getClass(), estudanteCollectionEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollection.add(estudanteCollectionEstudanteToAttach);
+            List<Estudante> attachedEstudanteList = new ArrayList<Estudante>();
+            for (Estudante estudanteListEstudanteToAttach : bolsa.getEstudanteList()) {
+                estudanteListEstudanteToAttach = em.getReference(estudanteListEstudanteToAttach.getClass(), estudanteListEstudanteToAttach.getIdEstudante());
+                attachedEstudanteList.add(estudanteListEstudanteToAttach);
             }
-            bolsa.setEstudanteCollection(attachedEstudanteCollection);
+            bolsa.setEstudanteList(attachedEstudanteList);
             em.persist(bolsa);
-            for (Estudante estudanteCollectionEstudante : bolsa.getEstudanteCollection()) {
-                Bolsa oldBolsaOfEstudanteCollectionEstudante = estudanteCollectionEstudante.getBolsa();
-                estudanteCollectionEstudante.setBolsa(bolsa);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
-                if (oldBolsaOfEstudanteCollectionEstudante != null) {
-                    oldBolsaOfEstudanteCollectionEstudante.getEstudanteCollection().remove(estudanteCollectionEstudante);
-                    oldBolsaOfEstudanteCollectionEstudante = em.merge(oldBolsaOfEstudanteCollectionEstudante);
+            for (Estudante estudanteListEstudante : bolsa.getEstudanteList()) {
+                Bolsa oldBolsaOfEstudanteListEstudante = estudanteListEstudante.getBolsa();
+                estudanteListEstudante.setBolsa(bolsa);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
+                if (oldBolsaOfEstudanteListEstudante != null) {
+                    oldBolsaOfEstudanteListEstudante.getEstudanteList().remove(estudanteListEstudante);
+                    oldBolsaOfEstudanteListEstudante = em.merge(oldBolsaOfEstudanteListEstudante);
                 }
             }
             em.getTransaction().commit();
@@ -72,30 +71,30 @@ public class BolsaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Bolsa persistentBolsa = em.find(Bolsa.class, bolsa.getIdBolsa());
-            Collection<Estudante> estudanteCollectionOld = persistentBolsa.getEstudanteCollection();
-            Collection<Estudante> estudanteCollectionNew = bolsa.getEstudanteCollection();
-            Collection<Estudante> attachedEstudanteCollectionNew = new ArrayList<Estudante>();
-            for (Estudante estudanteCollectionNewEstudanteToAttach : estudanteCollectionNew) {
-                estudanteCollectionNewEstudanteToAttach = em.getReference(estudanteCollectionNewEstudanteToAttach.getClass(), estudanteCollectionNewEstudanteToAttach.getIdEstudante());
-                attachedEstudanteCollectionNew.add(estudanteCollectionNewEstudanteToAttach);
+            List<Estudante> estudanteListOld = persistentBolsa.getEstudanteList();
+            List<Estudante> estudanteListNew = bolsa.getEstudanteList();
+            List<Estudante> attachedEstudanteListNew = new ArrayList<Estudante>();
+            for (Estudante estudanteListNewEstudanteToAttach : estudanteListNew) {
+                estudanteListNewEstudanteToAttach = em.getReference(estudanteListNewEstudanteToAttach.getClass(), estudanteListNewEstudanteToAttach.getIdEstudante());
+                attachedEstudanteListNew.add(estudanteListNewEstudanteToAttach);
             }
-            estudanteCollectionNew = attachedEstudanteCollectionNew;
-            bolsa.setEstudanteCollection(estudanteCollectionNew);
+            estudanteListNew = attachedEstudanteListNew;
+            bolsa.setEstudanteList(estudanteListNew);
             bolsa = em.merge(bolsa);
-            for (Estudante estudanteCollectionOldEstudante : estudanteCollectionOld) {
-                if (!estudanteCollectionNew.contains(estudanteCollectionOldEstudante)) {
-                    estudanteCollectionOldEstudante.setBolsa(null);
-                    estudanteCollectionOldEstudante = em.merge(estudanteCollectionOldEstudante);
+            for (Estudante estudanteListOldEstudante : estudanteListOld) {
+                if (!estudanteListNew.contains(estudanteListOldEstudante)) {
+                    estudanteListOldEstudante.setBolsa(null);
+                    estudanteListOldEstudante = em.merge(estudanteListOldEstudante);
                 }
             }
-            for (Estudante estudanteCollectionNewEstudante : estudanteCollectionNew) {
-                if (!estudanteCollectionOld.contains(estudanteCollectionNewEstudante)) {
-                    Bolsa oldBolsaOfEstudanteCollectionNewEstudante = estudanteCollectionNewEstudante.getBolsa();
-                    estudanteCollectionNewEstudante.setBolsa(bolsa);
-                    estudanteCollectionNewEstudante = em.merge(estudanteCollectionNewEstudante);
-                    if (oldBolsaOfEstudanteCollectionNewEstudante != null && !oldBolsaOfEstudanteCollectionNewEstudante.equals(bolsa)) {
-                        oldBolsaOfEstudanteCollectionNewEstudante.getEstudanteCollection().remove(estudanteCollectionNewEstudante);
-                        oldBolsaOfEstudanteCollectionNewEstudante = em.merge(oldBolsaOfEstudanteCollectionNewEstudante);
+            for (Estudante estudanteListNewEstudante : estudanteListNew) {
+                if (!estudanteListOld.contains(estudanteListNewEstudante)) {
+                    Bolsa oldBolsaOfEstudanteListNewEstudante = estudanteListNewEstudante.getBolsa();
+                    estudanteListNewEstudante.setBolsa(bolsa);
+                    estudanteListNewEstudante = em.merge(estudanteListNewEstudante);
+                    if (oldBolsaOfEstudanteListNewEstudante != null && !oldBolsaOfEstudanteListNewEstudante.equals(bolsa)) {
+                        oldBolsaOfEstudanteListNewEstudante.getEstudanteList().remove(estudanteListNewEstudante);
+                        oldBolsaOfEstudanteListNewEstudante = em.merge(oldBolsaOfEstudanteListNewEstudante);
                     }
                 }
             }
@@ -128,10 +127,10 @@ public class BolsaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The bolsa with id " + id + " no longer exists.", enfe);
             }
-            Collection<Estudante> estudanteCollection = bolsa.getEstudanteCollection();
-            for (Estudante estudanteCollectionEstudante : estudanteCollection) {
-                estudanteCollectionEstudante.setBolsa(null);
-                estudanteCollectionEstudante = em.merge(estudanteCollectionEstudante);
+            List<Estudante> estudanteList = bolsa.getEstudanteList();
+            for (Estudante estudanteListEstudante : estudanteList) {
+                estudanteListEstudante.setBolsa(null);
+                estudanteListEstudante = em.merge(estudanteListEstudante);
             }
             em.remove(bolsa);
             em.getTransaction().commit();

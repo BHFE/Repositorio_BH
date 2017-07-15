@@ -6,7 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "faculdade", catalog = "fecn2", schema = "public")
+@Table(name = "faculdade", catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Faculdade.findAll", query = "SELECT f FROM Faculdade f")
@@ -41,21 +41,21 @@ public class Faculdade implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_faculdade")
+    @Column(name = "id_faculdade", nullable = false)
     private Integer idFaculdade;
-    @Column(name = "desricao")
+    @Column(name = "desricao", length = 45)
     private String desricao;
-    @Column(name = "abreviatura")
+    @Column(name = "abreviatura", length = 11)
     private String abreviatura;
     @Basic(optional = false)
-    @Column(name = "director")
+    @Column(name = "director", nullable = false)
     private long director;
-    @Column(name = "endereco")
+    @Column(name = "endereco", length = 2147483647)
     private String endereco;
     @OneToMany(mappedBy = "faculdade", fetch = FetchType.LAZY)
-    private Collection<Funcionario> funcionarioCollection;
+    private List<Funcionario> funcionarioList;
     @OneToMany(mappedBy = "faculdade", fetch = FetchType.LAZY)
-    private Collection<Users> usersCollection;
+    private List<Users> usersList;
 
     public Faculdade() {
     }
@@ -110,21 +110,21 @@ public class Faculdade implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection() {
-        return funcionarioCollection;
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
     }
 
-    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
-        this.funcionarioCollection = funcionarioCollection;
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
     }
 
     @XmlTransient
-    public Collection<Users> getUsersCollection() {
-        return usersCollection;
+    public List<Users> getUsersList() {
+        return usersList;
     }
 
-    public void setUsersCollection(Collection<Users> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 
     @Override
