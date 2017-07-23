@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "profissao", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Profissao.findAll", query = "SELECT p FROM Profissao p")
@@ -40,13 +40,13 @@ public class Profissao implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_estudante", nullable = false)
     private Long idEstudante;
-    @Column(name = "descricaopr", length = 45)
+    @Column(length = 45)
     private String descricaopr;
-    @Column(name = "avenidapr", length = 45)
+    @Column(length = 45)
     private String avenidapr;
-    @Column(name = "contactopr", length = 255)
+    @Column(length = 255)
     private String contactopr;
-    @Column(name = "bairropr", length = 255)
+    @Column(length = 255)
     private String bairropr;
     @JoinColumn(name = "id_estudante", referencedColumnName = "id_estudante", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)

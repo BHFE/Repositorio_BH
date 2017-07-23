@@ -35,9 +35,9 @@ public class SgObraArea implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "idarea", nullable = false)
+    @Column(nullable = false)
     private Long idarea;
-    @Column(name = "descricao", length = 255)
+    @Column(length = 255)
     private String descricao;
     @OneToMany(mappedBy = "area", fetch = FetchType.LAZY)
     private List<SgObra> sgObraList;

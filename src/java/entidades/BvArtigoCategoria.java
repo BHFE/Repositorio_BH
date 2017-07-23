@@ -36,9 +36,9 @@ public class BvArtigoCategoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "categoria", nullable = false, length = 64)
+    @Column(nullable = false, length = 64)
     private String categoria;
-    @Column(name = "descricao", length = 255)
+    @Column(length = 255)
     private String descricao;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArea", fetch = FetchType.LAZY)
     private List<BvAvaliador> bvAvaliadorList;

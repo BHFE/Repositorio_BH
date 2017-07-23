@@ -393,21 +393,21 @@ public class ObraController extends SelectorComposer<Component> {
             return;
         }
         //=========================Adicao de autores============================
-        SgObraAutor oa = new SgObraAutor();
-        for (SgAutor aut : lista2) {
-       //   SgObraAutorPK sgoapk = new SgObraAutorPK(aut.getIdautor(), obra.getIdlivro(), new Date());
-           // oa.setSgObraAutorPK(sgoapk);
-           oa.setDataAlocacao(new Date());
-           oa.setIdautor(aut.getIdautor());
-           oa.setIdlivro(obra);
-            try {
-                new SgObraAutorJpaController(new JPA().getEmf()).create(oa);
-       
-            } catch (Exception ex) {
-                Clients.showNotification("nao foi possivel adicionar o autor " + aut.getNome(), "warning", null, null, 3000);
-                return;
-            }
-        }
+//        SgObraAutor oa = new SgObraAutor();
+//        for (SgAutor aut : lista2) {
+//       //   SgObraAutorPK sgoapk = new SgObraAutorPK(aut.getIdautor(), obra.getIdlivro(), new Date());
+//           // oa.setSgObraAutorPK(sgoapk);
+////           oa.setDataAlocacao(new Date());
+////           oa.setIdautor(aut.getIdautor());
+////           oa.setIdlivro(obra);
+//            try {
+//                new SgObraAutorJpaController(new JPA().getEmf()).create(oa);
+//       
+//            } catch (Exception ex) {
+//                Clients.showNotification("nao foi possivel adicionar o autor " + aut.getNome(), "warning", null, null, 3000);
+//                return;
+//            }
+//        }
         //============================Adicao de exemplares==========================
         SgExemplar exempl = new SgExemplar();
         exempl.setDataAquisicao(dataAquisicao.getValue());

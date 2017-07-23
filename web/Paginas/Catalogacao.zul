@@ -146,10 +146,10 @@
                                         divAddObra.setVisible(true);
                                         editarObra.setDisabled(true);
                                         addExemplar.setDisabled(true);
-                                        removeExemplar.setDisabled(true);
+                                        
                                     </attribute>
                                 </button>
-                                <button sclass="btn-primary" image="/Icons/ic_book_minus.png" id="removeExemplar" tooltiptext="Remover exemplar"/>
+                                
                             </div>
                         </hlayout>
                     </div>
@@ -264,7 +264,7 @@
                                                 divAddObra.setVisible(false);
                                                 editarObra.setDisabled(false);
                                                 addExemplar.setDisabled(false);
-                                                removeExemplar.setDisabled(false);
+                                          
                                             </attribute>
                                         </button>
                                     </div>

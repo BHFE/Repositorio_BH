@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package conexao;
-
+//hsjhjshsj
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;

@@ -1,4 +1,4 @@
-<?link rel="stylesheet" type="text/BVcss" href="/BV/css/style.css"?>
+<?link rel="stylesheet" type="text/BVcss" href="/BVcss/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
 <?init class="servicos.AutenticacaoInit"?>
 <!-- authentication init have to locate before composition -->
@@ -112,15 +112,8 @@
                                                     <image src="${each.exemplarRef.obraRef.capaDir}" width="110px"  height="150px"/>
                                        
                                                     <vbox align="left">
-                                                        <hbox>
-                                                            <label value="Titulo: "/>
-                                                            <label sclass="titulo" value="${each.titulo}" />
-                                                        </hbox>
+                                                       
                                             
-                                                        <hbox>
-                                                            <label value="Autor: "/>
-                                                            <label sclass="titulo" value="${each.sgObraAutorLists}" />
-                                                        </hbox>
                             
                                                     </vbox>
                                                 </hbox>
@@ -136,45 +129,6 @@
                         </panel>
                     
                     </div>
-                    <div class="col-lg-6">
-                        <panel title="Reservas Pendentes" id="res"   sclass="panel-default">
-                            <panelchildren>
-                           
-                                <listbox id="reservaListbox"     sclass=" tabelas" emptyMessage="Nenhuma reserva pendente">
-                                    <listhead >
-                                        <listheader  />
-                                        <listheader width="135px"/> 
-                                    </listhead>              
-                                    <template name="model">
-                                        <listitem>
-                                            <listcell>
-                                                <separator height="10px"/>
-                                                <hbox align="center">
-                                                    <image  src="${each.livro.obraRef.capaDir}" width="80px"  height="110px"/>
-                                        
-                                                    <vbox align="left" sclass="titulo">
-                                                     
-                                                        <label sclass="tituloi" value="${each.livro.obraRef.titulo}" />
-         
-                                                        <label sclass="" value="${each.dataExpiracaos}" />
-                              
-                                                        <separator height="5px;"/> 
-                                                    </vbox>
-                                                </hbox>                            
-                                            </listcell>                        
-                                            <listcell >
-                                                <hbox spacing="5px;">
-                                                                         
-                                                    <button  tooltiptext="Cancelar reserva"  sclass="btn btn-danger" image="/icon/ic_cancel_white_18dp.png"  forward="onClick = reservaListbox.onCancelar"/>
-                                                                   
-                                                </hbox>
-                                    
-                                            </listcell>         
-                                        </listitem>
-                                    </template>
-                                </listbox>
-                            </panelchildren>
-                        </panel>
                     
                     
                     
@@ -194,7 +148,7 @@
                                                 </hbox>
                                                 <hbox>
                                                     <label value="Data:"/>
-                                                    <label sclass="" value="${each.multaDataCriacao}"/>
+                                                    <label sclass="" value="${each.multaCriacaodata}"/>
                                                 </hbox>
                                             </listcell> 
                                         </listitem>
@@ -204,7 +158,7 @@
                         </panel>
                     </div>
                 </div>
-            </div>
+       
         
         </div>
     </window>

@@ -76,12 +76,18 @@ public class LoginController extends SelectorComposer<Component> {
 //                 Executions.sendRedirect("/BV/index.zul");
                
                    
+            }if (authService.login(nm, pd) == 8) {
+                      UserCredential cre = authService.getUserCredential();
+                Executions.sendRedirect("/BV/Paginas/admin/circ_submissoes.zul");
+//                 Executions.sendRedirect("/BV/index.zul");
+               
+                   
             }
-            if (authService.login(nm, pd) == 6) {
-                message.setValue("Nao tem permissao para aceder ao sistema!");
-                message.setVisible(true);
-            } 
-            
+//            if (authService.login(nm, pd) == 6) {
+//                message.setValue("Nao tem permissao para aceder ao sistema!");
+//                message.setVisible(true);
+//            } 
+//            
         }
     }
 

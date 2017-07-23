@@ -49,7 +49,7 @@ public class BReserva implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idagenda", nullable = false)
+    @Column(nullable = false)
     private Integer idagenda;
     @Column(name = "data_devolucao")
     @Temporal(TemporalType.DATE)
@@ -57,11 +57,10 @@ public class BReserva implements Serializable {
     @Column(name = "data_reserva")
     @Temporal(TemporalType.DATE)
     private Date dataReserva;
-    @Column(name = "estado", length = 255)
+    @Column(length = 255)
     private String estado;
-    @Column(name = "via", length = 255)
+    @Column(length = 255)
     private String via;
-    @Column(name = "bibliotecario")
     private BigInteger bibliotecario;
     @Column(name = "data_emprestimo")
     @Temporal(TemporalType.DATE)

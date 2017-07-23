@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Migueljr
  */
 @Entity
-@Table(name = "roles", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")
@@ -35,7 +35,7 @@ public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RolesPK rolesPK;
-    @Column(name = "descricao", length = 255)
+    @Column(length = 255)
     private String descricao;
     @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

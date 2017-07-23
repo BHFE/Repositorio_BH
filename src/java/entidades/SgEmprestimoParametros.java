@@ -42,14 +42,14 @@ public class SgEmprestimoParametros implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idparametro", nullable = false)
+    @Column(nullable = false)
     private Long idparametro;
     @Column(name = "data_definicao", length = 255)
     private String dataDefinicao;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "taxa", precision = 8, scale = 8)
+    @Column(precision = 8, scale = 8)
     private Float taxa;
-    @Column(name = "descricao", length = 2147483647)
+    @Column(length = 2147483647)
     private String descricao;
     @OneToMany(mappedBy = "parametrosRef", fetch = FetchType.LAZY)
     private List<SgEmprestimo> sgEmprestimoList;

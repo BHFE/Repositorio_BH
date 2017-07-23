@@ -87,13 +87,14 @@ public class PrincipalLeitor extends SelectorComposer<Component> {
 
         //Pegando Utilizador actual
         UserCredential cre = authService.getUserCredential();
-//      this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
+      
+     this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
 
         //Abrindo novos Artigos
-////        publicacaoRecentes();
+        publicacaoRecentes();
 //        reservaPendente();
         multasPorpagar();
-//        emprestimosPendentes();
+       emprestimosPendentes();
 
 //        Thread threadInfo = new Thread() {
 //            @Override
@@ -110,12 +111,12 @@ public class PrincipalLeitor extends SelectorComposer<Component> {
 
     public void multasPorpagar() {
         int i = 0;
-//        List<SgEmprestimo> emp = currentUser.getSgEmprestimoList();
- List<SgEmprestimo> emp =new SgEmprestimoJpaController(new JPA().getEmf()).findSgEmprestimoEntities();
+      List<SgEmprestimo> emp = currentUser.getSgEmprestimoList();
+// List<SgEmprestimo> emp =new SgEmprestimoJpaController(new JPA().getEmf()).findSgEmprestimoEntities();
         for (Iterator<SgEmprestimo> iterator = emp.iterator(); iterator.hasNext();) {
             SgEmprestimo value = iterator.next();
             if (value.getMultaEstado() != null) {
-                if ("Não paga".equals(value.getMultaEstado())) {
+                if ("Nao paga".equals(value.getMultaEstado())) {
                     i++;
                 } else {
                     iterator.remove();
@@ -140,7 +141,7 @@ public class PrincipalLeitor extends SelectorComposer<Component> {
         for (Iterator<SgEmprestimo> iterator = emp.iterator(); iterator.hasNext();) {
             SgEmprestimo value = iterator.next();
             if (value.getEstado() != null) {
-                if ("Pendente".equals(value.getEstado())) {
+                if ("Activo".equals(value.getEstado())) {
                     i++;
                 } else {
                     iterator.remove();
@@ -173,7 +174,7 @@ public class PrincipalLeitor extends SelectorComposer<Component> {
             }
         }
         if (i==0) {
-           // rec.setVisible(false);
+           rec.setVisible(false);
 
         } else {
             rec.setSclass("panel panel-primary");
@@ -184,47 +185,47 @@ public class PrincipalLeitor extends SelectorComposer<Component> {
 
     }
 
-    public void reservaPendente() {
-        int i = 0;
-        Date hoje = new Date();
-        todas = currentUser.getBReservaList();
-        for (Iterator<BReserva> iterator = todas.iterator(); iterator.hasNext();) {
-            BReserva value = iterator.next();
-            if (value.getEstado().equals("Pendente")) {
-                i++;
-            } else {
-                iterator.remove();
-            }
-        }
-        if (i==0) {
-            //res.setVisible(false);
-
-        } else {
-            res.setSclass("panel panel-primary");
-            res.setTitle("Reservas Pendentes (" + i + ")");
-            reservas = new ListModelList<BReserva>(todas);
-            reservaListbox.setModel(reservas);
-        }
-    }
-
-//    @Listen("onAbrir = #artigoListbox")
-//    public void abrirBvArtigo(ForwardEvent evt) throws FileNotFoundException, IOException {
-//        Button btn = (Button) evt.getOrigin().getTarget();
-//        Listitem litem = (Listitem) btn.getParent().getParent();
-//
-//        artigo = (BvArtigo) litem.getValue();
-//
-//        leitura = new BvLeitura(new Date(), artigo.getIdartigo(), new Date(), currentUser.getNrCartao());
-//        try {
-//            new BvLeituraJpaController(new JPA().getEmf()).create(leitura);
-//        } catch (Exception ex) {
-//            Logger.getLogger(Leituras.class.getName()).log(Level.SEVERE, null, ex);
+//    public void reservaPendente() {
+//        int i = 0;
+//        Date hoje = new Date();
+//        todas = currentUser.getBReservaList();
+//        for (Iterator<BReserva> iterator = todas.iterator(); iterator.hasNext();) {
+//            BReserva value = iterator.next();
+//            if (value.getEstado().equals("Pendente")) {
+//                i++;
+//            } else {
+//                iterator.remove();
+//            }
 //        }
-//        HashMap<String, BvArtigo> args = new HashMap<String, BvArtigo>();
-//        args.put("artigo", artigo);
-//        Window window = (Window) Executions.getCurrent().createComponents("fullScreem.zul", fullScreem, args);
-//        window.doHighlighted();
+//        if (i==0) {
+//            //res.setVisible(false);
+//
+//        } else {
+//            res.setSclass("panel panel-primary");
+//            res.setTitle("Reservas Pendentes (" + i + ")");
+//            reservas = new ListModelList<BReserva>(todas);
+//            reservaListbox.setModel(reservas);
+//        }
 //    }
+
+    @Listen("onAbrir = #artigoListbox")
+    public void abrirBvArtigo(ForwardEvent evt) throws FileNotFoundException, IOException {
+        Button btn = (Button) evt.getOrigin().getTarget();
+        Listitem litem = (Listitem) btn.getParent().getParent();
+
+        artigo = (BvArtigo) litem.getValue();
+
+        leitura = new BvLeitura(new Date(), artigo.getIdartigo(), new Date(), currentUser.getNrCartao());
+        try {
+            new BvLeituraJpaController(new JPA().getEmf()).create(leitura);
+        } catch (Exception ex) {
+            Logger.getLogger(Leituras.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap<String, BvArtigo> args = new HashMap<String, BvArtigo>();
+        args.put("artigo", artigo);
+        Window window = (Window) Executions.getCurrent().createComponents("fullScreem.zul", fullScreem, args);
+        window.doHighlighted();
+    }
 
 //    @Listen("onCancelar=#reservaListbox")
 //    public void removerPublicacao(ForwardEvent evt) throws Exception {

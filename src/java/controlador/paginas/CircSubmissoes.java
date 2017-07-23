@@ -11,6 +11,7 @@ import controladores.entidades.UsersJpaController;
 import controladores.entidades.exceptions.NonexistentEntityException;
 import entidades.BvArtigo;
 import entidades.Users;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,7 +77,7 @@ public class CircSubmissoes extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        //Identificando o utilizador actual
+//        Identificando o utilizador actual
         UserCredential cre = authService.getUserCredential();
         this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount());
         
@@ -117,10 +118,10 @@ public class CircSubmissoes extends SelectorComposer<Component> {
        
         if(a.getEstado().equals("Rejeitado") ){
             estado.setSclass("label label-danger");
-            //rejeitar.setVisible(false);
-             // publicar.setVisible(false);
-              rejeitar.setDisabled(true);
-              publicar.setDisabled(true);
+            rejeitar.setVisible(false);
+             publicar.setVisible(false);
+//              rejeitar.setDisabled(true);
+//              publicar.setDisabled(true);
               
         }else{
             if(a.getEstado().equals("Publicado")){
@@ -154,12 +155,35 @@ public class CircSubmissoes extends SelectorComposer<Component> {
        
     }
     
+    @Listen ("onClick=#publicar")
+    public void publicar() throws NonexistentEntityException, Exception{
+        a.setDataPublicacao(new Date());
+a.setEstado("Publicado");
+
+new    BvArtigoJpaController(new JPA().getEmf()).edit(a);
+ Clients.showNotification("Publicado");
+
+ Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circ_submissoes.zul");
+    }
+    
+    @Listen ("onClick=#rejeitar")
+    public void rejeitar() throws NonexistentEntityException, Exception{
+        a.setDataPublicacao(new Date());
+a.setEstado("Rejeitado");
+
+new    BvArtigoJpaController(new JPA().getEmf()).edit(a);
+ Clients.showNotification("Rejeitado");
+
+ Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circ_submissoes.zul");
+    }
+            
+    
     @Listen("onClick=#abrir")
     public void abrirFile(){
         
         HashMap<String, BvArtigo>  args = new HashMap <String, BvArtigo>();
         args.put("artigo", a);
-        Window window = (Window) Executions.getCurrent().createComponents("fullScreem.zul", fullScreem, args);
+        Window window = (Window) Executions.getCurrent().createComponents("/BV/Paginas/leitor/fullScreem.zul", fullScreem, args);
         window.doHighlighted();
     }
 
@@ -168,27 +192,27 @@ public class CircSubmissoes extends SelectorComposer<Component> {
     
     @Listen("onClick=#nova1")
     public void irUtilixadores(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/circulacao.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circulacao.zul");
     }
     
     @Listen("onClick=#nova2")
     public void ircirculacao(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/circ_submissoes.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circ_submissoes.zul");
     }
     
     @Listen("onClick=#voltar")
     public void irsubmissao(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/circ_submissoes.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circ_submissoes.zul");
     }
     
     @Listen("onClick=#nova")
     public void aqui(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/administracao.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/administracao.zul");
     }
     
     @Listen("onClick=#avaliar")
     public void avaliar(){
-        Executions.getCurrent().sendRedirect("/Paginas/avaliador/avaliar_submissao.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/avaliador/avaliar_submissao.zul");
     }
     
    

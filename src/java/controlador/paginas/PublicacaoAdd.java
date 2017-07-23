@@ -82,7 +82,7 @@ public class PublicacaoAdd extends SelectorComposer<Component> {
 
         UserCredential cre = authService.getUserCredential();
 
-//        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
+        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
         
         if(this.currentUser.getBvAvaliador()!=null){
             avaliador.setVisible(true);

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emprestimos" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="45936f1c-aa2f-4632-a9c2-901e7037b401">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT (SELECT COUNT (idemprestimo) as Domiciliar
+FROM sg_emprestimo
+WHERE tipo_emprestimo = 'Domiciliar'),
+
+(SELECT COUNT (idemprestimo) as Interno
+FROM sg_emprestimo
+WHERE tipo_emprestimo = 'Interno'),
+
+(SELECT COUNT (idemprestimo) as Devolvido
+FROM sg_emprestimo
+WHERE estado = 'Devolvido'),
+
+(SELECT COUNT (idemprestimo) as Emprestado
+FROM sg_emprestimo
+WHERE estado = 'Activo'),
+
+(SELECT COUNT (idemprestimo) as Renovado
+FROM sg_emprestimo
+WHERE estado_renovacao = 'Activo')]]>
+	</queryString>
+	<field name="domiciliar" class="java.lang.Long"/>
+	<field name="interno" class="java.lang.Long"/>
+	<field name="devolvido" class="java.lang.Long"/>
+	<field name="emprestado" class="java.lang.Long"/>
+	<field name="renovado" class="java.lang.Long"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="9d143682-1831-4627-83e5-408350b12f4d"/>
+				<staticText>
+					<reportElement x="340" y="20" width="163" height="43" forecolor="#FFFFFF" uuid="c5b0fc2c-7cde-4bf9-bbf7-7180963e4a24"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Relatorio]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="496" y="43" width="79" height="20" forecolor="#FFFFFF" uuid="3262bf10-9a0a-4f72-855c-026a7bf273bb"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Emprestimo]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="014dd2e5-cb11-4221-84a5-288e38b0ec18"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="111" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="11821547-5edc-4b12-a994-754543c81b63"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[domiciliar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="122" y="0" width="87" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="69caf5e5-dc43-4869-af8e-539f5838876b"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[interno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="222" y="0" width="98" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="168638c9-3ade-4be8-9154-7a354678bf2c"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[devolvido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="333" y="0" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="3ede7d45-152f-40f9-833c-4730279229eb"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[emprestado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="444" y="0" width="111" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="be1eef2e-ec47-4a12-9e87-4fcae19bd522"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[renovado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="9d3a68f0-7473-474b-a267-e87686927189"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="11" y="0" width="111" height="20" uuid="637143d0-b254-4358-b1fb-36cc21936fad"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{domiciliar}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="123" y="0" width="111" height="20" uuid="ec4b7828-4cdc-41ce-a172-130809219058"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{interno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="234" y="0" width="111" height="20" uuid="5507fe5a-89fe-4349-9416-0a98b5bfcf7c"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{devolvido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="344" y="0" width="100" height="20" uuid="eb57e297-2907-4179-aaf2-38a7d761d6df"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emprestado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="461" y="0" width="94" height="20" uuid="0563046b-d2ac-4da1-85ed-1847f21f747c"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{renovado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="3d7520fc-3a21-4a53-a221-f0be91b84d1f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="5b92bc3f-6264-4aba-859b-35784fab9a73"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="b72f9b2d-7466-4998-9200-34e8782759c0"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

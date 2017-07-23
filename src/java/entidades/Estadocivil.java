@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "estadocivil", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estadocivil.findAll", query = "SELECT e FROM Estadocivil e")
@@ -37,7 +37,7 @@ public class Estadocivil implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_estado", nullable = false)
     private Integer idEstado;
-    @Column(name = "descricao", length = 45)
+    @Column(length = 45)
     private String descricao;
     @OneToMany(mappedBy = "estadoCivil", fetch = FetchType.LAZY)
     private List<Estudante> estudanteList;

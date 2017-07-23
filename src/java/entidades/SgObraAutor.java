@@ -7,19 +7,14 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,52 +26,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SgObraAutor.findAll", query = "SELECT s FROM SgObraAutor s")
-    , @NamedQuery(name = "SgObraAutor.findByIdautor", query = "SELECT s FROM SgObraAutor s WHERE s.idautor = :idautor")
-    , @NamedQuery(name = "SgObraAutor.findByDataAlocacao", query = "SELECT s FROM SgObraAutor s WHERE s.dataAlocacao = :dataAlocacao")})
+    , @NamedQuery(name = "SgObraAutor.findByIdautor", query = "SELECT s FROM SgObraAutor s WHERE s.sgObraAutorPK.idautor = :idautor")
+    , @NamedQuery(name = "SgObraAutor.findByIdlivro", query = "SELECT s FROM SgObraAutor s WHERE s.sgObraAutorPK.idlivro = :idlivro")
+    , @NamedQuery(name = "SgObraAutor.findByDataAlocacao", query = "SELECT s FROM SgObraAutor s WHERE s.sgObraAutorPK.dataAlocacao = :dataAlocacao")})
 public class SgObraAutor implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "idautor", nullable = false)
-    private Long idautor;
-    @Basic(optional = false)
-    @Column(name = "data_alocacao", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dataAlocacao;
+    @EmbeddedId
+    protected SgObraAutorPK sgObraAutorPK;
     @JoinColumn(name = "idautor", referencedColumnName = "idautor", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    private SgAutor sgAutor;
-    @JoinColumn(name = "idlivro", referencedColumnName = "idlivro", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private SgObra idlivro;
+    private SgAutor sgAutor;
+    @JoinColumn(name = "idlivro", referencedColumnName = "idlivro", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private SgObra sgObra;
 
     public SgObraAutor() {
     }
 
-    public SgObraAutor(Long idautor) {
-        this.idautor = idautor;
+    public SgObraAutor(SgObraAutorPK sgObraAutorPK) {
+        this.sgObraAutorPK = sgObraAutorPK;
     }
 
-    public SgObraAutor(Long idautor, Date dataAlocacao) {
-        this.idautor = idautor;
-        this.dataAlocacao = dataAlocacao;
+    public SgObraAutor(long idautor, long idlivro, Date dataAlocacao) {
+        this.sgObraAutorPK = new SgObraAutorPK(idautor, idlivro, dataAlocacao);
     }
 
-    public Long getIdautor() {
-        return idautor;
+    public SgObraAutorPK getSgObraAutorPK() {
+        return sgObraAutorPK;
     }
 
-    public void setIdautor(Long idautor) {
-        this.idautor = idautor;
-    }
-
-    public Date getDataAlocacao() {
-        return dataAlocacao;
-    }
-
-    public void setDataAlocacao(Date dataAlocacao) {
-        this.dataAlocacao = dataAlocacao;
+    public void setSgObraAutorPK(SgObraAutorPK sgObraAutorPK) {
+        this.sgObraAutorPK = sgObraAutorPK;
     }
 
     public SgAutor getSgAutor() {
@@ -87,18 +68,18 @@ public class SgObraAutor implements Serializable {
         this.sgAutor = sgAutor;
     }
 
-    public SgObra getIdlivro() {
-        return idlivro;
+    public SgObra getSgObra() {
+        return sgObra;
     }
 
-    public void setIdlivro(SgObra idlivro) {
-        this.idlivro = idlivro;
+    public void setSgObra(SgObra sgObra) {
+        this.sgObra = sgObra;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idautor != null ? idautor.hashCode() : 0);
+        hash += (sgObraAutorPK != null ? sgObraAutorPK.hashCode() : 0);
         return hash;
     }
 
@@ -109,7 +90,7 @@ public class SgObraAutor implements Serializable {
             return false;
         }
         SgObraAutor other = (SgObraAutor) object;
-        if ((this.idautor == null && other.idautor != null) || (this.idautor != null && !this.idautor.equals(other.idautor))) {
+        if ((this.sgObraAutorPK == null && other.sgObraAutorPK != null) || (this.sgObraAutorPK != null && !this.sgObraAutorPK.equals(other.sgObraAutorPK))) {
             return false;
         }
         return true;
@@ -117,7 +98,7 @@ public class SgObraAutor implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.SgObraAutor[ idautor=" + idautor + " ]";
+        return "entidades.SgObraAutor[ sgObraAutorPK=" + sgObraAutorPK + " ]";
     }
     
 }

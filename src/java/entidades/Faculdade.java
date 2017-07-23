@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "faculdade", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Faculdade.findAll", query = "SELECT f FROM Faculdade f")
@@ -43,14 +43,14 @@ public class Faculdade implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_faculdade", nullable = false)
     private Integer idFaculdade;
-    @Column(name = "desricao", length = 45)
+    @Column(length = 45)
     private String desricao;
-    @Column(name = "abreviatura", length = 11)
+    @Column(length = 11)
     private String abreviatura;
     @Basic(optional = false)
-    @Column(name = "director", nullable = false)
+    @Column(nullable = false)
     private long director;
-    @Column(name = "endereco", length = 2147483647)
+    @Column(length = 2147483647)
     private String endereco;
     @OneToMany(mappedBy = "faculdade", fetch = FetchType.LAZY)
     private List<Funcionario> funcionarioList;

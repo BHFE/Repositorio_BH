@@ -76,6 +76,8 @@ public class UtenteController extends SelectorComposer<Component> {
             listVisitante, listEstudante, listFuncionario;
     @Wire
     Messagebox Sim, Cancelar;
+    
+    
 
     @Wire
     Window win2;
@@ -142,7 +144,7 @@ public class UtenteController extends SelectorComposer<Component> {
             l.setBi(bi_visitante.getValue());
             l.setTipoLeitor("Visitante");
             l.setEstado("Activo");
-            l.setIdagente(currentUser);
+           // l.setIdagente(currentUser);
             l.setDataRegisto(new Date());
             long param = 1;
             SgEmprestimoParametros novoCartao = new SgEmprestimoParametrosJpaController(new JPA().getEmf()).findSgEmprestimoParametros(param);
@@ -600,12 +602,13 @@ public class UtenteController extends SelectorComposer<Component> {
                     l.setIdutilizador(usr);
                     l.setEstado("Activo");
                     l.setDataRegisto(new Date());
-                    l.setIdagente(currentUser);
+                   l.setIdagente(currentUser);
               
-                    u.setIdGrupo("Leitor");
-                    u.setDataAlocacao(new Date());
+//                    u.getIdGrupo().setIdGrupo("Leitor");
+//                    u.setDataAlocacao(new Date());
+//                    u.setId(4);
+             
                   
-                    u.setUtilizador(usr);
                  
                     
                     
@@ -620,8 +623,9 @@ public class UtenteController extends SelectorComposer<Component> {
                     
                     try {
                         new BLeitorJpaController(new JPA().getEmf()).create(l);
+                          
                         
-                       new UsergrupoJpaController(new JPA().getEmf()).create(u);
+//                       new UsergrupoJpaController(new JPA().getEmf()).create(u);
                         
                         Clients.showNotification("Utente registado com sucesso!", "info", null, null, 3000);
                         id_leitorE.setValue(l.getNrCartao().toString());
@@ -642,7 +646,7 @@ public class UtenteController extends SelectorComposer<Component> {
                     lf.setEstado("Activo");
                     lf.setDataRegisto(new Date());
                     long param = 1;
-                    lf.setIdagente(currentUser);
+//                    lf.setIdagente(currentUser);
                     SgEmprestimoParametros novoCartao = new SgEmprestimoParametrosJpaController(new JPA().getEmf()).findSgEmprestimoParametros(param);
                     lf.setIdParametroRegisto(novoCartao);
                     lf.setTipoLeitor("Funcionario");

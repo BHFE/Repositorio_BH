@@ -1,6 +1,6 @@
-<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
-<?init class="org.zkoss.zk.ui.util.Composition" arg0="/Paginas/login/layout/templateAdmin.zul"?>
+<?link rel="stylesheet" type="text/BVcss" href="/BV/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/BV/Paginas/login/layout/templateAdmin.zul"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
@@ -15,7 +15,7 @@
                 <separator bar="true"/>
                 <div class="btn-group ">
                     <button sclass="" height="40px" width="150px" image="/icon/ic_format_list_bulleted_black_18dp.png" id="nova1" >Leitores</button>
-                    <button  image="/icon/ic_event_note_black_18dp.png" height="40px" width="180px" sclass="btn-default"   id="nova">Acessos</button>
+   
                     <button  image="/icon/ic_description_white_18dp.png" height="40px" width="180px" sclass="btn-primary active"   id="nova2">Publicações</button>                  
                 </div>                                     
             </vbox>
@@ -60,11 +60,11 @@
                                    
                                             <hbox>
                                                 <label  value="Submissão : "/>
-                                                <label  value="${each.dataSubmissaof}" />
+                                                <label  value="${each.dataSubmissao}" />
                                             </hbox>
                                             <hbox>
                                                 <label  value="Publicação : "/>
-                                                <label  value="${each.dataPublicacaof}" />
+                                                <label  value="${each.dataPublicacao}" />
                                             </hbox>
                                             <hbox>
                                                 <label  value="Avaliador : "/>
@@ -169,12 +169,12 @@
                         </div><!-- /.row -->
                         
                         
-                      <!--  <hbox  style="float:right"> 
+                      <hbox  style="float:right"> 
                                         
                             <button  id="publicar" label="Publicar" image="/icon/ic_done_white_18dp.png"  sclass="btn btn-success"  />
                             <button id="rejeitar" label="Rejeitar" image="/icon/ic_close_white_18dp.png"  sclass="btn btn-danger"/>                         
                             <button id="voltar" label="Voltar" class="btn btn-default" image="/icon/ic_keyboard_backspace_black_18dp.png" onClick=""/> 
-                        </hbox>-->
+                        </hbox>
                         
                     </panelchildren>
                 </panel>

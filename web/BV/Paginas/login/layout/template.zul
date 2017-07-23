@@ -1,7 +1,7 @@
 <?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
-<?init class="servicos.AutenticacaoInit"?>
+<!--<?init class="servicos.AutenticacaoInit"?>!-->
 <zk>
     
 

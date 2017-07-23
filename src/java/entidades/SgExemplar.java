@@ -55,9 +55,9 @@ public class SgExemplar implements Serializable {
     @Column(name = "data_registo")
     @Temporal(TemporalType.DATE)
     private Date dataRegisto;
-    @Column(name = "estado", length = 255)
+    @Column(length = 255)
     private String estado;
-    @Column(name = "forma", length = 255)
+    @Column(length = 255)
     private String forma;
     @Column(name = "motivo_remocao", length = 255)
     private String motivoRemocao;

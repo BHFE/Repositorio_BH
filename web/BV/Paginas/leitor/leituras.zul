@@ -1,4 +1,4 @@
-<?link rel="stylesheet" type="text/BVcss" href="/BV/css/style.css"?>
+<?link rel="stylesheet" type="text/BVcss" href="/BVcss/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
 <?init class="servicos.AutenticacaoInit"?>
 <!-- authentication init have to locate before composition -->
@@ -83,7 +83,7 @@
                                     <label value=";publicado em  " sclass="letra" />
                       
                                                  
-                                    <label value="${each.dataPublicacaof}" sclass="letra"/> 
+                                    <label value="${each.dataPublicacao}" sclass="letra"/> 
                                 
                                     <separator height="20px;"/>                                                  
                                 </listcell>      

@@ -88,8 +88,8 @@ public class Publicacoes extends SelectorComposer<Component> {
 
         //Identificando o utilizador actual
         UserCredential cre = authService.getUserCredential();
-        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitorList();
-        
+//        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitorList();
+        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
         
         if(this.currentUser.getBvAvaliador()!=null){
             avaliador.setVisible(true);
@@ -215,12 +215,12 @@ public class Publicacoes extends SelectorComposer<Component> {
     }
     @Listen("onClick=#voltar")
     public void irsubmissao(){
-        Executions.getCurrent().sendRedirect("/Paginas/leitor/publicacaoList.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/leitor/publicacaoList.zul");
     }
 
     @Listen("onClick=#nova")
     public void abrirForm() {
-        Executions.getCurrent().sendRedirect("/Paginas/leitor/publicacaoAdd.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/leitor/publicacaoAdd.zul");
 
     }
 

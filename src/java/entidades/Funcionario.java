@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "funcionario", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f")
@@ -49,17 +49,16 @@ public class Funcionario implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_funcionario", nullable = false)
     private Long idFuncionario;
-    @Column(name = "nome", length = 45)
+    @Column(length = 45)
     private String nome;
-    @Column(name = "apelido", length = 45)
+    @Column(length = 45)
     private String apelido;
-    @Column(name = "contacto", length = 2147483647)
+    @Column(length = 2147483647)
     private String contacto;
-    @Column(name = "email", length = 2147483647)
+    @Column(length = 2147483647)
     private String email;
-    @Column(name = "nrfuncionario", length = 2147483647)
+    @Column(length = 2147483647)
     private String nrfuncionario;
-    @Column(name = "masculino")
     private Boolean masculino;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario", fetch = FetchType.LAZY)
     private Tipochefia tipochefia;

@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "users", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
@@ -46,20 +47,19 @@ public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "utilizador", nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String utilizador;
-    @Column(name = "email", length = 45)
+    @Column(length = 45)
     private String email;
-    @Column(name = "pasword", length = 45)
+    @Column(length = 45)
     private String pasword;
     @Column(name = "last_access")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastAccess;
-    @Column(name = "nome", length = 45)
+    @Column(length = 45)
     private String nome;
-    @Column(name = "uestudante")
     private Boolean uestudante;
-    @Column(name = "estado", length = 255)
+    @Column(length = 255)
     private String estado;
     @OneToMany(mappedBy = "agenteBibliot", fetch = FetchType.LAZY)
     private List<SgEmprestimo> sgEmprestimoList;
@@ -67,9 +67,9 @@ public class Users implements Serializable {
     private List<Usergrupo> usergrupoList;
     @OneToMany(mappedBy = "bibliotecario", fetch = FetchType.LAZY)
     private List<SgObra> sgObraList;
+    @OneToOne(mappedBy = "idutilizador", fetch = FetchType.LAZY)
+    private BLeitor bLeitor;
     @OneToMany(mappedBy = "idagente", fetch = FetchType.LAZY)
-    private List<BLeitor> bLeitorList;
-    @OneToMany(mappedBy = "idutilizador", fetch = FetchType.LAZY)
     private List<BLeitor> bLeitorList1;
     @OneToMany(mappedBy = "agenteRegisto", fetch = FetchType.LAZY)
     private List<SgExemplar> sgExemplarList;
@@ -175,15 +175,14 @@ public class Users implements Serializable {
         this.sgObraList = sgObraList;
     }
 
-    @XmlTransient
-    public List<BLeitor> getBLeitorList() {
-        return bLeitorList;
+   public BLeitor getBLeitor() {
+        return bLeitor;
     }
 
-    public void setBLeitorList(List<BLeitor> bLeitorList) {
-        this.bLeitorList = bLeitorList;
+    public void setBLeitor(BLeitor bLeitor) {
+        this.bLeitor = bLeitor;
     }
-
+    
     @XmlTransient
     public List<BLeitor> getBLeitorList1() {
         return bLeitorList1;

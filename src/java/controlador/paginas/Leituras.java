@@ -110,7 +110,7 @@ public class Leituras extends SelectorComposer<Component> {
         super.doAfterCompose(comp);
 
         UserCredential cre = authService.getUserCredential();
-//        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
+        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount()).getBLeitor();
 
         todos = arigosValidos();
 

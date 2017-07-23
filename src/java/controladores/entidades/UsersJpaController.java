@@ -13,15 +13,15 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import entidades.BLeitor;
+import java.util.ArrayList;
+import java.util.List;
 import entidades.Estudante;
 import entidades.Faculdade;
 import entidades.Funcionario;
 import entidades.SgEmprestimo;
-import java.util.ArrayList;
-import java.util.List;
 import entidades.Usergrupo;
 import entidades.SgObra;
-import entidades.BLeitor;
 import entidades.SgExemplar;
 import entidades.SgEmprestimoParametros;
 import entidades.Users;
@@ -44,6 +44,9 @@ public class UsersJpaController implements Serializable {
     }
 
     public void create(Users users) throws PreexistingEntityException, Exception {
+        if (users.getBLeitor() == null) {
+//            users.setBLeitor(new ArrayList<BLeitor>());
+        }
         if (users.getSgEmprestimoList() == null) {
             users.setSgEmprestimoList(new ArrayList<SgEmprestimo>());
         }
@@ -52,9 +55,6 @@ public class UsersJpaController implements Serializable {
         }
         if (users.getSgObraList() == null) {
             users.setSgObraList(new ArrayList<SgObra>());
-        }
-        if (users.getBLeitorList() == null) {
-            users.setBLeitorList(new ArrayList<BLeitor>());
         }
         if (users.getBLeitorList1() == null) {
             users.setBLeitorList1(new ArrayList<BLeitor>());
@@ -69,6 +69,12 @@ public class UsersJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<BLeitor> attachedBLeitorList = new ArrayList<BLeitor>();
+//            for (BLeitor BLeitorListBLeitorToAttach : users.getBLeitorList()) {
+//                BLeitorListBLeitorToAttach = em.getReference(BLeitorListBLeitorToAttach.getClass(), BLeitorListBLeitorToAttach.getNrCartao());
+//                attachedBLeitorList.add(BLeitorListBLeitorToAttach);
+//            }
+            users.setBLeitor((BLeitor) attachedBLeitorList);
             Estudante idEstudante = users.getIdEstudante();
             if (idEstudante != null) {
                 idEstudante = em.getReference(idEstudante.getClass(), idEstudante.getIdEstudante());
@@ -102,12 +108,6 @@ public class UsersJpaController implements Serializable {
                 attachedSgObraList.add(sgObraListSgObraToAttach);
             }
             users.setSgObraList(attachedSgObraList);
-            List<BLeitor> attachedBLeitorList = new ArrayList<BLeitor>();
-            for (BLeitor BLeitorListBLeitorToAttach : users.getBLeitorList()) {
-                BLeitorListBLeitorToAttach = em.getReference(BLeitorListBLeitorToAttach.getClass(), BLeitorListBLeitorToAttach.getNrCartao());
-                attachedBLeitorList.add(BLeitorListBLeitorToAttach);
-            }
-            users.setBLeitorList(attachedBLeitorList);
             List<BLeitor> attachedBLeitorList1 = new ArrayList<BLeitor>();
             for (BLeitor BLeitorList1BLeitorToAttach : users.getBLeitorList1()) {
                 BLeitorList1BLeitorToAttach = em.getReference(BLeitorList1BLeitorToAttach.getClass(), BLeitorList1BLeitorToAttach.getNrCartao());
@@ -127,6 +127,15 @@ public class UsersJpaController implements Serializable {
             }
             users.setSgEmprestimoParametrosList(attachedSgEmprestimoParametrosList);
             em.persist(users);
+//            for (BLeitor BLeitorListBLeitor : users.getBLeitorList()) {
+//                Users oldIdutilizadorOfBLeitorListBLeitor = BLeitorListBLeitor.getIdutilizador();
+//                if (oldIdutilizadorOfBLeitorListBLeitor != null) {
+//                    oldIdutilizadorOfBLeitorListBLeitor.setBLeitor(null);
+//                    oldIdutilizadorOfBLeitorListBLeitor = em.merge(oldIdutilizadorOfBLeitorListBLeitor);
+//                }
+//                BLeitorListBLeitor.setIdutilizador(users);
+//                BLeitorListBLeitor = em.merge(BLeitorListBLeitor);
+//            }
             if (idEstudante != null) {
                 idEstudante.getUsersList().add(users);
                 idEstudante = em.merge(idEstudante);
@@ -166,22 +175,13 @@ public class UsersJpaController implements Serializable {
                     oldBibliotecarioOfSgObraListSgObra = em.merge(oldBibliotecarioOfSgObraListSgObra);
                 }
             }
-            for (BLeitor BLeitorListBLeitor : users.getBLeitorList()) {
-                Users oldIdagenteOfBLeitorListBLeitor = BLeitorListBLeitor.getIdagente();
-                BLeitorListBLeitor.setIdagente(users);
-                BLeitorListBLeitor = em.merge(BLeitorListBLeitor);
-                if (oldIdagenteOfBLeitorListBLeitor != null) {
-                    oldIdagenteOfBLeitorListBLeitor.getBLeitorList().remove(BLeitorListBLeitor);
-                    oldIdagenteOfBLeitorListBLeitor = em.merge(oldIdagenteOfBLeitorListBLeitor);
-                }
-            }
             for (BLeitor BLeitorList1BLeitor : users.getBLeitorList1()) {
-                Users oldIdutilizadorOfBLeitorList1BLeitor = BLeitorList1BLeitor.getIdutilizador();
-                BLeitorList1BLeitor.setIdutilizador(users);
+                Users oldIdagenteOfBLeitorList1BLeitor = BLeitorList1BLeitor.getIdagente();
+                BLeitorList1BLeitor.setIdagente(users);
                 BLeitorList1BLeitor = em.merge(BLeitorList1BLeitor);
-                if (oldIdutilizadorOfBLeitorList1BLeitor != null) {
-                    oldIdutilizadorOfBLeitorList1BLeitor.getBLeitorList1().remove(BLeitorList1BLeitor);
-                    oldIdutilizadorOfBLeitorList1BLeitor = em.merge(oldIdutilizadorOfBLeitorList1BLeitor);
+                if (oldIdagenteOfBLeitorList1BLeitor != null) {
+                    oldIdagenteOfBLeitorList1BLeitor.getBLeitorList1().remove(BLeitorList1BLeitor);
+                    oldIdagenteOfBLeitorList1BLeitor = em.merge(oldIdagenteOfBLeitorList1BLeitor);
                 }
             }
             for (SgExemplar sgExemplarListSgExemplar : users.getSgExemplarList()) {
@@ -221,6 +221,8 @@ public class UsersJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Users persistentUsers = em.find(Users.class, users.getUtilizador());
+            List<BLeitor> BLeitorListOld = (List<BLeitor>) persistentUsers.getBLeitor();
+            List<BLeitor> BLeitorListNew = (List<BLeitor>) users.getBLeitor();
             Estudante idEstudanteOld = persistentUsers.getIdEstudante();
             Estudante idEstudanteNew = users.getIdEstudante();
             Faculdade faculdadeOld = persistentUsers.getFaculdade();
@@ -233,8 +235,6 @@ public class UsersJpaController implements Serializable {
             List<Usergrupo> usergrupoListNew = users.getUsergrupoList();
             List<SgObra> sgObraListOld = persistentUsers.getSgObraList();
             List<SgObra> sgObraListNew = users.getSgObraList();
-            List<BLeitor> BLeitorListOld = persistentUsers.getBLeitorList();
-            List<BLeitor> BLeitorListNew = users.getBLeitorList();
             List<BLeitor> BLeitorList1Old = persistentUsers.getBLeitorList1();
             List<BLeitor> BLeitorList1New = users.getBLeitorList1();
             List<SgExemplar> sgExemplarListOld = persistentUsers.getSgExemplarList();
@@ -253,6 +253,13 @@ public class UsersJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            List<BLeitor> attachedBLeitorListNew = new ArrayList<BLeitor>();
+            for (BLeitor BLeitorListNewBLeitorToAttach : BLeitorListNew) {
+                BLeitorListNewBLeitorToAttach = em.getReference(BLeitorListNewBLeitorToAttach.getClass(), BLeitorListNewBLeitorToAttach.getNrCartao());
+                attachedBLeitorListNew.add(BLeitorListNewBLeitorToAttach);
+            }
+            BLeitorListNew = attachedBLeitorListNew;
+//            users.setBLeitorList(BLeitorListNew);
             if (idEstudanteNew != null) {
                 idEstudanteNew = em.getReference(idEstudanteNew.getClass(), idEstudanteNew.getIdEstudante());
                 users.setIdEstudante(idEstudanteNew);
@@ -286,13 +293,6 @@ public class UsersJpaController implements Serializable {
             }
             sgObraListNew = attachedSgObraListNew;
             users.setSgObraList(sgObraListNew);
-            List<BLeitor> attachedBLeitorListNew = new ArrayList<BLeitor>();
-            for (BLeitor BLeitorListNewBLeitorToAttach : BLeitorListNew) {
-                BLeitorListNewBLeitorToAttach = em.getReference(BLeitorListNewBLeitorToAttach.getClass(), BLeitorListNewBLeitorToAttach.getNrCartao());
-                attachedBLeitorListNew.add(BLeitorListNewBLeitorToAttach);
-            }
-            BLeitorListNew = attachedBLeitorListNew;
-            users.setBLeitorList(BLeitorListNew);
             List<BLeitor> attachedBLeitorList1New = new ArrayList<BLeitor>();
             for (BLeitor BLeitorList1NewBLeitorToAttach : BLeitorList1New) {
                 BLeitorList1NewBLeitorToAttach = em.getReference(BLeitorList1NewBLeitorToAttach.getClass(), BLeitorList1NewBLeitorToAttach.getNrCartao());
@@ -315,6 +315,23 @@ public class UsersJpaController implements Serializable {
             sgEmprestimoParametrosListNew = attachedSgEmprestimoParametrosListNew;
             users.setSgEmprestimoParametrosList(sgEmprestimoParametrosListNew);
             users = em.merge(users);
+            for (BLeitor BLeitorListOldBLeitor : BLeitorListOld) {
+                if (!BLeitorListNew.contains(BLeitorListOldBLeitor)) {
+                    BLeitorListOldBLeitor.setIdutilizador(null);
+                    BLeitorListOldBLeitor = em.merge(BLeitorListOldBLeitor);
+                }
+            }
+            for (BLeitor BLeitorListNewBLeitor : BLeitorListNew) {
+                if (!BLeitorListOld.contains(BLeitorListNewBLeitor)) {
+                    Users oldIdutilizadorOfBLeitorListNewBLeitor = BLeitorListNewBLeitor.getIdutilizador();
+                    BLeitorListNewBLeitor.setIdutilizador(users);
+                    BLeitorListNewBLeitor = em.merge(BLeitorListNewBLeitor);
+                    if (oldIdutilizadorOfBLeitorListNewBLeitor != null && !oldIdutilizadorOfBLeitorListNewBLeitor.equals(users)) {
+//                        oldIdutilizadorOfBLeitorListNewBLeitor.getBLeitorList().remove(BLeitorListNewBLeitor);
+                        oldIdutilizadorOfBLeitorListNewBLeitor = em.merge(oldIdutilizadorOfBLeitorListNewBLeitor);
+                    }
+                }
+            }
             if (idEstudanteOld != null && !idEstudanteOld.equals(idEstudanteNew)) {
                 idEstudanteOld.getUsersList().remove(users);
                 idEstudanteOld = em.merge(idEstudanteOld);
@@ -384,37 +401,20 @@ public class UsersJpaController implements Serializable {
                     }
                 }
             }
-            for (BLeitor BLeitorListOldBLeitor : BLeitorListOld) {
-                if (!BLeitorListNew.contains(BLeitorListOldBLeitor)) {
-                    BLeitorListOldBLeitor.setIdagente(null);
-                    BLeitorListOldBLeitor = em.merge(BLeitorListOldBLeitor);
-                }
-            }
-            for (BLeitor BLeitorListNewBLeitor : BLeitorListNew) {
-                if (!BLeitorListOld.contains(BLeitorListNewBLeitor)) {
-                    Users oldIdagenteOfBLeitorListNewBLeitor = BLeitorListNewBLeitor.getIdagente();
-                    BLeitorListNewBLeitor.setIdagente(users);
-                    BLeitorListNewBLeitor = em.merge(BLeitorListNewBLeitor);
-                    if (oldIdagenteOfBLeitorListNewBLeitor != null && !oldIdagenteOfBLeitorListNewBLeitor.equals(users)) {
-                        oldIdagenteOfBLeitorListNewBLeitor.getBLeitorList().remove(BLeitorListNewBLeitor);
-                        oldIdagenteOfBLeitorListNewBLeitor = em.merge(oldIdagenteOfBLeitorListNewBLeitor);
-                    }
-                }
-            }
             for (BLeitor BLeitorList1OldBLeitor : BLeitorList1Old) {
                 if (!BLeitorList1New.contains(BLeitorList1OldBLeitor)) {
-                    BLeitorList1OldBLeitor.setIdutilizador(null);
+                    BLeitorList1OldBLeitor.setIdagente(null);
                     BLeitorList1OldBLeitor = em.merge(BLeitorList1OldBLeitor);
                 }
             }
             for (BLeitor BLeitorList1NewBLeitor : BLeitorList1New) {
                 if (!BLeitorList1Old.contains(BLeitorList1NewBLeitor)) {
-                    Users oldIdutilizadorOfBLeitorList1NewBLeitor = BLeitorList1NewBLeitor.getIdutilizador();
-                    BLeitorList1NewBLeitor.setIdutilizador(users);
+                    Users oldIdagenteOfBLeitorList1NewBLeitor = BLeitorList1NewBLeitor.getIdagente();
+                    BLeitorList1NewBLeitor.setIdagente(users);
                     BLeitorList1NewBLeitor = em.merge(BLeitorList1NewBLeitor);
-                    if (oldIdutilizadorOfBLeitorList1NewBLeitor != null && !oldIdutilizadorOfBLeitorList1NewBLeitor.equals(users)) {
-                        oldIdutilizadorOfBLeitorList1NewBLeitor.getBLeitorList1().remove(BLeitorList1NewBLeitor);
-                        oldIdutilizadorOfBLeitorList1NewBLeitor = em.merge(oldIdutilizadorOfBLeitorList1NewBLeitor);
+                    if (oldIdagenteOfBLeitorList1NewBLeitor != null && !oldIdagenteOfBLeitorList1NewBLeitor.equals(users)) {
+                        oldIdagenteOfBLeitorList1NewBLeitor.getBLeitorList1().remove(BLeitorList1NewBLeitor);
+                        oldIdagenteOfBLeitorList1NewBLeitor = em.merge(oldIdagenteOfBLeitorList1NewBLeitor);
                     }
                 }
             }
@@ -492,6 +492,11 @@ public class UsersJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            List<BLeitor> BLeitorList = (List<BLeitor>) users.getBLeitor();
+            for (BLeitor BLeitorListBLeitor : BLeitorList) {
+                BLeitorListBLeitor.setIdutilizador(null);
+                BLeitorListBLeitor = em.merge(BLeitorListBLeitor);
+            }
             Estudante idEstudante = users.getIdEstudante();
             if (idEstudante != null) {
                 idEstudante.getUsersList().remove(users);
@@ -517,14 +522,9 @@ public class UsersJpaController implements Serializable {
                 sgObraListSgObra.setBibliotecario(null);
                 sgObraListSgObra = em.merge(sgObraListSgObra);
             }
-            List<BLeitor> BLeitorList = users.getBLeitorList();
-            for (BLeitor BLeitorListBLeitor : BLeitorList) {
-                BLeitorListBLeitor.setIdagente(null);
-                BLeitorListBLeitor = em.merge(BLeitorListBLeitor);
-            }
             List<BLeitor> BLeitorList1 = users.getBLeitorList1();
             for (BLeitor BLeitorList1BLeitor : BLeitorList1) {
-                BLeitorList1BLeitor.setIdutilizador(null);
+                BLeitorList1BLeitor.setIdagente(null);
                 BLeitorList1BLeitor = em.merge(BLeitorList1BLeitor);
             }
             List<SgExemplar> sgExemplarList = users.getSgExemplarList();

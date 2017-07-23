@@ -69,17 +69,17 @@ public class BLeitor implements Serializable {
     @Column(name = "data_actualizacao")
     @Temporal(TemporalType.DATE)
     private Date dataActualizacao;
-    @Column(name = "bi", length = 255)
+    @Column(length = 255)
     private String bi;
-    @Column(name = "email", length = 255)
+    @Column(length = 255)
     private String email;
-    @Column(name = "moradia", length = 255)
+    @Column(length = 255)
     private String moradia;
-    @Column(name = "nome", length = 255)
+    @Column(length = 255)
     private String nome;
-    @Column(name = "telefone", length = 255)
+    @Column(length = 255)
     private String telefone;
-    @Column(name = "estado", length = 255)
+    @Column(length = 255)
     private String estado;
     @Column(name = "tipo_conta", length = 255)
     private String tipoConta;
@@ -97,12 +97,12 @@ public class BLeitor implements Serializable {
     @JoinColumn(name = "id_parametro_registo", referencedColumnName = "idparametro")
     @ManyToOne(fetch = FetchType.LAZY)
     private SgEmprestimoParametros idParametroRegisto;
-    @JoinColumn(name = "idagente", referencedColumnName = "utilizador")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Users idagente;
     @JoinColumn(name = "idutilizador", referencedColumnName = "utilizador")
     @ManyToOne(fetch = FetchType.LAZY)
     private Users idutilizador;
+    @JoinColumn(name = "idagente", referencedColumnName = "utilizador")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Users idagente;
     @OneToMany(mappedBy = "leitor", fetch = FetchType.LAZY)
     private List<BReserva> bReservaList;
 
@@ -260,20 +260,20 @@ public class BLeitor implements Serializable {
         this.idParametroRegisto = idParametroRegisto;
     }
 
-    public Users getIdagente() {
-        return idagente;
-    }
-
-    public void setIdagente(Users idagente) {
-        this.idagente = idagente;
-    }
-
     public Users getIdutilizador() {
         return idutilizador;
     }
 
     public void setIdutilizador(Users idutilizador) {
         this.idutilizador = idutilizador;
+    }
+
+    public Users getIdagente() {
+        return idagente;
+    }
+
+    public void setIdagente(Users idagente) {
+        this.idagente = idagente;
     }
 
     @XmlTransient

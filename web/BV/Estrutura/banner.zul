@@ -12,10 +12,10 @@
        
         java.util.Map sites = new java.util.HashMap();
         
-        sites.put("principal","/Paginas/pincipal.zul");
-        sites.put("conta","/Paginas/conta.zul");
-        sites.put("artigo","/Paginas/publicacaoList.zul");
-        sites.put("leitura","/Paginas/leituras.zul");
+        sites.put("principal","/BV/Paginas/pincipal.zul");
+        sites.put("conta","/BV/Paginas/conta.zul");
+        sites.put("artigo","/BV/Paginas/publicacaoList.zul");
+        sites.put("leitura","/BV/Paginas/leituras.zul");
 
         void redirect(String name){
         String loc = sites.get(name);

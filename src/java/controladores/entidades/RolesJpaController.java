@@ -40,9 +40,8 @@ public class RolesJpaController implements Serializable {
         if (roles.getRolesPK() == null) {
             roles.setRolesPK(new RolesPK());
         }
-        roles.getRolesPK().setIdItem(roles.getItem().getItem());
-        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         roles.getRolesPK().setIdGrupo(roles.getGrupo().getIdGrupo());
+        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -89,9 +88,8 @@ public class RolesJpaController implements Serializable {
     }
 
     public void edit(Roles roles) throws NonexistentEntityException, Exception {
-        roles.getRolesPK().setIdItem(roles.getItem().getItem());
-        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         roles.getRolesPK().setIdGrupo(roles.getGrupo().getIdGrupo());
+        roles.getRolesPK().setIdCategoria(roles.getCategoria().getIdCategoria());
         EntityManager em = null;
         try {
             em = getEntityManager();

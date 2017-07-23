@@ -6,6 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,12 +39,12 @@ public class SgAutor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idautor", nullable = false)
+    @Column(nullable = false)
     private Long idautor;
-    @Column(name = "nome", length = 255)
+    @Column(length = 255)
     private String nome;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "sgAutor", fetch = FetchType.LAZY)
-    private SgObraAutor sgObraAutor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sgAutor", fetch = FetchType.LAZY)
+    private List<SgObraAutor> sgObraAutorList;
 
     public SgAutor() {
     }
@@ -67,12 +69,13 @@ public class SgAutor implements Serializable {
         this.nome = nome;
     }
 
-    public SgObraAutor getSgObraAutor() {
-        return sgObraAutor;
+    @XmlTransient
+    public List<SgObraAutor> getSgObraAutorList() {
+        return sgObraAutorList;
     }
 
-    public void setSgObraAutor(SgObraAutor sgObraAutor) {
-        this.sgObraAutor = sgObraAutor;
+    public void setSgObraAutorList(List<SgObraAutor> sgObraAutorList) {
+        this.sgObraAutorList = sgObraAutorList;
     }
 
     @Override

@@ -39,8 +39,6 @@ public class BvLeituraJpaController implements Serializable {
         if (bvLeitura.getBvLeituraPK() == null) {
             bvLeitura.setBvLeituraPK(new BvLeituraPK());
         }
-        bvLeitura.getBvLeituraPK().setLeitor(bvLeitura.getBLeitor().getNrCartao());
-        bvLeitura.getBvLeituraPK().setObra(bvLeitura.getBvArtigo().getIdartigo());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -78,8 +76,6 @@ public class BvLeituraJpaController implements Serializable {
     }
 
     public void edit(BvLeitura bvLeitura) throws NonexistentEntityException, Exception {
-        bvLeitura.getBvLeituraPK().setLeitor(bvLeitura.getBLeitor().getNrCartao());
-        bvLeitura.getBvLeituraPK().setObra(bvLeitura.getBvArtigo().getIdartigo());
         EntityManager em = null;
         try {
             em = getEntityManager();

@@ -72,15 +72,15 @@ public class BLeitorJpaController implements Serializable {
                 idParametroRegisto = em.getReference(idParametroRegisto.getClass(), idParametroRegisto.getIdparametro());
                 BLeitor.setIdParametroRegisto(idParametroRegisto);
             }
-            Users idagente = BLeitor.getIdagente();
-            if (idagente != null) {
-                idagente = em.getReference(idagente.getClass(), idagente.getUtilizador());
-                BLeitor.setIdagente(idagente);
-            }
             Users idutilizador = BLeitor.getIdutilizador();
             if (idutilizador != null) {
                 idutilizador = em.getReference(idutilizador.getClass(), idutilizador.getUtilizador());
                 BLeitor.setIdutilizador(idutilizador);
+            }
+            Users idagente = BLeitor.getIdagente();
+            if (idagente != null) {
+                idagente = em.getReference(idagente.getClass(), idagente.getUtilizador());
+                BLeitor.setIdagente(idagente);
             }
             List<SgEmprestimo> attachedSgEmprestimoList = new ArrayList<SgEmprestimo>();
             for (SgEmprestimo sgEmprestimoListSgEmprestimoToAttach : BLeitor.getSgEmprestimoList()) {
@@ -124,14 +124,24 @@ public class BLeitorJpaController implements Serializable {
                 idParametroRegisto.getBLeitorList().add(BLeitor);
                 idParametroRegisto = em.merge(idParametroRegisto);
             }
-            if (idagente != null) {
-                idagente.getBLeitorList().add(BLeitor);
-                idagente = em.merge(idagente);
-            }
-            if (idutilizador != null) {
-                idutilizador.getBLeitorList().add(BLeitor);
-                idutilizador = em.merge(idutilizador);
-            }
+//            if (idutilizador != null) {
+//                java.util.List<entidades.BLeitor> oldBLeitorListOfIdutilizador = idutilizador.getBLeitorList();
+//                if (oldBLeitorListOfIdutilizador != null) {
+//                    oldBLeitorListOfIdutilizador.setIdutilizador(null);
+//                    oldBLeitorListOfIdutilizador = em.merge(oldBLeitorListOfIdutilizador);
+//                }
+//                idutilizador.setBLeitor(BLeitor);
+//                idutilizador = em.merge(idutilizador);
+//            }
+//            if (idagente != null) {
+////                java.util.List<entidades.BLeitor> oldBLeitorListOfIdagente = idagente.getBLeitorList();
+//                if (oldBLeitorListOfIdagente != null) {
+////                    oldBLeitorListOfIdagente.setIdagente(null);
+//                    oldBLeitorListOfIdagente = em.merge(oldBLeitorListOfIdagente);
+//                }
+//                idagente.setBLeitor(BLeitor);
+//                idagente = em.merge(idagente);
+//            }
             for (SgEmprestimo sgEmprestimoListSgEmprestimo : BLeitor.getSgEmprestimoList()) {
                 BLeitor oldIdLeitorOfSgEmprestimoListSgEmprestimo = sgEmprestimoListSgEmprestimo.getIdLeitor();
                 sgEmprestimoListSgEmprestimo.setIdLeitor(BLeitor);
@@ -188,10 +198,10 @@ public class BLeitorJpaController implements Serializable {
             SgEmprestimoParametros idParametroActualizacaoNew = BLeitor.getIdParametroActualizacao();
             SgEmprestimoParametros idParametroRegistoOld = persistentBLeitor.getIdParametroRegisto();
             SgEmprestimoParametros idParametroRegistoNew = BLeitor.getIdParametroRegisto();
-            Users idagenteOld = persistentBLeitor.getIdagente();
-            Users idagenteNew = BLeitor.getIdagente();
             Users idutilizadorOld = persistentBLeitor.getIdutilizador();
             Users idutilizadorNew = BLeitor.getIdutilizador();
+            Users idagenteOld = persistentBLeitor.getIdagente();
+            Users idagenteNew = BLeitor.getIdagente();
             List<SgEmprestimo> sgEmprestimoListOld = persistentBLeitor.getSgEmprestimoList();
             List<SgEmprestimo> sgEmprestimoListNew = BLeitor.getSgEmprestimoList();
             List<BvLeitura> bvLeituraListOld = persistentBLeitor.getBvLeituraList();
@@ -230,13 +240,13 @@ public class BLeitorJpaController implements Serializable {
                 idParametroRegistoNew = em.getReference(idParametroRegistoNew.getClass(), idParametroRegistoNew.getIdparametro());
                 BLeitor.setIdParametroRegisto(idParametroRegistoNew);
             }
-            if (idagenteNew != null) {
-                idagenteNew = em.getReference(idagenteNew.getClass(), idagenteNew.getUtilizador());
-                BLeitor.setIdagente(idagenteNew);
-            }
             if (idutilizadorNew != null) {
                 idutilizadorNew = em.getReference(idutilizadorNew.getClass(), idutilizadorNew.getUtilizador());
                 BLeitor.setIdutilizador(idutilizadorNew);
+            }
+            if (idagenteNew != null) {
+                idagenteNew = em.getReference(idagenteNew.getClass(), idagenteNew.getUtilizador());
+                BLeitor.setIdagente(idagenteNew);
             }
             List<SgEmprestimo> attachedSgEmprestimoListNew = new ArrayList<SgEmprestimo>();
             for (SgEmprestimo sgEmprestimoListNewSgEmprestimoToAttach : sgEmprestimoListNew) {
@@ -292,22 +302,32 @@ public class BLeitorJpaController implements Serializable {
                 idParametroRegistoNew.getBLeitorList().add(BLeitor);
                 idParametroRegistoNew = em.merge(idParametroRegistoNew);
             }
-            if (idagenteOld != null && !idagenteOld.equals(idagenteNew)) {
-                idagenteOld.getBLeitorList().remove(BLeitor);
-                idagenteOld = em.merge(idagenteOld);
-            }
-            if (idagenteNew != null && !idagenteNew.equals(idagenteOld)) {
-                idagenteNew.getBLeitorList().add(BLeitor);
-                idagenteNew = em.merge(idagenteNew);
-            }
             if (idutilizadorOld != null && !idutilizadorOld.equals(idutilizadorNew)) {
-                idutilizadorOld.getBLeitorList().remove(BLeitor);
+                idutilizadorOld.setBLeitor(null);
                 idutilizadorOld = em.merge(idutilizadorOld);
             }
-            if (idutilizadorNew != null && !idutilizadorNew.equals(idutilizadorOld)) {
-                idutilizadorNew.getBLeitorList().add(BLeitor);
-                idutilizadorNew = em.merge(idutilizadorNew);
+//            if (idutilizadorNew != null && !idutilizadorNew.equals(idutilizadorOld)) {
+//                java.util.List<entidades.BLeitor> oldBLeitorListOfIdutilizador = idutilizadorNew.getBLeitorList();
+//                if (oldBLeitorListOfIdutilizador != null) {
+//                    oldBLeitorListOfIdutilizador.setIdutilizador(null);
+//                    oldBLeitorListOfIdutilizador = em.merge(oldBLeitorListOfIdutilizador);
+//                }
+//                idutilizadorNew.setBLeitor(BLeitor);
+//                idutilizadorNew = em.merge(idutilizadorNew);
+//            }
+            if (idagenteOld != null && !idagenteOld.equals(idagenteNew)) {
+                idagenteOld.setBLeitor(null);
+                idagenteOld = em.merge(idagenteOld);
             }
+//            if (idagenteNew != null && !idagenteNew.equals(idagenteOld)) {
+//                java.util.List<entidades.BLeitor> oldBLeitorListOfIdagente = idagenteNew.getBLeitorList();
+//                if (oldBLeitorListOfIdagente != null) {
+////                    oldBLeitorListOfIdagente.setIdagente(null);
+//                    oldBLeitorListOfIdagente = em.merge(oldBLeitorListOfIdagente);
+//                }
+//                idagenteNew.setBLeitor(BLeitor);
+//                idagenteNew = em.merge(idagenteNew);
+//            }
             for (SgEmprestimo sgEmprestimoListOldSgEmprestimo : sgEmprestimoListOld) {
                 if (!sgEmprestimoListNew.contains(sgEmprestimoListOldSgEmprestimo)) {
                     sgEmprestimoListOldSgEmprestimo.setIdLeitor(null);
@@ -427,15 +447,15 @@ public class BLeitorJpaController implements Serializable {
                 idParametroRegisto.getBLeitorList().remove(BLeitor);
                 idParametroRegisto = em.merge(idParametroRegisto);
             }
-            Users idagente = BLeitor.getIdagente();
-            if (idagente != null) {
-                idagente.getBLeitorList().remove(BLeitor);
-                idagente = em.merge(idagente);
-            }
             Users idutilizador = BLeitor.getIdutilizador();
             if (idutilizador != null) {
-                idutilizador.getBLeitorList().remove(BLeitor);
+                idutilizador.setBLeitor(null);
                 idutilizador = em.merge(idutilizador);
+            }
+            Users idagente = BLeitor.getIdagente();
+            if (idagente != null) {
+                idagente.setBLeitor(null);
+                idagente = em.merge(idagente);
             }
             List<SgEmprestimo> sgEmprestimoList = BLeitor.getSgEmprestimoList();
             for (SgEmprestimo sgEmprestimoListSgEmprestimo : sgEmprestimoList) {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d086765c-c777-49e2-9475-5b005a0c0f34">
+	<queryString language="SQL">
+		<![CDATA[SELECT (SELECT COUNT (idlivro) as TotalLivros
+FROM sg_obra
+WHERE tipo_obra = 'Livro'),
+
+(SELECT COUNT (idlivro) as TotalRevistas
+FROM sg_obra
+WHERE tipo_obra = 'Revista'),
+
+(SELECT COUNT (idlivro) as TotalMonografias
+FROM sg_obra
+WHERE tipo_obra = 'Monografia'),
+
+(SELECT COUNT (idlivro) as TotalCd
+FROM sg_obra
+WHERE tipo_obra = 'Cd'),
+
+(SELECT COUNT (idlivro) as TotalJornal
+FROM sg_obra
+WHERE tipo_obra = 'Jornal')]]>
+	</queryString>
+	<field name="totallivros" class="java.lang.Long"/>
+	<field name="totalrevistas" class="java.lang.Long"/>
+	<field name="totalmonografias" class="java.lang.Long"/>
+	<field name="totalcd" class="java.lang.Long"/>
+	<field name="totaljornal" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -25,14 +25,14 @@ public class BvLeituraPK implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataLeitura;
     @Basic(optional = false)
-    @Column(name = "obra", nullable = false)
+    @Column(nullable = false)
     private long obra;
     @Basic(optional = false)
     @Column(name = "horas_leitura", nullable = false)
     @Temporal(TemporalType.TIME)
     private Date horasLeitura;
     @Basic(optional = false)
-    @Column(name = "leitor", nullable = false)
+    @Column(nullable = false)
     private long leitor;
 
     public BvLeituraPK() {

@@ -9,10 +9,12 @@ import conexao.JPA;
 import controladores.entidades.BLeitorJpaController;
 import controladores.entidades.BReservaJpaController;
 import controladores.entidades.BvArtigoJpaController;
+import controladores.entidades.UsersJpaController;
 
 import entidades.BLeitor;
 import entidades.BReserva;
 import entidades.BvArtigo;
+import entidades.Users;
 
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +36,9 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
+import servicos.Autenticacao;
+import servicos.AutenticacaoImpl;
+import servicos.UserCredential;
 
 /**
  *
@@ -73,16 +78,16 @@ public class Circulacao extends SelectorComposer<Component>{
     ListModelList<BReserva> reservas;
     ListModelList<BvArtigo> artigos;
     
-    //Autenticacao authService = new AutenticacaoImpl();
-    //Users currentUser = new Users();
+    Autenticacao authService = new AutenticacaoImpl();
+    Users currentUser = new Users();
     BLeitor user;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         
-        //UserCredential cre = authService.getUserCredential();
-        //this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount());
+        UserCredential cre = authService.getUserCredential();
+        this.currentUser = new UsersJpaController(new JPA().getEmf()).findUsers(cre.getAccount());
         
         users = new ListModelList<BLeitor>(new BLeitorJpaController(new JPA().getEmf()).findBLeitorEntities());
         userListbox.setModel(users);
@@ -122,12 +127,12 @@ public class Circulacao extends SelectorComposer<Component>{
         
         
         
-        
-        reservas = new ListModelList<BReserva>(minhasBReservas(user));
-        reservaListbox.setModel(reservas);
-        
-        artigos = new ListModelList<BvArtigo>(minhasPublicacoes(user));
-        artigoListbox.setModel(artigos);
+//        
+//        reservas = new ListModelList<BReserva>(minhasBReservas(user));
+//        reservaListbox.setModel(reservas);
+//        
+//        artigos = new ListModelList<BvArtigo>(minhasPublicacoes(user));
+//        artigoListbox.setModel(artigos);
         
         
 
@@ -151,20 +156,20 @@ public class Circulacao extends SelectorComposer<Component>{
             
     }
     
-    public List <BReserva> minhasBReservas(BLeitor u){
-        int i=0;
-        List<BReserva> todos = new BReservaJpaController(new JPA().getEmf()).findBReservaEntities();
-        for (Iterator<BReserva> iterator = todos.iterator(); iterator.hasNext();) {
-            BReserva value = iterator.next();
-            if (!(value.getLeitor() == null ? u != null : !value.getLeitor().equals(u))) {
-            i++;
-            } else {
-                iterator.remove();
-            }
-        }
-        tabr.setLabel("Reservas ("+i+")" );
-        return todos; 
-    }
+//    public List <BReserva> minhasBReservas(BLeitor u){
+//        int i=0;
+//        List<BReserva> todos = new BReservaJpaController(new JPA().getEmf()).findBReservaEntities();
+//        for (Iterator<BReserva> iterator = todos.iterator(); iterator.hasNext();) {
+//            BReserva value = iterator.next();
+//            if (!(value.getLeitor() == null ? u != null : !value.getLeitor().equals(u))) {
+//            i++;
+//            } else {
+//                iterator.remove();
+//            }
+//        }
+//        tabr.setLabel("Reservas ("+i+")" );
+//        return todos; 
+//    }
     
         public List<BvArtigo> minhasPublicacoes(BLeitor u) {
         int i=0;
@@ -232,22 +237,22 @@ public class Circulacao extends SelectorComposer<Component>{
     
     @Listen("onClick=#nova")
     public void reservasGestor(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/administracao.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/administracao.zul");
     }
     
     @Listen("onClick=#nova2")
     public void submissoesGestor(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/circ_submissoes.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circ_submissoes.zul");
     }
     
     @Listen("onClick=#voltar")
     public void listare(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/circulacao.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circulacao.zul");
     }
     
     @Listen("onClick=#nova1")
     public void listar(){
-        Executions.getCurrent().sendRedirect("/Paginas/admin/circulacao.zul");
+        Executions.getCurrent().sendRedirect("/BV/Paginas/admin/circulacao.zul");
     }
     
 }

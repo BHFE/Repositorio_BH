@@ -18,7 +18,7 @@ import controladores.entidades.exceptions.NonexistentEntityException;
 import entidades.BLeitor;
 import entidades.Estudante;
 import entidades.Funcionario;
-import static entidades.Profissao_.estudante;
+//import static entidades.Profissao_.estudante;
 import entidades.SgEmprestimo;
 import entidades.SgExemplar;
 import entidades.SgObra;

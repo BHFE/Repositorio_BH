@@ -2,42 +2,42 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="BHPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>entidades.BLeitor</class>
-    <class>entidades.BLeitorSgEmprestimo</class>
-    <class>entidades.BReserva</class>
-    <class>entidades.Bolsa</class>
-    <class>entidades.BvArtigo</class>
-    <class>entidades.BvArtigoCategoria</class>
-    <class>entidades.BvAvaliador</class>
-    <class>entidades.BvLeitura</class>
-    <class>entidades.Categoria</class>
-    <class>entidades.Curso</class>
-    <class>entidades.Docente</class>
-    <class>entidades.Estadocivil</class>
-    <class>entidades.Estudante</class>
-    <class>entidades.Faculdade</class>
-    <class>entidades.Funcionario</class>
-    <class>entidades.Grupo</class>
-    <class>entidades.Item</class>
-    <class>entidades.Pais</class>
-    <class>entidades.Profissao</class>
-    <class>entidades.Provincia</class>
-    <class>entidades.Roles</class>
-    <class>entidades.SgAutor</class>
-    <class>entidades.SgEmprestimo</class>
-    <class>entidades.SgEmprestimoParametros</class>
-    <class>entidades.SgExemplar</class>
-    <class>entidades.SgObra</class>
-    <class>entidades.SgObraArea</class>
-    <class>entidades.SgObraAutor</class>
     <class>entidades.SgObraCategoria</class>
-    <class>entidades.SgObraSgExemplar</class>
-    <class>entidades.SgObraSgObraAutor</class>
-    <class>entidades.Tipochefia</class>
-    <class>entidades.Usergrupo</class>
-    <class>entidades.Users</class>
-    <class>entidades.UsersUsergrupo</class>
+    <class>entidades.Funcionario</class>
     <class>entidades.Viaingresso</class>
+    <class>entidades.SgObraArea</class>
+    <class>entidades.Roles</class>
+    <class>entidades.BvArtigoCategoria</class>
+    <class>entidades.Estadocivil</class>
+    <class>entidades.BvLeitura</class>
+    <class>entidades.Pais</class>
+    <class>entidades.UsersUsergrupo</class>
+    <class>entidades.Curso</class>
+    <class>entidades.BLeitor</class>
+    <class>entidades.BReserva</class>
+    <class>entidades.Tipochefia</class>
+    <class>entidades.Item</class>
+    <class>entidades.SgEmprestimoParametros</class>
+    <class>entidades.Users</class>
+    <class>entidades.Faculdade</class>
+    <class>entidades.BvAvaliador</class>
+    <class>entidades.SgObraAutor</class>
+    <class>entidades.SgEmprestimo</class>
+    <class>entidades.Provincia</class>
+    <class>entidades.Bolsa</class>
+    <class>entidades.Usergrupo</class>
+    <class>entidades.SgExemplar</class>
+    <class>entidades.Estudante</class>
+    <class>entidades.SgObraSgObraAutor</class>
+    <class>entidades.SgObraSgExemplar</class>
+    <class>entidades.BLeitorSgEmprestimo</class>
+    <class>entidades.Categoria</class>
+    <class>entidades.BvArtigo</class>
+    <class>entidades.SgAutor</class>
+    <class>entidades.Docente</class>
+    <class>entidades.SgObra</class>
+    <class>entidades.Profissao</class>
+    <class>entidades.Grupo</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/bh"/>

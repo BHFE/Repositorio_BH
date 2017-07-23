@@ -5,7 +5,6 @@
  */
 package controladores.entidades;
 
-import controladores.entidades.exceptions.IllegalOrphanException;
 import controladores.entidades.exceptions.NonexistentEntityException;
 import controladores.entidades.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -16,7 +15,7 @@ import javax.persistence.criteria.Root;
 import entidades.SgAutor;
 import entidades.SgObra;
 import entidades.SgObraAutor;
-import java.util.ArrayList;
+import entidades.SgObraAutorPK;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,20 +35,9 @@ public class SgObraAutorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(SgObraAutor sgObraAutor) throws IllegalOrphanException, PreexistingEntityException, Exception {
-        List<String> illegalOrphanMessages = null;
-        SgAutor sgAutorOrphanCheck = sgObraAutor.getSgAutor();
-        if (sgAutorOrphanCheck != null) {
-            SgObraAutor oldSgObraAutorOfSgAutor = sgAutorOrphanCheck.getSgObraAutor();
-            if (oldSgObraAutorOfSgAutor != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("The SgAutor " + sgAutorOrphanCheck + " already has an item of type SgObraAutor whose sgAutor column cannot be null. Please make another selection for the sgAutor field.");
-            }
-        }
-        if (illegalOrphanMessages != null) {
-            throw new IllegalOrphanException(illegalOrphanMessages);
+    public void create(SgObraAutor sgObraAutor) throws PreexistingEntityException, Exception {
+        if (sgObraAutor.getSgObraAutorPK() == null) {
+            sgObraAutor.setSgObraAutorPK(new SgObraAutorPK());
         }
         EntityManager em = null;
         try {
@@ -60,23 +48,23 @@ public class SgObraAutorJpaController implements Serializable {
                 sgAutor = em.getReference(sgAutor.getClass(), sgAutor.getIdautor());
                 sgObraAutor.setSgAutor(sgAutor);
             }
-            SgObra idlivro = sgObraAutor.getIdlivro();
-            if (idlivro != null) {
-                idlivro = em.getReference(idlivro.getClass(), idlivro.getIdlivro());
-                sgObraAutor.setIdlivro(idlivro);
+            SgObra sgObra = sgObraAutor.getSgObra();
+            if (sgObra != null) {
+                sgObra = em.getReference(sgObra.getClass(), sgObra.getIdlivro());
+                sgObraAutor.setSgObra(sgObra);
             }
             em.persist(sgObraAutor);
             if (sgAutor != null) {
-                sgAutor.setSgObraAutor(sgObraAutor);
+                sgAutor.getSgObraAutorList().add(sgObraAutor);
                 sgAutor = em.merge(sgAutor);
             }
-            if (idlivro != null) {
-                idlivro.getSgObraAutorList().add(sgObraAutor);
-                idlivro = em.merge(idlivro);
+            if (sgObra != null) {
+                sgObra.getSgObraAutorList().add(sgObraAutor);
+                sgObra = em.merge(sgObra);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findSgObraAutor(sgObraAutor.getIdautor()) != null) {
+            if (findSgObraAutor(sgObraAutor.getSgObraAutorPK()) != null) {
                 throw new PreexistingEntityException("SgObraAutor " + sgObraAutor + " already exists.", ex);
             }
             throw ex;
@@ -87,59 +75,46 @@ public class SgObraAutorJpaController implements Serializable {
         }
     }
 
-    public void edit(SgObraAutor sgObraAutor) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(SgObraAutor sgObraAutor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            SgObraAutor persistentSgObraAutor = em.find(SgObraAutor.class, sgObraAutor.getIdautor());
+            SgObraAutor persistentSgObraAutor = em.find(SgObraAutor.class, sgObraAutor.getSgObraAutorPK());
             SgAutor sgAutorOld = persistentSgObraAutor.getSgAutor();
             SgAutor sgAutorNew = sgObraAutor.getSgAutor();
-            SgObra idlivroOld = persistentSgObraAutor.getIdlivro();
-            SgObra idlivroNew = sgObraAutor.getIdlivro();
-            List<String> illegalOrphanMessages = null;
-            if (sgAutorNew != null && !sgAutorNew.equals(sgAutorOld)) {
-                SgObraAutor oldSgObraAutorOfSgAutor = sgAutorNew.getSgObraAutor();
-                if (oldSgObraAutorOfSgAutor != null) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("The SgAutor " + sgAutorNew + " already has an item of type SgObraAutor whose sgAutor column cannot be null. Please make another selection for the sgAutor field.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
+            SgObra sgObraOld = persistentSgObraAutor.getSgObra();
+            SgObra sgObraNew = sgObraAutor.getSgObra();
             if (sgAutorNew != null) {
                 sgAutorNew = em.getReference(sgAutorNew.getClass(), sgAutorNew.getIdautor());
                 sgObraAutor.setSgAutor(sgAutorNew);
             }
-            if (idlivroNew != null) {
-                idlivroNew = em.getReference(idlivroNew.getClass(), idlivroNew.getIdlivro());
-                sgObraAutor.setIdlivro(idlivroNew);
+            if (sgObraNew != null) {
+                sgObraNew = em.getReference(sgObraNew.getClass(), sgObraNew.getIdlivro());
+                sgObraAutor.setSgObra(sgObraNew);
             }
             sgObraAutor = em.merge(sgObraAutor);
             if (sgAutorOld != null && !sgAutorOld.equals(sgAutorNew)) {
-                sgAutorOld.setSgObraAutor(null);
+                sgAutorOld.getSgObraAutorList().remove(sgObraAutor);
                 sgAutorOld = em.merge(sgAutorOld);
             }
             if (sgAutorNew != null && !sgAutorNew.equals(sgAutorOld)) {
-                sgAutorNew.setSgObraAutor(sgObraAutor);
+                sgAutorNew.getSgObraAutorList().add(sgObraAutor);
                 sgAutorNew = em.merge(sgAutorNew);
             }
-            if (idlivroOld != null && !idlivroOld.equals(idlivroNew)) {
-                idlivroOld.getSgObraAutorList().remove(sgObraAutor);
-                idlivroOld = em.merge(idlivroOld);
+            if (sgObraOld != null && !sgObraOld.equals(sgObraNew)) {
+                sgObraOld.getSgObraAutorList().remove(sgObraAutor);
+                sgObraOld = em.merge(sgObraOld);
             }
-            if (idlivroNew != null && !idlivroNew.equals(idlivroOld)) {
-                idlivroNew.getSgObraAutorList().add(sgObraAutor);
-                idlivroNew = em.merge(idlivroNew);
+            if (sgObraNew != null && !sgObraNew.equals(sgObraOld)) {
+                sgObraNew.getSgObraAutorList().add(sgObraAutor);
+                sgObraNew = em.merge(sgObraNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = sgObraAutor.getIdautor();
+                SgObraAutorPK id = sgObraAutor.getSgObraAutorPK();
                 if (findSgObraAutor(id) == null) {
                     throw new NonexistentEntityException("The sgObraAutor with id " + id + " no longer exists.");
                 }
@@ -152,7 +127,7 @@ public class SgObraAutorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws NonexistentEntityException {
+    public void destroy(SgObraAutorPK id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -160,19 +135,19 @@ public class SgObraAutorJpaController implements Serializable {
             SgObraAutor sgObraAutor;
             try {
                 sgObraAutor = em.getReference(SgObraAutor.class, id);
-                sgObraAutor.getIdautor();
+                sgObraAutor.getSgObraAutorPK();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The sgObraAutor with id " + id + " no longer exists.", enfe);
             }
             SgAutor sgAutor = sgObraAutor.getSgAutor();
             if (sgAutor != null) {
-                sgAutor.setSgObraAutor(null);
+                sgAutor.getSgObraAutorList().remove(sgObraAutor);
                 sgAutor = em.merge(sgAutor);
             }
-            SgObra idlivro = sgObraAutor.getIdlivro();
-            if (idlivro != null) {
-                idlivro.getSgObraAutorList().remove(sgObraAutor);
-                idlivro = em.merge(idlivro);
+            SgObra sgObra = sgObraAutor.getSgObra();
+            if (sgObra != null) {
+                sgObra.getSgObraAutorList().remove(sgObraAutor);
+                sgObra = em.merge(sgObra);
             }
             em.remove(sgObraAutor);
             em.getTransaction().commit();
@@ -207,7 +182,7 @@ public class SgObraAutorJpaController implements Serializable {
         }
     }
 
-    public SgObraAutor findSgObraAutor(Long id) {
+    public SgObraAutor findSgObraAutor(SgObraAutorPK id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(SgObraAutor.class, id);

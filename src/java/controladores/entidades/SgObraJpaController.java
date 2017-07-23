@@ -72,7 +72,7 @@ public class SgObraJpaController implements Serializable {
             }
             List<SgObraAutor> attachedSgObraAutorList = new ArrayList<SgObraAutor>();
             for (SgObraAutor sgObraAutorListSgObraAutorToAttach : sgObra.getSgObraAutorList()) {
-                sgObraAutorListSgObraAutorToAttach = em.getReference(sgObraAutorListSgObraAutorToAttach.getClass(), sgObraAutorListSgObraAutorToAttach.getIdautor());
+                sgObraAutorListSgObraAutorToAttach = em.getReference(sgObraAutorListSgObraAutorToAttach.getClass(), sgObraAutorListSgObraAutorToAttach.getSgObraAutorPK());
                 attachedSgObraAutorList.add(sgObraAutorListSgObraAutorToAttach);
             }
             sgObra.setSgObraAutorList(attachedSgObraAutorList);
@@ -100,12 +100,12 @@ public class SgObraJpaController implements Serializable {
                 bibliotecario = em.merge(bibliotecario);
             }
             for (SgObraAutor sgObraAutorListSgObraAutor : sgObra.getSgObraAutorList()) {
-                SgObra oldIdlivroOfSgObraAutorListSgObraAutor = sgObraAutorListSgObraAutor.getIdlivro();
-                sgObraAutorListSgObraAutor.setIdlivro(sgObra);
+                SgObra oldSgObraOfSgObraAutorListSgObraAutor = sgObraAutorListSgObraAutor.getSgObra();
+                sgObraAutorListSgObraAutor.setSgObra(sgObra);
                 sgObraAutorListSgObraAutor = em.merge(sgObraAutorListSgObraAutor);
-                if (oldIdlivroOfSgObraAutorListSgObraAutor != null) {
-                    oldIdlivroOfSgObraAutorListSgObraAutor.getSgObraAutorList().remove(sgObraAutorListSgObraAutor);
-                    oldIdlivroOfSgObraAutorListSgObraAutor = em.merge(oldIdlivroOfSgObraAutorListSgObraAutor);
+                if (oldSgObraOfSgObraAutorListSgObraAutor != null) {
+                    oldSgObraOfSgObraAutorListSgObraAutor.getSgObraAutorList().remove(sgObraAutorListSgObraAutor);
+                    oldSgObraOfSgObraAutorListSgObraAutor = em.merge(oldSgObraOfSgObraAutorListSgObraAutor);
                 }
             }
             for (SgExemplar sgExemplarListSgExemplar : sgObra.getSgExemplarList()) {
@@ -149,7 +149,7 @@ public class SgObraJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain SgObraAutor " + sgObraAutorListOldSgObraAutor + " since its idlivro field is not nullable.");
+                    illegalOrphanMessages.add("You must retain SgObraAutor " + sgObraAutorListOldSgObraAutor + " since its sgObra field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -173,7 +173,7 @@ public class SgObraJpaController implements Serializable {
             }
             List<SgObraAutor> attachedSgObraAutorListNew = new ArrayList<SgObraAutor>();
             for (SgObraAutor sgObraAutorListNewSgObraAutorToAttach : sgObraAutorListNew) {
-                sgObraAutorListNewSgObraAutorToAttach = em.getReference(sgObraAutorListNewSgObraAutorToAttach.getClass(), sgObraAutorListNewSgObraAutorToAttach.getIdautor());
+                sgObraAutorListNewSgObraAutorToAttach = em.getReference(sgObraAutorListNewSgObraAutorToAttach.getClass(), sgObraAutorListNewSgObraAutorToAttach.getSgObraAutorPK());
                 attachedSgObraAutorListNew.add(sgObraAutorListNewSgObraAutorToAttach);
             }
             sgObraAutorListNew = attachedSgObraAutorListNew;
@@ -220,12 +220,12 @@ public class SgObraJpaController implements Serializable {
             }
             for (SgObraAutor sgObraAutorListNewSgObraAutor : sgObraAutorListNew) {
                 if (!sgObraAutorListOld.contains(sgObraAutorListNewSgObraAutor)) {
-                    SgObra oldIdlivroOfSgObraAutorListNewSgObraAutor = sgObraAutorListNewSgObraAutor.getIdlivro();
-                    sgObraAutorListNewSgObraAutor.setIdlivro(sgObra);
+                    SgObra oldSgObraOfSgObraAutorListNewSgObraAutor = sgObraAutorListNewSgObraAutor.getSgObra();
+                    sgObraAutorListNewSgObraAutor.setSgObra(sgObra);
                     sgObraAutorListNewSgObraAutor = em.merge(sgObraAutorListNewSgObraAutor);
-                    if (oldIdlivroOfSgObraAutorListNewSgObraAutor != null && !oldIdlivroOfSgObraAutorListNewSgObraAutor.equals(sgObra)) {
-                        oldIdlivroOfSgObraAutorListNewSgObraAutor.getSgObraAutorList().remove(sgObraAutorListNewSgObraAutor);
-                        oldIdlivroOfSgObraAutorListNewSgObraAutor = em.merge(oldIdlivroOfSgObraAutorListNewSgObraAutor);
+                    if (oldSgObraOfSgObraAutorListNewSgObraAutor != null && !oldSgObraOfSgObraAutorListNewSgObraAutor.equals(sgObra)) {
+                        oldSgObraOfSgObraAutorListNewSgObraAutor.getSgObraAutorList().remove(sgObraAutorListNewSgObraAutor);
+                        oldSgObraOfSgObraAutorListNewSgObraAutor = em.merge(oldSgObraOfSgObraAutorListNewSgObraAutor);
                     }
                 }
             }
@@ -281,7 +281,7 @@ public class SgObraJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This SgObra (" + sgObra + ") cannot be destroyed since the SgObraAutor " + sgObraAutorListOrphanCheckSgObraAutor + " in its sgObraAutorList field has a non-nullable idlivro field.");
+                illegalOrphanMessages.add("This SgObra (" + sgObra + ") cannot be destroyed since the SgObraAutor " + sgObraAutorListOrphanCheckSgObraAutor + " in its sgObraAutorList field has a non-nullable sgObra field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

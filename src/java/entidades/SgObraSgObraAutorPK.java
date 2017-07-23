@@ -28,10 +28,10 @@ public class SgObraSgObraAutorPK implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataAlocacao;
     @Basic(optional = false)
-    @Column(name = "idautor", nullable = false)
+    @Column(nullable = false)
     private long idautor;
     @Basic(optional = false)
-    @Column(name = "idlivro", nullable = false)
+    @Column(nullable = false)
     private long idlivro;
 
     public SgObraSgObraAutorPK() {

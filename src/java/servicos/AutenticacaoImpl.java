@@ -44,12 +44,12 @@ public class AutenticacaoImpl implements Autenticacao, Serializable {
             return 1;
             //utilizador nao existe ou password incorrecto
         }
-        if (user.getEstado() != null) {
-            if (user.getEstado().equals("Inactivo")) {
-                return 2;
-                //o utilizador esta bloqueado
-            }
-        }
+//        if (user. != null) {
+//            if (user.getEstado().equals("Inactivo")) {
+//                return 2;
+//                //o utilizador esta bloqueado
+//            }
+//        }
 
         List<Usergrupo> listaGrupo = user.getUsergrupoList();
       
@@ -72,12 +72,18 @@ if (usergrupo.getIdGrupo().equals("Gestor Bibliotecario")) {
                 UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
                 sess.setAttribute("userCredential", cre);
                 return 3;
-            } else if (usergrupo.getIdGrupo().equals("Leitor")) {
+            } else if (usergrupo.getIdGrupo().equals("Avaliador")) {
                 Session sess = Sessions.getCurrent();
                 UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
                 sess.setAttribute("userCredential", cre);
-                return 7;
-            } 
+                return 8;
+            }
+//else{
+//                Session sess = Sessions.getCurrent();
+//                UserCredential cre = new UserCredential(user.getUtilizador(), user.getNome());
+//                sess.setAttribute("userCredential", cre);
+//                return 7;
+//            } 
             
         
              
@@ -89,7 +95,7 @@ if (usergrupo.getIdGrupo().equals("Gestor Bibliotecario")) {
         if (cre.isAnonymous()) {
             return 5;
         }
-        return 6;
+        return 7;
     }
 
     public void logout() {

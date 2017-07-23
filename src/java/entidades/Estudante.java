@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Migueljr
  */
 @Entity
-@Table(name = "estudante", catalog = "bh", schema = "public")
+@Table(catalog = "bh", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estudante.findAll", query = "SELECT e FROM Estudante e")
@@ -83,7 +83,7 @@ public class Estudante implements Serializable {
     private String nrEstudante;
     @Column(name = "nome_completo", length = 45)
     private String nomeCompleto;
-    @Column(name = "apelido", length = 45)
+    @Column(length = 45)
     private String apelido;
     @Column(name = "data_nascimento")
     @Temporal(TemporalType.DATE)
@@ -92,15 +92,15 @@ public class Estudante implements Serializable {
     private String nomePai;
     @Column(name = "nome_mae", length = 45)
     private String nomeMae;
-    @Column(name = "naturalidade", length = 45)
+    @Column(length = 45)
     private String naturalidade;
-    @Column(name = "localidade", length = 45)
+    @Column(length = 45)
     private String localidade;
-    @Column(name = "distrito", length = 45)
+    @Column(length = 45)
     private String distrito;
     @Column(name = "ano_ter_medio")
     private Integer anoTerMedio;
-    @Column(name = "escola", length = 45)
+    @Column(length = 45)
     private String escola;
     @Column(name = "ano_ingresso")
     private Integer anoIngresso;
@@ -118,15 +118,14 @@ public class Estudante implements Serializable {
     private Integer tamAgregadoFamiliar;
     @Column(name = "primeira_universidade", length = 45)
     private String primeiraUniversidade;
-    @Column(name = "idioma", length = 45)
+    @Column(length = 45)
     private String idioma;
-    @Column(name = "email", length = 45)
+    @Column(length = 45)
     private String email;
     @Column(name = "nota_admissao")
     private Integer notaAdmissao;
     @Column(name = "outra_via_ingresso", length = 45)
     private String outraViaIngresso;
-    @Column(name = "istrabalhador")
     private Boolean istrabalhador;
     @Column(name = "is_transferencia")
     private Boolean isTransferencia;
@@ -134,18 +133,12 @@ public class Estudante implements Serializable {
     private Boolean isMudancaUn;
     @Column(name = "is_bolseiro")
     private Boolean isBolseiro;
-    @Column(name = "masculino")
     private Boolean masculino;
-    @Column(name = "estado")
     private Boolean estado;
-    @Column(name = "testudo")
     private Integer testudo;
-    @Column(name = "ultimamatricula")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ultimamatricula;
-    @Column(name = "mudancac")
     private Short mudancac;
-    @Column(name = "transferido")
     private Short transferido;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "estudante", fetch = FetchType.LAZY)
     private Profissao profissao;

@@ -2,26 +2,17 @@
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <window id="win" width="850px" action="show: slideDown; hide: slideUp" apply="Relatorios.Emprestimos">
-    <div>
-        Escolha o tipo de Ficheiro:  <listbox id="format" mold="select" onSelect="showReport()" >
-		<listitem label="PDF" value="pdf" selected="true" />
-		<listitem label="XML" value="xml" />
-		<listitem label="HTML" value="html" />
-		<listitem label="Word (RTF)" value="rtf" />
-		<listitem label="Excel" value="xls" />
-		<listitem label="Excel (JXL)" value="jxl" />
-		<listitem label="CSV" value="csv" />
-		<listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
-	</listbox>
-    </div>
+    <window id="win" width="850px" action="show: slideDown; hide: slideUp" apply="controlador.paginas.ReportController">
             <separator/>
             <div sclass="row">  
                 <div sclass="col-lg-6">
                     <div sclass="row">
                         <div sclass="conteudo">
                             <div sclass="btn-group">
-                                <button sclass="btn-primary" tooltiptext="Gerar" height="38px" id="gerar">Gerar Relatorio</button>
+                                <button sclass="btn-primary" tooltiptext="Gerar" height="38px" id="gerar">Obras</button>
+                                <button sclass="btn-primary" tooltiptext="Gerar" height="38px" id="gerarU">Utentes</button>
+                                <button sclass="btn-primary" tooltiptext="Gerar" height="38px" id="gerarE">Emprestimos</button>
+                                <button sclass="btn-primary" tooltiptext="Gerar" height="38px" id="gerarM">Multas</button>
                                 <button sclass="btn-danger" image="/Icons/ic_close.png" label="Cancelar" onClick="win.detach()" id="sair" tooltiptext="Sair"/>
                             </div>
                         </div>

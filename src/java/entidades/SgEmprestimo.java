@@ -49,7 +49,7 @@ public class SgEmprestimo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idemprestimo", nullable = false)
+    @Column(nullable = false)
     private Long idemprestimo;
     @Column(name = "data_devolucao")
     @Temporal(TemporalType.DATE)
@@ -70,7 +70,7 @@ public class SgEmprestimo implements Serializable {
     @Column(name = "multa_criacaodata")
     @Temporal(TemporalType.DATE)
     private Date multaCriacaodata;
-    @Column(name = "estado", length = 255)
+    @Column(length = 255)
     private String estado;
     @Column(name = "estado_renovacao", length = 255)
     private String estadoRenovacao;

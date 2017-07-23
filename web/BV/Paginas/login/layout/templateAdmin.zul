@@ -1,11 +1,11 @@
-<?link rel="stylesheet" type="text/css" href="/BV/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/BV/bootstrap/v3/css/bootstrap.css"?>
-<!--<?init class="servicos.AutenticacaoInit"?>-->
+<?link rel="stylesheet" type="text/css" href="/BVcss/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/BVbootstrap/v3/css/bootstrap.css"?>
+<?init class="servicos.AutenticacaoInit"?>
 <zk>
     
 
-    <script src="/BV/bootstrap/zk/js/Button-bs.js"></script>
-    <script src="/BV/bootstrap/zk/js/panel-bs.js"></script>
+    <script src="/BVbootstrap/zk/js/Button-bs.js"></script>
+    <script src="/BVbootstrap/zk/js/panel-bs.js"></script>
 
     <div sclass="testa"  >
         <style>

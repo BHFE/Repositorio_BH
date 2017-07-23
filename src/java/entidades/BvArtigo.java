@@ -56,28 +56,28 @@ public class BvArtigo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idartigo", nullable = false)
+    @Column(nullable = false)
     private Long idartigo;
-    @Column(name = "autor", length = 255)
+    @Column(length = 255)
     private String autor;
     @Column(name = "data_publicacao")
     @Temporal(TemporalType.DATE)
     private Date dataPublicacao;
-    @Column(name = "descricao", length = 8000)
+    @Column(length = 8000)
     private String descricao;
     @Column(name = "directorio_capa", length = 255)
     private String directorioCapa;
     @Column(name = "directorio_pdf", length = 255)
     private String directorioPdf;
-    @Column(name = "direitos", length = 8000)
+    @Column(length = 8000)
     private String direitos;
-    @Column(name = "estado", length = 255)
+    @Column(length = 255)
     private String estado;
-    @Column(name = "formato", length = 255)
+    @Column(length = 255)
     private String formato;
-    @Column(name = "idioma", length = 255)
+    @Column(length = 255)
     private String idioma;
-    @Column(name = "titulo", length = 255)
+    @Column(length = 255)
     private String titulo;
     @Column(name = "avaliacao_obs", length = 8000)
     private String avaliacaoObs;

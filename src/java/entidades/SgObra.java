@@ -60,40 +60,40 @@ public class SgObra implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idlivro", nullable = false)
+    @Column(nullable = false)
     private Long idlivro;
     @Column(name = "cadastro_data")
     @Temporal(TemporalType.DATE)
     private Date cadastroData;
     @Column(name = "codigo_barra", length = 255)
     private String codigoBarra;
-    @Column(name = "cota", length = 255)
+    @Column(length = 255)
     private String cota;
-    @Column(name = "directorio", length = 3000)
+    @Column(length = 3000)
     private String directorio;
-    @Column(name = "edicao", length = 64)
+    @Column(length = 64)
     private String edicao;
     @Column(name = "edicao_cidade", length = 255)
     private String edicaoCidade;
-    @Column(name = "editora", length = 255)
+    @Column(length = 255)
     private String editora;
-    @Column(name = "formato", length = 255)
+    @Column(length = 255)
     private String formato;
-    @Column(name = "idioma", length = 255)
+    @Column(length = 255)
     private String idioma;
-    @Column(name = "isbn", length = 255)
+    @Column(length = 255)
     private String isbn;
     @Column(name = "publicacao_ano", length = 64)
     private String publicacaoAno;
-    @Column(name = "titulo", length = 255)
+    @Column(length = 255)
     private String titulo;
-    @Column(name = "volume", length = 16)
+    @Column(length = 16)
     private String volume;
     @Column(name = "capa_dir", length = 3000)
     private String capaDir;
     @Column(name = "tipo_obra", length = 255)
     private String tipoObra;
-    @Column(name = "nome", length = 255)
+    @Column(length = 255)
     private String nome;
     @Column(name = "motivo_remocao", length = 255)
     private String motivoRemocao;
@@ -109,7 +109,7 @@ public class SgObra implements Serializable {
     @JoinColumn(name = "bibliotecario", referencedColumnName = "utilizador")
     @ManyToOne(fetch = FetchType.LAZY)
     private Users bibliotecario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idlivro", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sgObra", fetch = FetchType.LAZY)
     private List<SgObraAutor> sgObraAutorList;
     @OneToMany(mappedBy = "obraRef", fetch = FetchType.LAZY)
     private List<SgExemplar> sgExemplarList;

@@ -42,6 +42,5 @@ public class ReportConection {
                 "jdbc:postgresql://localhost:5432/bh",
                 "postgres",
                 "0000" );
-
     }
 }

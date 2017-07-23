@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="CSS/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/bootstrap/v3/css/bootstrap.css"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
